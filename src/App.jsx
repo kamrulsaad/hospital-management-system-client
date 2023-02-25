@@ -6,6 +6,7 @@ function App() {
     <div >
       Hello from create vite app <br />
       Hospital Management Website UNIECH
+      Welcome to siite
       <Navbar></Navbar>
     </div>
   )
