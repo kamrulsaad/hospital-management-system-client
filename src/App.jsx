@@ -1,15 +1,14 @@
-import Navbar from "./components/Navbar"
+import {RouterProvider } from 'react-router-dom';
+import router from './components/Layouts/routes';
 
 function App() {
 
   return (
     <div >
-      Hello from create vite app <br />
-      Hospital Management Website UNIECH
-      Welcome to siite
-      <Navbar></Navbar>
+      <RouterProvider  router={router}></RouterProvider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
+
