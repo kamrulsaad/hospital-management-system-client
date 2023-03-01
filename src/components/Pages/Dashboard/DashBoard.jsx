@@ -9,7 +9,7 @@ import Patients from './Patients';
 
 const DashBoard = () => {
     return (
-     <div className='grid grid-cols-3'>
+     <div className='grid grid-cols-3 -mt-20'>
         <Patients></Patients>
         <Doctor></Doctor>
         <Bed></Bed>
