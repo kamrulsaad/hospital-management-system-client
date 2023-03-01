@@ -4,7 +4,8 @@ import Register from '../Pages/Register/Register';
 import ErrorPage from './ErrorPage';
 import Home from '../Pages/Home/Home';
 import Main from './Main/Main';
-import Dashboard from '../Pages/Dashboard/DashBoard.jsx';
+import DashBoard from '../Pages/Dashboard/DashBoard.jsx';
+import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
 
 const router = createBrowserRouter([
 
@@ -34,14 +35,26 @@ const router = createBrowserRouter([
                 element:<Register></Register>,
     
             },
-            {
-                path:'/dashboard',
-                element:<Dashboard></Dashboard>,
+            // {
+            //     path:'/dashboard',
+            //     element:<DashBoard></DashBoard>,
     
-            },
+            // },
            
-        ]
-    }
+        ]},
+        {
+            path:'/dashboard',
+            element:<DashBoardLayouts></DashBoardLayouts>,
+            children :[
+                {
+                    path:'/dashboard',
+                    element:<DashBoard></DashBoard>
+                }
+            
+            ]
+            
+        }
+    
    
 
   ]);

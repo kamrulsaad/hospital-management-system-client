@@ -1,10 +1,10 @@
 import React from 'react';
-import Dashboard from '../Dashboard/DashBoard'
+import DashBoardLayouts from '../../Layouts/DashBoardLayouts/DashBoardLayouts';
 
 const Home = () => {
     return (
         <div>
-            <Dashboard></Dashboard>
+            <DashBoardLayouts></DashBoardLayouts>
         </div>
     );
 };
