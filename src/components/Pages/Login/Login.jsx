@@ -36,12 +36,12 @@ const Login = () => {
             .then(res => res.json())
             .then(result => {
                 console.log(result);
-                // set JWT token in local storage 
-                localStorage.setItem('LoginToken', result.data.token);
 
                 if (result.status === "fail") {
                     return setError(result.error)
                 }
+                // set JWT token in local storage 
+                localStorage.setItem('LoginToken', result.data.token);
                 // toast.success(`Login Is SuccessFull`);
                 navigate(from, { replace: true });
                 // Navigate('/dashboard')
