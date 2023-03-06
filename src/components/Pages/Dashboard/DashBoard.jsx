@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../Context/UserProvider/UserProvider';
 import AvailableBed from './AvailableBed';
 import AvailableDoctor from './AvailableDoctor';
@@ -9,17 +9,16 @@ import Patients from './Patients';
 
 
 const DashBoard = () => {
-    const { user } = useContext(UserContext);
-    console.log(user);
+ 
     return (
-     <div className='grid grid-cols-3 -mt-20'>
-        <Patients></Patients>
-        <Doctor></Doctor>
-        <Bed></Bed>
-        <NewPatient></NewPatient>
-        <AvailableDoctor></AvailableDoctor>
-        <AvailableBed></AvailableBed>
-     </div>
+        <div className='grid grid-cols-3 -mt-20'>
+            <Patients></Patients>
+            <Doctor></Doctor>
+            <Bed></Bed>
+            <NewPatient></NewPatient>
+            <AvailableDoctor></AvailableDoctor>
+            <AvailableBed></AvailableBed>
+        </div>
     );
 };
 
