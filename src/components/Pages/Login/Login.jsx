@@ -2,10 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-
     const [error, setError] = useState();
-
-
     // Redirect to current path
     const navigate = useNavigate();
     const location = useLocation();
@@ -15,7 +12,6 @@ const Login = () => {
     const handleUserNamePassword = event => {
         event.preventDefault();
         const form = event.target;
-
         const email = form.email.value;
         const password = form.password.value;
         const loginData = {
@@ -23,9 +19,7 @@ const Login = () => {
             password: password,
         };
         console.log(loginData);
-
         // login send to backend 
-
         fetch('http://hms.uniech.com/api/v1/user/login', {
             method: 'POST',
             headers: {
@@ -36,12 +30,12 @@ const Login = () => {
             .then(res => res.json())
             .then(result => {
                 console.log(result);
-                // set JWT token in local storage 
-                localStorage.setItem('LoginToken', result.data.token);
 
                 if (result.status === "fail") {
                     return setError(result.error)
                 }
+                // set JWT token in local storage 
+                localStorage.setItem('LoginToken', result.data.token);
                 // toast.success(`Login Is SuccessFull`);
                 navigate(from, { replace: true });
                 // Navigate('/dashboard')
@@ -52,16 +46,6 @@ const Login = () => {
                 console.error(error)
                 setError(error.message);
             });
-
-
-
-
-
-
-
-
-
-
     }
 
 

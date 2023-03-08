@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../Context/UserProvider/UserProvider';
 
 const Profile = () => {
+    // using contextAPI
+    const { userInfo } = useContext(UserContext);
+    console.log(userInfo);
+
     return (
         <div>
             <div className='grid grid-cols-2'>
@@ -10,8 +15,8 @@ const Profile = () => {
                     </svg>
                 </div>
                 <div className='-ml-14 '>
-                    <h1 className='text-4xl font-semibold '>Arbin Zaman</h1>
-                    <h4 className='text-xl font-thin text-2xl'>Admin</h4>
+                    <h1 className='text-4xl font-semibold '>{userInfo?.data?.firstName} {userInfo?.data?.lastName}</h1>
+                    <h4 className='text-xl font-thin text-2xl'>{userInfo?.data?.role}</h4>
                 </div>
             </div>
             
