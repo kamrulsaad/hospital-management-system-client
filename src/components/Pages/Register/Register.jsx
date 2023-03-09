@@ -1,4 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useLocation, useNavigate, } from 'react-router-dom';
+
+const handleSubmit = event => {
+    const [error, setError] = useState();
+    // Redirect to current path
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
+
+    // Getting From Data 
+    event.preventDefault();
+    const form = event.target;
+    const firstName = form.firstName.value;
+    const lastName = form.lastName.value;
+    const phone = form.phone.value;
+    const role = form.role.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const signUpData = {
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        role: role,
+        email: email,
+        password: password,
+    };
+    console.log(signUpData);
+
+
+
+    // login send to backend 
+    fetch('http://hms.uniech.com/api/v1/user/signup', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(signUpData)
+    })
+        .then(res => res.json())
+        .then(result => {
+            console.log(result);
+            navigate(from, { replace: true });
+            form.reset();
+
+        })
+        .catch(error => {
+            console.error(error)
+            setError(error.message);
+        });
+
+}
+
+
+
 
 const Register = () => {
     return (
@@ -9,27 +64,25 @@ const Register = () => {
                         <h1 className="my-3 text-4xl font-bold pb-20"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
                         <p className="  text-xl font-semibold"> <span className='text-tahiti-dark'>Sign Up to your </span> <span className='text-tahiti-primary'>account</span> </p>
                     </div>
-                    <form novalidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
+                    <form onSubmit={handleSubmit} novalidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
                         <div className="space-y-4">
 
-                            <div className="dropdown">
-                             <span className=" text-xl text-tahiti-primary">Select Role</span>
-                                <label tabIndex={0} className="btn btn-ghost ml-5 text-tahiti-dark bg-tahiti-primary">Select</label>
-                                <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-tahiti-green rounded-box w-52">
-                                    <li><a>Admin</a></li>
-                                    <li><a>Doctor</a></li>
-                                    <li><a>Receptionist</a></li>
-                                </ul>
-                            </div>
+                            <select type="role" name="role" id="role" className="select bg-tahiti-primary block w-full text-center text-white">
+                                <option disabled selected>Choose User</option>
+                                <option>admin</option>
+                                <option>doctor</option>
+                                <option>receptionist</option>
+                            </select>
+
 
                             <div>
-                                <label for="email" className="block mb-2 text-sm text-tahiti-primary">FIRST NAME </label>
-                                <input type="email" name="email" id="email" placeholder="your first name" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
+                                <label for="firstName" className="block mb-2 text-sm text-tahiti-primary">FIRST NAME </label>
+                                <input type="firstName" name="firstName" id="firstName" placeholder="your first name" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                                 <hr className="w-full text-tahiti-primary" />
                             </div>
                             <div>
-                                <label for="email" className="block mb-2 text-sm text-tahiti-primary">LAST NAME </label>
-                                <input type="email" name="email" id="email" placeholder="your last name" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
+                                <label for="lastName" className="block mb-2 text-sm text-tahiti-primary">LAST NAME </label>
+                                <input type="lastName" name="lastName" id="lastName" placeholder="your last name" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                                 <hr className="w-full text-tahiti-primary" />
                             </div>
                             <div>
@@ -47,14 +100,14 @@ const Register = () => {
                                 <hr className="w-full text-tahiti-primary" />
                             </div>
                             <div>
-                                <label for="email" className="block mb-2 text-sm text-tahiti-primary">PHONE</label>
-                                <input type="email" name="email" id="email" placeholder="your phone" className="w-full pb-3 focus:outline-none text-xs text-tahiti-primary" />
+                                <label for="phone" className="block mb-2 text-sm text-tahiti-primary">PHONE</label>
+                                <input type="phone" name="phone" id="phone" placeholder="your phone" className="w-full pb-3 focus:outline-none text-xs text-tahiti-primary" />
                                 <hr className="w-full text-tahiti-primary" />
                             </div>
                         </div>
                         <div className="space-y-2">
                             <div>
-                                <button type="button" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">Sign Up</button>
+                                <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">Sign Up</button>
                             </div>
 
                         </div>

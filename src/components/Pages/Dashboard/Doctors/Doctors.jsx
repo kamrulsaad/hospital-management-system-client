@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react';
 
 
-const AllPatients = () => {
+const Doctors = () => {
 
 
     // const [patients, setPatients] = useState({});
@@ -55,15 +55,14 @@ const AllPatients = () => {
 
 return (
     <div>
-        <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Patients</h1>
+        <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Doctor</h1>
         <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button>
-        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
+        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Doctor</button>
         <div className="overflow-x-auto">
             <table className="table w-full">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Patient ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
@@ -101,7 +100,7 @@ return (
 );
 };
 
-export default AllPatients;
+export default Doctors;
 
 
 
