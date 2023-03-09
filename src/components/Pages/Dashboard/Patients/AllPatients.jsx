@@ -1,10 +1,10 @@
-import React, { useEffect} from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const AllPatients = () => {
 
 
-    // const [patients, setPatients] = useState({});
+    const [patients, setPatients] = useState({});
     // const url = `http://hms.uniech.com/api/v1/patient/all-patient`;
 
     // const { data: patients = [], refetch } = useQuery({
@@ -16,48 +16,28 @@ const AllPatients = () => {
     //     }
     // })
 
-    // fetching userInfo from backend
-    useEffect(() => {
-        fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err));
-        
-      
-    }, []);
+  useEffect(() => {
+    setLoading(true);
+    fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setPatients(data?.data);
+      });
+  }, []);
 
-    // console.log(patients);
+  if (loading) return <Spinner></Spinner>;
 
+  if (patients.length === 0)
+    return <h2 className="text-tahiti-red text-center">No Result Found</h2>;
 
-
-//    // handleDeleteUser
-//    const handleDeleteUser = _id => {
-
-
-//     fetch(`https://trade-buy-sell-arbinzaman.vercel.app/usersList/${_id}`, {
-//         method: 'DELETE'
-//     })
-//         .then(res => res.json())
-//         .then(data => {
-//             console.log(data)
-//             if (data.deletedCount > 0) {
-//                 console.log(data.deletedCount);
-//                 toast.success("User Deleted Succesfully")
-//                 const remainingUsers = displayUser.filter(usr => usr._id !== _id);
-//                 setDisplayUser(remainingUsers);
-//             }
-//         })
-// }
-
-return (
+  return (
     <div>
-        <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Patients</h1>
-        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button>
-        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
+        <h1 className='text-3xl font-bold mb-10 mt-5 '>All Users</h1>
         <div className="overflow-x-auto">
             <table className="table w-full">
                 <thead>
@@ -98,10 +78,7 @@ return (
 
 
     </div>
-);
+  );
 };
 
 export default AllPatients;
-
-
-

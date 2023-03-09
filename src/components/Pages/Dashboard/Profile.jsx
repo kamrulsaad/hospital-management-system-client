@@ -9,7 +9,6 @@ const Profile = () => {
 
     // fetching userInfo from backend
     const [userInfo, setUserInfo] = useState({});
-    console.log(userInfo);
     // fetching userInfo from backend
     useEffect(() => {
         fetch("http://hms.uniech.com/api/v1/user/user-info", {
