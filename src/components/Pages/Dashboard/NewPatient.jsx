@@ -3,8 +3,8 @@ import React from 'react';
 const NewPatient = () => {
     return (
         <div>
-           <div className='text-center    mt-10  bg-tahiti-white'>
-                <div className="card pt-10 pb-5  w-80 bg-base-100 rounded-xl shadow-xl">
+           <div className='text-center    mt-10  '>
+                <div className="card pt-10 pb-5  w-80 bg-base-100 rounded-3xl shadow-xl">
                     <div className="card-body">
                         <div className=' grid grid-cols-4'>
                             <div className='pl-10 '>

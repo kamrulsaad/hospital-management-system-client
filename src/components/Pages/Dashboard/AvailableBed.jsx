@@ -4,7 +4,7 @@ const AvailableBed = () => {
     return (
         <div>
              <div className='text-center    mt-10 ml-10  '>
-                <div className="card pt-10 pb-5  w-80 bg-base-100 rounded-2xl shadow-xl">
+                <div className="card pt-10 pb-5  w-80 bg-base-100 rounded-3xl shadow-xl">
                     <div className="card-body">
                         <div className=' grid grid-cols-4'>
                             <div className=' '>

@@ -4,7 +4,7 @@ const Patients = () => {
     return (
         <div>
             <div className='text-center   '>
-                <div className="card pl-10 pt-10 pb-5 pr- w-80 bg-base-100 rounded-2xl shadow-xl">
+                <div className="card pl-10 pt-10 pb-5 pr- w-80 bg-base-100 rounded-3xl shadow-xl">
                     <div className="card-body">
                         <div className='pl-10 grid grid-cols-4'>
                             <div>
