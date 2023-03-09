@@ -6,6 +6,7 @@ import Home from '../Pages/Home/Home';
 import Main from './Main/Main';
 import DashBoard from '../Pages/Dashboard/DashBoard.jsx';
 import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
+import AllPatients from '../Pages/Dashboard/Patients/AllPatients';
 
 const router = createBrowserRouter([
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
                 {
                     path:'/dashboard',
                     element:<DashBoard></DashBoard>
+                },
+                {
+                    path:'/dashboard/patients',
+                    element:<AllPatients></AllPatients>
                 }
             
             ]
