@@ -33,7 +33,7 @@ const Profile = () => {
                 </div>
                 <div className='-ml-8 '>
                     <h1 className='text-4xl font-semibold '>{userInfo?.data?.firstName} {userInfo?.data?.lastName}</h1>
-                    <h4 className='text-xl font-thin text-2xl'>{userInfo?.data?.role}</h4>
+                    <h4 className='text-xl font-thin'>{userInfo?.data?.role}</h4>
                 </div>
             </div>
 
