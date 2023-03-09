@@ -5,7 +5,7 @@ import AvailableDoctor from './AvailableDoctor';
 import Bed from './Bed';
 import Doctor from './Doctor';
 import NewPatient from './NewPatient';
-import Patients from './Patients';
+import Patients from './Patients/Patients';
 
 
 const DashBoard = () => {
