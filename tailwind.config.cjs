@@ -13,6 +13,7 @@ module.exports = {
         grey: '#AEAEAE',
         white: '#FFFFFF',
         green: '#f0fdf4',
+        red: '#FF0000',
 
       }},
     extend: {},

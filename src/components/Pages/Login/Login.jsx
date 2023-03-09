@@ -59,19 +59,19 @@ const Login = () => {
                 <form onSubmit={handleUserNamePassword} noValidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
                     <div className="space-y-4">
                         <div>
-                            <label for="email" className="block mb-2 text-sm text-tahiti-primary">USERNAME </label>
-                            <input type="email" name="email" id="email" placeholder="username" className="w-full pb-3 text-xs text-tahiti-primary" />
+                            <label for="email" className="block mb-2 text-sm text-tahiti-primary">EMAIL </label>
+                            <input type="email" name="email" id="email" placeholder="Email" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                             <hr className="w-full text-tahiti-primary" />
                         </div>
                         <div>
                             <div className="flex justify-between mb-2">
-                                <label for="password" className="text-sm text-tahiti-primary">PASSWORD</label>
+                                <label for="password" className="text-sm  text-tahiti-primary">PASSWORD</label>
 
                             </div>
-                            <input type="password" name="password" id="password" placeholder="password" className="w-full pb-3 text-xs text-tahiti-primary" />
+                            <input type="password" name="password" id="password" placeholder="password" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                             <hr className="w-full text-tahiti-primary" />
                         </div>
-                        {error && <p> {error} </p>}
+                        {error && <p className='text-tahiti-red'> {error} </p>}
                     </div>
                     <div className="space-y-2">
                         <div>
