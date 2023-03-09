@@ -16,8 +16,6 @@ const AllPatients = () => {
     //     }
     // })
 
-
-
     // fetching userInfo from backend
     useEffect(() => {
         fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
@@ -26,12 +24,13 @@ const AllPatients = () => {
             },
         })
             .then((res) => res.json())
-            .then((data) => setPatients(data))
+            .then((data) => console.log(data))
             .catch((err) => console.log(err));
+        
       
     }, []);
 
-    console.log(patients);
+    // console.log(patients);
 
 
 
@@ -73,21 +72,21 @@ return (
                 <tbody>
 
                 {
-                        patients.map(( patient, i) => <tr key={ patient._id}>
-                            <th>{i + 1}</th>
-                            <td>{ patient?._id}</td>
-                            <td>{ patient?.firstName}</td>
-                            <td>{ patient?.lastName}</td>
-                            <td>{ patient?.email}</td>
-                            <td>{ patient?.phone}</td>
-                            <td><button>Details</button></td>
-                            {/* onClick={() => handleDeleteUser(user._id)} */}
-                            <td>
-                                {/* { patient?.role !== 'admin' &&  */}
-                                <button  className='btn btn-xs btn-danger'>Delete</button>
-                                {/* // } */}
-                                </td>
-                        </tr>)
+                        // patients.map((patient, i) => <tr key={ patient._id}>
+                        //     <th>{i + 1}</th>
+                        //     <td>{ patient?._id}</td>
+                        //     <td>{ patient?.firstName}</td>
+                        //     <td>{ patient?.lastName}</td>
+                        //     <td>{ patient?.email}</td>
+                        //     <td>{ patient?.phone}</td>
+                        //     <td><button>Details</button></td>
+                        //     {/* onClick={() => handleDeleteUser(user._id)} */}
+                        //     <td>
+                        //         {/* { patient?.role !== 'admin' &&  */}
+                        //         <button  className='btn btn-xs btn-danger'>Delete</button>
+                        //         {/* // } */}
+                        //         </td>
+                        // </tr>)
                     }
 
                 </tbody>
