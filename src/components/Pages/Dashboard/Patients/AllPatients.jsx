@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "../../../Shared/Spinner";
+// import { useQuery } from 'react-query';
 
 const AllPatients = () => {
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(null);
+  const [patients, setPatients] = useState({});
+  const [loading, setLoading] = useState(null)
+  // const url = `http://hms.uniech.com/api/v1/patient/all-patient`;
+
+  // const { data: patients = [], refetch } = useQuery({
+  //     queryKey: ['patients'],
+  //     queryFn: async () => {
+  //         const res = await fetch(url);
+  //         const data = await res.json();
+  //         return data;
+  //     }
+  // })
 
   useEffect(() => {
     setLoading(true);
@@ -19,14 +30,24 @@ const AllPatients = () => {
       });
   }, []);
 
-  if (loading) return <Spinner></Spinner>;
+    if (loading) return <Spinner></Spinner>;
 
   if (patients.length === 0)
-    return <h2 className="text-tahiti-red text-center">No Result Found</h2>;
+    return (
+      <h2 className="text-tahiti-red text-center mt-60 text-5xl ">
+        No Patient Found
+      </h2>
+    );
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-10 mt-5 ">All Patients</h1>
+      <h1 className="text-5xl font-bold m-5 ml-10mt-10">Patients</h1>
+      <button className="lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white">
+        Add New
+      </button>
+      <button className="lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black">
+        All Patients
+      </button>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
