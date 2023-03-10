@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-// import { useQuery } from 'react-query';
-
-const AllPatients = () => {
+import React, { useEffect} from 'react';
 
 
-    const [patients, setPatients] = useState({});
+const Doctors = () => {
+
+
+    // const [patients, setPatients] = useState({});
     // const url = `http://hms.uniech.com/api/v1/patient/all-patient`;
 
     // const { data: patients = [], refetch } = useQuery({
@@ -16,36 +16,53 @@ const AllPatients = () => {
     //     }
     // })
 
-  useEffect(() => {
-    // setLoading(true);
-    fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // setLoading(false);
-        setPatients(data?.data);
-      });
-  }, []);
+    // fetching userInfo from backend
+    useEffect(() => {
+        fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
+        
+      
+    }, []);
 
-//   if (loading) return <Spinner></Spinner>;
+    // console.log(patients);
 
-  if (patients.length === 0)
-    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
 
-  return (
+
+//    // handleDeleteUser
+//    const handleDeleteUser = _id => {
+
+
+//     fetch(`https://trade-buy-sell-arbinzaman.vercel.app/usersList/${_id}`, {
+//         method: 'DELETE'
+//     })
+//         .then(res => res.json())
+//         .then(data => {
+//             console.log(data)
+//             if (data.deletedCount > 0) {
+//                 console.log(data.deletedCount);
+//                 toast.success("User Deleted Succesfully")
+//                 const remainingUsers = displayUser.filter(usr => usr._id !== _id);
+//                 setDisplayUser(remainingUsers);
+//             }
+//         })
+// }
+
+return (
     <div>
-        <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Patients</h1>
+        <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Doctor</h1>
         <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button>
-        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
+        <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Doctor</button>
         <div className="overflow-x-auto">
             <table className="table w-full">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Patient ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
@@ -80,7 +97,10 @@ const AllPatients = () => {
 
 
     </div>
-  );
+);
 };
 
-export default AllPatients;
+export default Doctors;
+
+
+
