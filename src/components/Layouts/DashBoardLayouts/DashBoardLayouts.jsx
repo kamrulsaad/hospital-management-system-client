@@ -1,18 +1,7 @@
-// import React, { useContext } from 'react';
-import { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';   
-// import { UserContext } from '../../Context/UserProvider/UserProvider';
 import Profile from '../../Pages/Dashboard/Profile';
 
 const DashBoardLayouts = () => {
-    // for profile access
-    // const [userInfo, setUserInfo] = useState({});
-    // console.log(userInfo.data.role);
-    // const role = userInfo?.data?.role;
-
-    // const [isAdmin] = useAdmin(userInfo);
-    // console.log(isAdmin);
-    // const { logOut } = useContext(UserContext);
     const logOut = () => {
         localStorage.clear();
         return;
@@ -22,24 +11,6 @@ const DashBoardLayouts = () => {
         logOut()
         navigate("/login")
     }
-
-
-
-    // fetching userInfo from backend
-    // useEffect(() => {
-    //     fetch("http://hms.uniech.com/api/v1/user/user-info", {
-    //         headers: {
-    //             Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-    //         },
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => setUserInfo(data))
-    //         .catch((err) => console.log(err));
-    //     // setLoading(true);
-    // }, []);
-
-
-
 
     return (
 

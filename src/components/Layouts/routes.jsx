@@ -56,6 +56,10 @@ const router = createBrowserRouter([
                     element:<DashBoard></DashBoard>
                 },
                 {
+                    path:'/dashboard/Home',
+                    element:<DashBoard><Home></Home></DashBoard>
+                },
+                {
                     path:'/dashboard/patients',
                     element:<AllPatients></AllPatients>
                 },
