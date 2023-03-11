@@ -6,11 +6,6 @@ const Login = () => {
     const [error, setError] = useState();
     // Redirect to current path
     const navigate = useNavigate();
-    // const handleLogIn = () => {
-    //     if (result.status === "success") {
-    //         navigate("/home")
-    //     }
-    // }
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
     // console.log(from);

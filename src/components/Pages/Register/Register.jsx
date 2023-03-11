@@ -1,57 +1,58 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate, } from 'react-router-dom';
-
-const handleSubmit = event => {
-    const [error, setError] = useState();
-
-    // Getting From Data 
-    event.preventDefault();
-    const form = event.target;
-    const firstName = form.firstName.value;
-    const lastName = form.lastName.value;
-    const phone = form.phone.value;
-    const role = form.role.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const signUpData = {
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        role: role,
-        email: email,
-        password: password,
-    };
-    console.log(signUpData);
-
-
-
-    // login send to backend 
-    fetch('http://hms.uniech.com/api/v1/user/signup', {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-            "content-type": "application/json",
-        },
-        body: JSON.stringify(signUpData)
-    })
-        .then(res => res.json())
-        .then(result => {
-            console.log(result);
-            navigate(from, { replace: true });
-            form.reset();
-
-        })
-        .catch(error => {
-            console.error(error)
-            setError(error.message);
-        });
-
-}
+import { toast } from 'react-toastify';
 
 
 
 
 const Register = () => {
+
+    const handleSubmit = event => {
+        const [error, setError] = useState();
+
+        // Getting From Data 
+        event.preventDefault();
+        const form = event.target;
+        const firstName = form.firstName.value;
+        const lastName = form.lastName.value;
+        const phone = form.phone.value;
+        const role = form.role.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        const signUpData = {
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            role: role,
+            email: email,
+            password: password,
+        };
+        console.log(signUpData);
+
+
+
+        // login send to backend 
+        fetch('http://hms.uniech.com/api/v1/user/signup', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(signUpData)
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result);
+                toast.success(`User Added Successful`);
+                form.reset();
+
+            })
+            .catch(error => {
+                console.error(error)
+                setError(error.message);
+            });
+
+    }
+
     return (
         <div>
             {/* <div className='bg-tahiti-green  py-20'>
