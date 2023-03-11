@@ -7,7 +7,7 @@ const Profile = () => {
     // console.log(userInfo);
 
 
-    // fetching userInfo from backend
+
     const [userInfo, setUserInfo] = useState({});
     // fetching userInfo from backend
     useEffect(() => {

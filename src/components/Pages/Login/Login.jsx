@@ -1,10 +1,16 @@
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [error, setError] = useState();
     // Redirect to current path
     const navigate = useNavigate();
+    // const handleLogIn = () => {
+    //     if (result.status === "success") {
+    //         navigate("/home")
+    //     }
+    // }
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
     // console.log(from);
@@ -36,9 +42,9 @@ const Login = () => {
                 }
                 // set JWT token in local storage 
                 localStorage.setItem('LoginToken', result.data.token);
-                // toast.success(`Login Is SuccessFull`);
+                toast.success(`Login Is SuccessFull`);
                 navigate(from, { replace: true });
-                // Navigate('/dashboard')
+                navigate("/home")
                 form.reset();
 
             })

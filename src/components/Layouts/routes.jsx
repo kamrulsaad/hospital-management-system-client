@@ -8,6 +8,7 @@ import DashBoard from '../Pages/Dashboard/DashBoard.jsx';
 import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
 import AllPatients from '../Pages/Dashboard/Patients/AllPatients';
 import Doctors from '../Pages/Dashboard/Doctors/Doctors';
+import PrivateRoute from '../PrivateRoutes/PrivateRoutes';
 
 const router = createBrowserRouter([
 
@@ -18,7 +19,12 @@ const router = createBrowserRouter([
         
             {
                 path:'/',
-                element:<Home></Home>,
+                element:<Login></Login>,
+                
+            },
+            {
+                path:'/home',
+                element:<PrivateRoute><Home></Home></PrivateRoute>,
                 
             },
             {
@@ -37,16 +43,12 @@ const router = createBrowserRouter([
                 element:<Register></Register>,
     
             },
-            // {
-            //     path:'/dashboard',
-            //     element:<DashBoard></DashBoard>,
-    
-            // },
+         
            
         ]},
         {
             path:'/dashboard',
-            element:<DashBoardLayouts></DashBoardLayouts>,
+            element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
             children :[
                 {
                     path:'/dashboard',
