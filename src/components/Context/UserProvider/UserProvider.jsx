@@ -10,8 +10,8 @@ const UserProvider = ({ children }) => {
 
 
   // fetching userInfo from backend
-  const [userInfo, setUserInfo] = useState({});
-  // fetching userInfo from backend
+  const [user, setUser] = useState({});
+  // fetching user from backend
   useEffect(() => {
     fetch("http://hms.uniech.com/api/v1/user/user-info", {
       headers: {
@@ -19,7 +19,7 @@ const UserProvider = ({ children }) => {
       },
     })
       .then((res) => res.json())
-      .then((data) => setUserInfo(data))
+      .then((data) => setUser(data))
       .catch((err) => console.log(err));
     // setLoading(true);
   }, []);
@@ -28,15 +28,15 @@ const UserProvider = ({ children }) => {
   // // LogOut
   const logOut = () => {
     // setLoading(true);
-    // setUserInfo(null);
+    // setuser(null);
     localStorage.clear();
     return ;
   }
   
-  const userInfos = {logOut,userInfo}
+  const users = {logOut,user}
   return (
     <div>
-      <UserContext.Provider value={userInfos}>
+      <UserContext.Provider value={users}>
         {children}
       </UserContext.Provider>
     </div>

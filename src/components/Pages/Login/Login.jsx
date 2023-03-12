@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [error, setError] = useState();
@@ -36,9 +37,9 @@ const Login = () => {
                 }
                 // set JWT token in local storage 
                 localStorage.setItem('LoginToken', result.data.token);
-                // toast.success(`Login Is SuccessFull`);
+                toast.success(`Login is successful`);
                 navigate(from, { replace: true });
-                // Navigate('/dashboard')
+                navigate("/dashboard/Home")
                 form.reset();
 
             })
@@ -53,7 +54,7 @@ const Login = () => {
         <div className='bg-tahiti-green  py-48'>
             <div className="bg-tahiti-white shadow-xl mb-20 w-full max-w-md p-8 mx-auto space-y-3 rounded-xl bg-light text-gray-100">
                 <div className="mb-8 text-center">
-                    <h1 className="my-3 text-4xl font-bold pb-20"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
+                    <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
                     <p className="  text-xl font-semibold"> <span className='text-tahiti-dark'>Login to you </span> <span className='text-tahiti-primary'>account</span> </p>
                 </div>
                 <form onSubmit={handleUserNamePassword} noValidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
