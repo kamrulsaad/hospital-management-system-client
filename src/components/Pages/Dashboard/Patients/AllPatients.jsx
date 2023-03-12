@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { useQuery } from 'react-query';
+import Spinner from '../../../Shared/Spinner'
 
 const AllPatients = () => {
 
-
+  const [loading,setLoading] =useState(null);
   const [patients, setPatients] = useState([]);
   // console.log(patients);
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -17,12 +18,12 @@ const AllPatients = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // setLoading(false);
+        setLoading(false);
         setPatients(data?.data);
       });
   }, []);
 
-  //   if (loading) return <Spinner></Spinner>;
+    if (loading) return <Spinner></Spinner>;
 
   if (patients.length === 0)
     return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;

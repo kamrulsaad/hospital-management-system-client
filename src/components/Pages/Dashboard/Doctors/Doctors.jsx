@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from '../../../Shared/Spinner'
 
 
 const Doctors = () => {
 
-
+const [loading,setLoading] =useState(null);
    const [doctors, setDoctors] = useState([]);
     console.log(doctors);
   
     useEffect(() => {
-      // setLoading(true);
+      setLoading(true);
       fetch("http://hms.uniech.com/api/v1/user/all-doctors", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -17,10 +18,11 @@ const Doctors = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          // setLoading(false);
+          setLoading(false);
           setDoctors(data?.data);
         });
     }, []);
+    if (loading)return<Spinner></Spinner>
 
 
 

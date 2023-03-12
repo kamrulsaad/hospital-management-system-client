@@ -51,7 +51,7 @@ const Login = () => {
 
 
     return (
-        <div className='bg-tahiti-green  py-48'>
+        <div className='bg-tahiti-green  min-h-screen flex justify-center items-center'>
             <div className="bg-tahiti-white shadow-xl mb-20 w-full max-w-md p-8 mx-auto space-y-3 rounded-xl bg-light text-gray-100">
                 <div className="mb-8 text-center">
                     <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>

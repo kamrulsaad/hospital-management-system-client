@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const AddAPatient = () => {
-
+    const [error, setError] = useState();
     const handleSubmit = event => {
-        const [error, setError] = useState();
+ 
 
         // Getting Form-Data 
         event.preventDefault();
