@@ -20,14 +20,14 @@ const router = createBrowserRouter([
         
             {
                 path:'/',
-                element:<Login></Login>,
-                
-            },
-            {
-                path:'/home',
                 element:<PrivateRoute><Home></Home></PrivateRoute>,
                 
             },
+            // {
+            //     path:'/home',
+            //     element:,
+                
+            // },
             {
                 path:'/*',
                 element:<ErrorPage></ErrorPage>,
