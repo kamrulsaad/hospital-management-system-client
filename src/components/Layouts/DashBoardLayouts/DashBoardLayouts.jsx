@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';   
-import Profile from '../../Pages/Dashboard/Profile';
+import Profile from '../../Pages/Dashboard/UserProfie/Profile';
 
 const DashBoardLayouts = () => {
     const logOut = () => {
@@ -10,6 +10,9 @@ const DashBoardLayouts = () => {
     const handleLogOut = () => {
         logOut()
         navigate("/login")
+    }
+    const changeRoute =()=>{
+        navigate("/dashboard/userprofile")
     }
     // function changeColor() {
 
@@ -39,7 +42,7 @@ const DashBoardLayouts = () => {
 
                 </div>
                 <div className="drawer-side grid grid-rows-4">
-                    <div className='flex justify-center'>
+                    <div onClick={changeRoute} className='flex justify-center'>
                         <div className='mt-20'>
                             <Profile></Profile>
 
