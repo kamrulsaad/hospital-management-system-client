@@ -29,7 +29,7 @@ const Register = () => {
 
 
         // login send to backend 
-        fetch('http://hms.uniech.com/api/v1/user/signup', {
+        fetch('https://hms.uniech.com/api/v1/user/signup', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

@@ -21,7 +21,7 @@ const Login = () => {
         };
         console.log(loginData);
         // login send to backend 
-        fetch('http://hms.uniech.com/api/v1/user/login', {
+        fetch('https://hms.uniech.com/api/v1/user/login', {
             method: 'POST',
             headers: {
                 "content-type": "application/json",

@@ -11,7 +11,7 @@ const [loading,setLoading] =useState(null);
   
     useEffect(() => {
       setLoading(true);
-      fetch("http://hms.uniech.com/api/v1/user/all-doctors", {
+      fetch("https://hms.uniech.com/api/v1/user/all-doctors", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
         },

@@ -11,7 +11,7 @@ const AllPatients = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://hms.uniech.com/api/v1/patient/all-patient", {
+    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
