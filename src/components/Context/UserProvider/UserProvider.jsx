@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -10,10 +11,12 @@ const UserProvider = ({ children }) => {
 
 
   // fetching userInfo from backend
+
   const [user, setUser] = useState({});
+
   // fetching user from backend
   useEffect(() => {
-    fetch("http://hms.uniech.com/api/v1/user/user-info", {
+    fetch("https://hms.uniech.com/api/v1/user/user-info", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -30,10 +33,10 @@ const UserProvider = ({ children }) => {
     // setLoading(true);
     // setuser(null);
     localStorage.clear();
-    return ;
+    return;
   }
-  
-  const users = {logOut,user}
+
+  const users = { logOut, user }
   return (
     <div>
       <UserContext.Provider value={users}>

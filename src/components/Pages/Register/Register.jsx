@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-
-
-
 const Register = () => {
+    const [error, setError] = useState("");
 
     const handleSubmit = event => {
-        const [error, setError] = useState();
+        
 
         // Getting From Data 
         event.preventDefault();
@@ -31,7 +29,7 @@ const Register = () => {
 
 
         // login send to backend 
-        fetch('http://hms.uniech.com/api/v1/user/signup', {
+        fetch('https://hms.uniech.com/api/v1/user/signup', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -138,24 +136,24 @@ const Register = () => {
 
                         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                             <div className="col-span-full sm:col-span-3">
-                                <label for="firstname" className="text-sm">First name</label>
-                                <input id="firstname" type="text" placeholder="First name" className="w-full rounded-md  focus:outline-none" />
+                                <label for="firstName" className="text-sm">First name</label>
+                                <input name="firstName" type="text" placeholder="First name" className="w-full rounded-md  focus:outline-none" />
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="lastname" className="text-sm">Last name</label>
-                                <input id="lastname" type="text" placeholder="Last name" className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:outline-none" />
+                                <label for="lastName" className="text-sm">Last name</label>
+                                <input name="lastName" type="text" placeholder="Last name" className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:outline-none" />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="email" className="text-sm">Email</label>
-                                <input id="email" type="email" placeholder="Email" className="w-full rounded-md  focus:outline-none" />
+                                <input name="email" type="email" placeholder="Email" className="w-full rounded-md  focus:outline-none" />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="password" className="text-sm">Password</label>
-                                <input id="password" type="password" placeholder="password" className="w-full rounded-md  focus:outline-none" />
+                                <input name="password" type="password" placeholder="password" className="w-full rounded-md  focus:outline-none" />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="phone" className="text-sm">Phone</label>
-                                <input id="phone" type="phone" placeholder="phone" className="w-full rounded-md  focus:outline-none" />
+                                <input name="phone" type="phone" placeholder="phone" className="w-full rounded-md  focus:outline-none" />
                             </div>
 
                             <select type="role" name="role" id="role" className="select bg-tahiti-primary font-bold w-full text-tahiti-white">

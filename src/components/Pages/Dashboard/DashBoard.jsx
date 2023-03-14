@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../Context/UserProvider/UserProvider';
-import AvailableBed from './AvailableBed';
-import AvailableDoctor from './AvailableDoctor';
-import Bed from './Bed';
+import AvailableBed from './Bed/AvailableBed';
+import AvailableDoctor from './Doctors/AvailableDoctor';
+import Bed from './Bed/Bed';
 import Doctor from './Doctors/Doctor';
-import NewPatient from './NewPatient';
+import NewPatient from './Patients/NewPatient';
 import Patients from './Patients/Patients';
 
 
