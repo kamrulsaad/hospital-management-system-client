@@ -59,10 +59,10 @@ const AddAPatient = () => {
 
     }
     return (
-        <div className=''>
-            <section className="p-6 ">
+        <div className='lg:p-20'>
+            <section className="p-6  bg-tahiti-white shadow-xl rounded-xl ">
                 <div className="mb-8 text-center">
-                    <h1 className="my-3 text-4xl font-bold pb-20"><span className='text-tahiti-primary'>PATIENT</span><span className='text-tahiti-dark'> IMFORNATION</span> </h1>
+                    <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>PATIENT</span><span className='text-tahiti-dark'> IMFORNATION</span> </h1>
                     
                 </div>
                 <form onSubmit={handleSubmit} noValidate="" action="" className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
@@ -70,19 +70,19 @@ const AddAPatient = () => {
 
                         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                             <div className="col-span-full sm:col-span-3">
-                                <label for="name" className="">FULL NAME</label>
-                                <input id="name" type="name" placeholder="full name" className="w-full  focus:outline-none" />
-                                <hr />
+                                <label for="name" className="text-tahiti-lightGreen">FULL NAME</label>
+                                <input id="name" type="name" placeholder="" className="w-full focus:outline-none" />
+                                <hr className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="phone" className="">Phone</label>
-                                <input id="phone" type="phone" placeholder="Phone" className="w-full  focus:outline-none" />
-                                <hr />
+                                <label for="phone" className="text-tahiti-lightGreen">Phone</label>
+                                <input id="phone" type="phone" placeholder="" className="w-full  focus:outline-none" />
+                                <hr className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="address" className="">ADDRESS</label>
-                                <input id="address" type="address" placeholder="address" className="w-full  focus:outline-none" />
-                                <hr />
+                                <label for="address" className="text-tahiti-lightGreen">ADDRESS</label>
+                                <input id="address" type="address" placeholder="" className="w-full  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
 
                             <select type="bloodGroup" name="bloodGroup" id="bloodGroup" className="select bg-tahiti-primary font-bold w-full text-tahiti-white">
@@ -103,29 +103,34 @@ const AddAPatient = () => {
                                 <option className='font-bold ' >Female</option>
                                 <option className='font-bold ' >Other</option>
                             </select>
+                            <div className="col-span-full sm:col-span-3">
+                                <label for="address" className="text-tahiti-lightGreen">DATE</label>
+                                <input id="address" type="address" placeholder="DD/MM/YYYY" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
+                                <hr className='text-tahiti-lightGreen' />
+                            </div>
 
                             <div className="mb-8 col-span-full flex justify-center sm:col-span-6 ">
                                 <p className="text-3xl font-bold mt-20 "> <span className='text-tahiti-dark'>Emergency </span> <span className='text-tahiti-primary'>Contact</span> </p>
                             </div>
 
                             <div className="col-span-full sm:col-span-3">
-                                <label for="emergencyContactName" className="">Name</label>
-                                <input id="emergencyContactName" type="emergencyContactName" placeholder="Name" className="w-full  focus:outline-none" />
-                            <hr />
+                                <label for="emergencyContactName" className="text-tahiti-lightGreen">Name</label>
+                                <input id="emergencyContactName" type="emergencyContactName" placeholder="" className="w-full  focus:outline-none" />
+                            <hr className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="emergencyContactPhone" className="">Phone</label>
-                                <input id="emergencyContactPhone" type="emergencyContactPhone" placeholder="Phone" className="w-full  focus:outline-none" />
-                            <hr />
+                                <label for="emergencyContactPhone" className="text-tahiti-lightGreen">Phone</label>
+                                <input id="emergencyContactPhone" type="emergencyContactPhone" placeholder="" className="w-full  focus:outline-none" />
+                            <hr className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="relation" className="">Relation</label>
-                                <input id="relation" type="relation" placeholder="Relation" className="w-full  focus:outline-none" />
-                            <hr />
+                                <label for="relation" className="text-tahiti-lightGreen">Relation</label>
+                                <input id="relation" type="relation" placeholder="" className="w-full  focus:outline-none" />
+                            <hr className='text-tahiti-lightGreen'/>
                             </div>
 
                             <div>
-                                <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary text-tahiti-white ">Add A Patient</button>
+                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
                             </div>
                         </div>
                     </fieldset>
