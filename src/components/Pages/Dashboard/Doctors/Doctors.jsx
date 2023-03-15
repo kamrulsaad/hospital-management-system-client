@@ -52,7 +52,7 @@ const [loading,setLoading] =useState(null);
     // }
 
     return (
-        <div className='ml-20 '>
+        <div className='lg:ml-20 '>
             <h1 className='text-5xl font-bold mt-20 '>Doctor</h1>
             <Link to="/dashboard/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button></Link>
             <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Doctor</button>
