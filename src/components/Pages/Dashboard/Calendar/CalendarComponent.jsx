@@ -7,19 +7,11 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 const CalendarComponent = () => {
 
-  // const currDate = new Date().toDateString();
-
-  // function MyApp() {
-  //     const [value, onChange] = useState(new Date());
-  // }
   return (
-    <div className='lg:mt-36  '>
-
+    <div className='lg:mt-20 bg-tahiti-white m-20 rounded-xl shadow-2xl '>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar />
       </LocalizationProvider>
-
-      {/* <p>{currDate}</p> */}
     </div>
   );
 };
