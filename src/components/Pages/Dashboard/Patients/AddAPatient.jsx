@@ -1,10 +1,32 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import Swal from 'sweetalert2'
 const AddAPatient = () => {
     const [error, setError] = useState();
+const navigate = useNavigate();
+    const alert = () => {
+        Swal.fire({
+            title: 'Patient Added SuccessFully. Do You Want To Book Appointment For This Patient?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Book',
+            denyButtonText: `Don't Book`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                navigate("/dashboard/appointment")
+                Swal.fire('Success', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+
+
+    }
+
     const handleSubmit = event => {
- 
+
 
         // Getting Form-Data 
         event.preventDefault();
@@ -47,7 +69,7 @@ const AddAPatient = () => {
             .then(res => res.json())
             .then(result => {
                 console.log(result);
-                toast.success(`Patient Added Successful`);
+                // toast.success(`Patient Added Successful`);
                 form.reset();
 
             })
@@ -63,7 +85,7 @@ const AddAPatient = () => {
             <section className="p-6  bg-tahiti-white shadow-xl rounded-xl ">
                 <div className="mb-8 text-center">
                     <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>PATIENT</span><span className='text-tahiti-dark'> IMFORNATION</span> </h1>
-                    
+
                 </div>
                 <form onSubmit={handleSubmit} noValidate="" action="" className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
                     <fieldset className="grid grid-cols-4 gap-6 p-6 ">
@@ -72,17 +94,17 @@ const AddAPatient = () => {
                             <div className="col-span-full sm:col-span-3">
                                 <label for="name" className="text-tahiti-lightGreen">FULL NAME</label>
                                 <input id="name" type="name" placeholder="" className="w-full focus:outline-none" />
-                                <hr className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="phone" className="text-tahiti-lightGreen">Phone</label>
                                 <input id="phone" type="phone" placeholder="" className="w-full  focus:outline-none" />
-                                <hr className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="address" className="text-tahiti-lightGreen">ADDRESS</label>
                                 <input id="address" type="address" placeholder="" className="w-full  focus:outline-none" />
-                                <hr  className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
 
                             <select type="bloodGroup" name="bloodGroup" id="bloodGroup" className="select bg-tahiti-primary font-bold w-full text-tahiti-white">
@@ -116,27 +138,31 @@ const AddAPatient = () => {
                             <div className="col-span-full sm:col-span-3">
                                 <label for="emergencyContactName" className="text-tahiti-lightGreen">Name</label>
                                 <input id="emergencyContactName" type="emergencyContactName" placeholder="" className="w-full  focus:outline-none" />
-                            <hr className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="emergencyContactPhone" className="text-tahiti-lightGreen">Phone</label>
                                 <input id="emergencyContactPhone" type="emergencyContactPhone" placeholder="" className="w-full  focus:outline-none" />
-                            <hr className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label for="relation" className="text-tahiti-lightGreen">Relation</label>
                                 <input id="relation" type="relation" placeholder="" className="w-full  focus:outline-none" />
-                            <hr className='text-tahiti-lightGreen'/>
+                                <hr className='text-tahiti-lightGreen' />
                             </div>
 
                             <div>
-                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
+                                <button type="submit" onClick={alert} className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
                             </div>
                         </div>
                     </fieldset>
 
                 </form>
             </section>
+
+
+
+
         </div>
     );
 };

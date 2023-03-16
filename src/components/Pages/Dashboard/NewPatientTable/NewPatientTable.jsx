@@ -26,7 +26,7 @@ const NewPatientTable = () => {
     // Loading functionality
     if (loading) return <Spinner></Spinner>;
     if (patients.length === 0)
-        return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
+        return <h2 className="text-tahiti-darkGreen text-center mt-60 text-5xl ">No Patient Found</h2>;
 
     return (
         <div className=''>
@@ -41,7 +41,7 @@ const NewPatientTable = () => {
                             <th>Name</th>
                             {/* <th>Last Name</th> */}
                             <th>Phone</th>
-                            <th>Details</th>
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@ const NewPatientTable = () => {
                                     {/* <td>{ patient?.lastName}</td> */}
                                     {/* <td>{ patient?.email}</td> */}
                                     <td>{patient?.phone}</td>
-                                    <td><button className='btn btn-xs'>Details</button></td>
+                                    <td><button className='btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan'>Details</button></td>
 
                                 </tr>)
                         }

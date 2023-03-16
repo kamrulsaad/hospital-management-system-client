@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { useQuery } from 'react-query';
-import Spinner from '../../../Shared/Spinner'
+import Spinner from '../../../../Shared/Spinner'
 
-const AllPatients = () => {
+const AllUser = () => {
 
   const [loading, setLoading] = useState(null);
-  const [patients, setPatients] = useState([]);
-  // const [patient, setPatient] = useState([]);
-  // console.log(patient);
+  const [users, setUsers] = useState([]);
+  // const [user, setUser] = useState([]);
+  console.log(users);
+
 
   // All Patient fetch data
   useEffect(() => {
     setLoading(true);
-    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
+    fetch("https://hms.uniech.com/api/v1/user/all-user", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -21,7 +22,7 @@ const AllPatients = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        setPatients(data?.data);
+        setUsers(data?.data);
       });
   }, []);
 
@@ -49,23 +50,23 @@ const AllPatients = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  if (patients.length === 0)
+  if (users.length === 0)
     return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
 
   return (
     <div className='lg:ml-20 '>
-      <h1 className='text-5xl font-bold mt-20 '>Patients</h1>
-      <Link to="/dashboard/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
-      <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
+      <h1 className='text-5xl font-bold mt-20 '>Users</h1>
+      <Link to="/dashboard/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
+      {/* <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All User</button> */}
       <div className="overflow-x-auto">
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
               <th></th>
-              <th>Patient ID</th>
+              <th>User ID</th>
               <th>Name</th>
               {/* <th>Last Name</th> */}
-              <th>Phone</th>
+              <th>Role</th>
               <th>Details</th>
               <th>Delete</th>
             </tr>
@@ -73,19 +74,19 @@ const AllPatients = () => {
           <tbody>
 
             {
-              patients.map((patient, i) =>
-                <tr key={patient?._id}>
+              users.map((user, i) =>
+                <tr key={user?._id}>
                   <th>{i + 1}</th>
-                  <td>{patient?._id}</td>
-                  <td>{patient?.name}</td>
-                  {/* <td>{ patient?.lastName}</td> */}
-                  {/* <td>{ patient?.email}</td> */}
-                  <td>{patient?.phone}</td>
-                  <td><button className='btn btn-xs'>Details</button></td>
+                  <td>{user?._id}</td>
+                  <td>{user?.firstName}</td>
+                  {/* <td>{ user?.lastName}</td> */}
+                  {/* <td>{ user?.email}</td> */}
+                  <td>{user?.role}</td>
+                  <td><button className='btn btn-xs btn-ghost bg-tahiti-darkGreen text-tahiti-white '>Details</button></td>
                   {/* onClick={() => handleDeleteUser(user._id)} */}
                   <td>
-                    {/* { patient?.role !== 'admin' &&  */}
-                    <button className='btn btn-xs bg-tahiti-red'>Delete</button>
+                    {/* { user?.role !== 'admin' &&  */}
+                    <button className='btn btn-xs bg-tahiti-red btn-ghost text-tahiti-white '>Delete</button>
                     {/* // } */}
                   </td>
                 </tr>)
@@ -98,4 +99,4 @@ const AllPatients = () => {
   );
 };
 
-export default AllPatients;
+export default AllUser;
