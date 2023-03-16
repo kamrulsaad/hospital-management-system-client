@@ -52,7 +52,7 @@ const Register = () => {
     }
 
     return (
-        <div>
+        <div className='lg:p-20'>
             {/* <div className='bg-tahiti-green  py-20'>
                 <div className="bg-tahiti-white shadow-xl mb-20 w-full max-w-md p-8 mx-auto space-y-3 rounded-xl bg-light text-gray-100">
                     <div className="mb-8 text-center">
@@ -126,34 +126,39 @@ const Register = () => {
 
 
 
-            <section className="p-6 dark:bg-gray-800 dark:text-gray-50">
+            <section className="p-6  bg-tahiti-white shadow-xl rounded-xl">
                 <div className="mb-8 text-center">
-                    <h1 className="my-3 text-4xl font-bold pb-20"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
+                    <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
                     <p className="  text-xl font-semibold"> <span className='text-tahiti-dark'>Register A New </span> <span className='text-tahiti-primary'>User</span> </p>
                 </div>
                 <form onSubmit={handleSubmit} novalidate="" action="" className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
-                    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+                    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md  ">
 
                         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
                             <div className="col-span-full sm:col-span-3">
-                                <label for="firstName" className="text-sm">First name</label>
-                                <input name="firstName" type="text" placeholder="First name" className="w-full rounded-md  focus:outline-none" />
+                                <label for="firstName" className="text-stext-md font-semibold text-tahiti-lightGreen">First name</label>
+                                <input name="firstName" type="text" placeholder="" className="w-full rounded-md  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="lastName" className="text-sm">Last name</label>
-                                <input name="lastName" type="text" placeholder="Last name" className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:outline-none" />
+                                <label for="lastName" className="text-md font-semibold text-tahiti-lightGreen">Last name</label>
+                                <input name="lastName" type="text" placeholder="" className="w-full rounded-md  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="email" className="text-sm">Email</label>
-                                <input name="email" type="email" placeholder="Email" className="w-full rounded-md  focus:outline-none" />
+                                <label for="email" className="text-md font-semibold text-tahiti-lightGreen">Email</label>
+                                <input name="email" type="email" placeholder="" className="w-full rounded-md  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="password" className="text-sm">Password</label>
-                                <input name="password" type="password" placeholder="password" className="w-full rounded-md  focus:outline-none" />
+                                <label for="password" className="text-md font-semibold text-tahiti-lightGreen">Password</label>
+                                <input name="password" type="password" placeholder="" className="w-full rounded-md  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="phone" className="text-sm">Phone</label>
-                                <input name="phone" type="phone" placeholder="phone" className="w-full rounded-md  focus:outline-none" />
+                                <label for="phone" className="text-md font-semibold text-tahiti-lightGreen">Phone</label>
+                                <input name="phone" type="phone" placeholder="" className="w-full rounded-md  focus:outline-none" />
+                                <hr  className='text-tahiti-lightGreen'/>
                             </div>
 
                             <select type="role" name="role" id="role" className="select bg-tahiti-primary font-bold w-full text-tahiti-white">
@@ -162,10 +167,11 @@ const Register = () => {
                                 <option className='font-bold ' >doctor</option>
                                 <option className='font-bold ' >receptionist</option>
                             </select>
+                            
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 pb-32">
                                 <div>
-                                    <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary text-tahiti-white    ">Sign Up</button>
+                                    <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-dark text-tahiti-white mt-32  lg:-ml-40 ">Sign Up</button>
                                 </div>
 
                             </div>

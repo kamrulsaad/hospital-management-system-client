@@ -10,6 +10,7 @@ import AllPatients from '../Pages/Dashboard/Patients/AllPatients';
 import Doctors from '../Pages/Dashboard/Doctors/Doctors';
 import PrivateRoute from '../PrivateRoutes/PrivateRoutes';
 import AddAPatient from '../Pages/Dashboard/Patients/AddAPatient';
+import UserProfile from '../Pages/Dashboard/UserProfie/UserProfile';
 
 const router = createBrowserRouter([
 
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
                 {
                     path:'/dashboard/addapatient',
                     element:<AddAPatient></AddAPatient>
+                },
+                {
+                    path:'/dashboard/userprofile',
+                    element:<UserProfile></UserProfile>
                 },
             
             ]

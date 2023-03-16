@@ -29,12 +29,12 @@ const AllPatients = () => {
     return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
 
   return (
-    <div>
-      <h1 className='text-5xl font-bold m-5 ml-10mt-10'>Patients</h1>
-      <Link to="/dashboard/addapatient"><button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button></Link>
+    <div className='lg:ml-20 '>
+      <h1 className='text-5xl font-bold mt-20 '>Patients</h1>
+      <Link to="/dashboard/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-red text-tahiti-white'>Add New</button></Link>
       <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
       <div className="overflow-x-auto">
-        <table className="table w-full">
+        <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
               <th></th>
