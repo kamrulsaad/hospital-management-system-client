@@ -5,11 +5,13 @@ import Spinner from '../../../Shared/Spinner'
 
 const AllPatients = () => {
 
-  const [loading,setLoading] =useState(null);
+  const [loading, setLoading] = useState(null);
   const [patients, setPatients] = useState([]);
-  // console.log(patients);
+  const [patient, setPatient] = useState([]);
+  console.log(patient);
 
-  useEffect(() => {
+   // All Patient fetch data
+   useEffect(() => {
     setLoading(true);
     fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
       headers: {
@@ -23,8 +25,29 @@ const AllPatients = () => {
       });
   }, []);
 
-    if (loading) return <Spinner></Spinner>;
 
+  // const patientDetails = () => {
+
+  //   // All Patient fetch data onClick={patientDetails(patient?._id)}
+  //   useEffect(() => {
+  //     setLoading(true);
+  //     fetch(`https://hms.uniech.com/api/v1/patient/${_id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setLoading(false);
+  //         setPatient(data?.data);
+  //       });
+  //   }, []);
+  // };
+
+
+
+  // Loading functionality
+  if (loading) return <Spinner></Spinner>;
   if (patients.length === 0)
     return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
 
@@ -57,7 +80,7 @@ const AllPatients = () => {
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}
                   <td>{patient?.phone}</td>
-                  <td><button className='btn btn-xs'>Details</button></td>
+                  <td><button  className='btn btn-xs'>Details</button></td>
                   {/* onClick={() => handleDeleteUser(user._id)} */}
                   <td>
                     {/* { patient?.role !== 'admin' &&  */}

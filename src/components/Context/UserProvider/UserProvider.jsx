@@ -11,9 +11,7 @@ const UserProvider = ({ children }) => {
 
 
   // fetching userInfo from backend
-
   const [user, setUser] = useState({});
-
   // fetching user from backend
   useEffect(() => {
     fetch("https://hms.uniech.com/api/v1/user/user-info", {

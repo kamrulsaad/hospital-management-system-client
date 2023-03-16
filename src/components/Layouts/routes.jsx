@@ -4,7 +4,7 @@ import Register from '../Pages/Register/Register';
 import ErrorPage from './ErrorPage';
 import Home from '../Pages/Home/Home';
 import Main from './Main/Main';
-import DashBoard from '../Pages/Dashboard/DashBoard.jsx';
+import DashBoard from '../Pages/Dashboard/DashBoradHome/DashBoard';
 import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
 import AllPatients from '../Pages/Dashboard/Patients/AllPatients';
 import Doctors from '../Pages/Dashboard/Doctors/Doctors';
