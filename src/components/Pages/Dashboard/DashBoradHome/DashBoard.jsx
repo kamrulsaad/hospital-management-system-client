@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../../Context/UserProvider/UserProvider';
+
 import AvailableBed from '../Bed/AvailableBed';
 import AvailableDoctor from '../Doctors/AvailableDoctor';
 import Bed from '../Bed/Bed';
@@ -8,19 +8,24 @@ import NewPatient from '../Patients/NewPatient';
 import Patients from '../Patients/Patients';
 import Calendar from '../Calendar/CalendarComponent';
 import CalendarComponent from '../Calendar/CalendarComponent';
+import NewPatientTable from '../NewPatientTable/NewPatientTable';
 
 
 const DashBoard = () => {
 
     return (
-        <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid justify-items-stretch lg:mt-10 lg:ml-20 sm:ml-20'>
-            <Patients></Patients>
-            <Doctor></Doctor>
-            <Bed></Bed>
-            <NewPatient></NewPatient>
-            <AvailableDoctor></AvailableDoctor>
-            <AvailableBed></AvailableBed>
-            <CalendarComponent></CalendarComponent>
+        <div >
+            <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid justify-items-stretch lg:mt-10 lg:ml-20 sm:ml-20'>
+                <Patients></Patients>
+                <Doctor></Doctor>
+                <Bed></Bed>
+                <NewPatient></NewPatient>
+                <AvailableDoctor></AvailableDoctor>
+                <AvailableBed></AvailableBed>
+                <CalendarComponent></CalendarComponent>
+                <div className='col-span-2'><NewPatientTable></NewPatientTable></div>
+            </div>
+
         </div>
     );
 };

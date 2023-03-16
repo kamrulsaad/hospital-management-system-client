@@ -7,11 +7,11 @@ const AllPatients = () => {
 
   const [loading, setLoading] = useState(null);
   const [patients, setPatients] = useState([]);
-  const [patient, setPatient] = useState([]);
+  // const [patient, setPatient] = useState([]);
   console.log(patient);
 
-   // All Patient fetch data
-   useEffect(() => {
+  // All Patient fetch data
+  useEffect(() => {
     setLoading(true);
     fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
       headers: {
@@ -24,6 +24,7 @@ const AllPatients = () => {
         setPatients(data?.data);
       });
   }, []);
+
 
 
   // const patientDetails = () => {
@@ -80,7 +81,7 @@ const AllPatients = () => {
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}
                   <td>{patient?.phone}</td>
-                  <td><button  className='btn btn-xs'>Details</button></td>
+                  <td><button className='btn btn-xs'>Details</button></td>
                   {/* onClick={() => handleDeleteUser(user._id)} */}
                   <td>
                     {/* { patient?.role !== 'admin' &&  */}
