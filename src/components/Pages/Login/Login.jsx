@@ -70,6 +70,7 @@ const Login = () => {
                             </div>
                             <input type="password" name="password" id="password" placeholder="password" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                             <hr className="w-full text-tahiti-primary" />
+                            <a rel="noopener noreferrer" href="#" className="text-xs hover:underline text-tahiti-primary ">Forgot password?</a>
                         </div>
                         {error && <p className='text-tahiti-red'> {error} </p>}
                     </div>

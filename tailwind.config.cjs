@@ -17,6 +17,9 @@ module.exports = {
         babyPink: '#f2f2f2',
         darkGreen: '#213d33',
         lightGreen: '#27cd9a',
+        lightBlue: '#C9F7F5',
+        cyan: '#1BC5BD ',
+        
 
       }},
     extend: {},
