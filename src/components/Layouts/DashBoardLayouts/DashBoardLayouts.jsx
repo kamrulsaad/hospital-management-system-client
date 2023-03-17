@@ -14,11 +14,7 @@ const DashBoardLayouts = () => {
     const changeRoute = () => {
         navigate("/dashboard/userprofile")
     }
-    // function changeColor() {
-
-    //     document.getElementById("color").setAttribute('fill', '#00CC99');
-    // id="color" onclick={changeColor}
-    //     }
+    
 
     return (
 
