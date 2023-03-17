@@ -18,12 +18,12 @@ const router = createBrowserRouter([
 
     {
       path:'/',
-      element:<Main></Main>,
+      element:<DashBoardLayouts></DashBoardLayouts>,
       children:[
         
             {
                 path:'/',
-                element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
+                element:<PrivateRoute><DashBoard></DashBoard></PrivateRoute>,
                 
             },
             // {
