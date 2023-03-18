@@ -115,17 +115,6 @@ const Register = () => {
  */}
 
 
-
-
-
-
-
-
-
-
-
-
-
             <section className="p-6  bg-tahiti-white shadow-xl rounded-xl">
                 <div className="mb-8 text-center">
                     <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>UNIECH</span><span className='text-tahiti-dark'> HMS</span> </h1>
@@ -171,7 +160,7 @@ const Register = () => {
 
                             <div className="space-y-2 pb-32">
                                 <div>
-                                    <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-dark text-tahiti-white mt-32  lg:-ml-40 ">Sign Up</button>
+                                    <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-darkGreen text-tahiti-white mt-32  lg:-ml-40 ">Sign Up</button>
                                 </div>
 
                             </div>

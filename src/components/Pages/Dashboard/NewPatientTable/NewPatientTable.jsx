@@ -3,24 +3,25 @@ import { Link } from "react-router-dom";
 import Spinner from "../../../Shared/Spinner";
 
 const NewPatientTable = () => {
-  const [loading, setLoading] = useState(null);
-  const [patients, setPatients] = useState([]);
-  // Using .reverse for new Patients
-  // All Patient fetch data
-  useEffect(() => {
-    setLoading(true);
-    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        const patient = data?.data?.concat().reverse();
-        setPatients(patient);
-      });
-  }, []);
+    const [loading, setLoading] = useState(null);
+    const [patient, setPatients] = useState([]);
+    // Using .reverse for new Patients
+    const patients = patient.slice(0, 5).concat().reverse();
+    // All Patient fetch data
+    useEffect(() => {
+        setLoading(true);
+        fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setLoading(false);
+                setPatients(data?.data);
+            });
+    }, []);
+
 
   
 

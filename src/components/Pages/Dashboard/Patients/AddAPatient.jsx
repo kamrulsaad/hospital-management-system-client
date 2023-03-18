@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2'
+import Appointment from '../Appointment/Appointment';
 const AddAPatient = () => {
     const [error, setError] = useState();
-const navigate = useNavigate();
+    const [newPatient, setNewPatient] = useState();
+    console.log(newPatient);
+    const navigate = useNavigate();
+    // js date function 
+    const currDate = new Date().toLocaleDateString();
+    // Show Alert 
     const alert = () => {
         Swal.fire({
             title: 'Patient Added SuccessFully. Do You Want To Book Appointment For This Patient?',
@@ -15,7 +21,7 @@ const navigate = useNavigate();
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                navigate("/dashboard/appointment")
+                navigate("/appointment")
                 Swal.fire('Success', '', 'success')
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info')
@@ -34,6 +40,7 @@ const navigate = useNavigate();
         const name = form.name.value;
         const phone = form.phone.value;
         const address = form.address.value;
+        const date = form.date.value;
         const bloodGroup = form.bloodGroup.value;
         const gender = form.gender.value;
         const emergencyContactName = form.emergencyContactName.value;
@@ -44,6 +51,7 @@ const navigate = useNavigate();
             name: name,
             phone: phone,
             address: address,
+            date: date,
             bloodGroup: bloodGroup,
             gender: gender,
             emergency_contact: {
@@ -57,7 +65,7 @@ const navigate = useNavigate();
 
 
 
-        // login send to backend 
+        // All Patient Send To Backend 
         fetch('https://hms.uniech.com/api/v1/patient/add-new-patient', {
             method: 'POST',
             headers: {
@@ -69,6 +77,8 @@ const navigate = useNavigate();
             .then(res => res.json())
             .then(result => {
                 console.log(result);
+                setNewPatient(result);
+
                 // toast.success(`Patient Added Successful`);
                 form.reset();
 
@@ -78,6 +88,11 @@ const navigate = useNavigate();
                 setError(error.message);
                 toast.danger(`Patient Added Unsuccessful`);
             });
+
+
+        // const handBookAppointment = (id) => {
+        //     navigate(`dashboard/addapatient/${id}`);
+        // };
 
     }
     return (
@@ -126,8 +141,8 @@ const navigate = useNavigate();
                                 <option className='font-bold ' >Other</option>
                             </select>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="address" className="text-tahiti-lightGreen">DATE</label>
-                                <input id="address" type="address" placeholder="DD/MM/YYYY" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
+                                <label for="date" className="text-tahiti-lightGreen">DATE</label>
+                                <input id="date" type="date" placeholder="DD/MM/YYYY" defaultValue={currDate} className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
                                 <hr className='text-tahiti-lightGreen' />
                             </div>
 
@@ -159,7 +174,11 @@ const navigate = useNavigate();
 
                 </form>
             </section>
-
+            {/* {
+                <Appointment
+                newPatient={newPatient}
+                ></Appointment>
+            } */}
 
 
 
