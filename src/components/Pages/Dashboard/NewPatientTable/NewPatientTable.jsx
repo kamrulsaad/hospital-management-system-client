@@ -6,7 +6,7 @@ const NewPatientTable = () => {
     const [loading, setLoading] = useState(null);
     const [patient, setPatients] = useState([]);
     // Using .reverse for new Patients
-    const patients = patient.concat().reverse();
+    const patients = patient.slice(0, 5).concat().reverse();
     // All Patient fetch data
     useEffect(() => {
         setLoading(true);

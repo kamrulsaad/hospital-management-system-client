@@ -6,9 +6,14 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 
 const PrivateRoute = ({ children }) => {
-
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
+    // if login token not available login redirect
     if (!localStorage.getItem("LoginToken")) {
+      navigate('/login')
+    }
+    // if login token expired login redirect
+    if (user.status === 'fail') {
       navigate('/login')
     }
     // const { user } = useContext(UserContext);
@@ -18,7 +23,7 @@ const PrivateRoute = ({ children }) => {
 
 
 
-    const [user, setUser] = useState({});
+
     console.log(user);
     // fetching userInfo from backend
     useEffect(() => {

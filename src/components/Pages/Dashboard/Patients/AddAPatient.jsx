@@ -19,11 +19,9 @@ const AddAPatient = () => {
             confirmButtonText: 'Book',
             denyButtonText: `Don't Book`,
         }).then((result) => {
-
-            
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                navigate("/dashboard/appointment")
+                navigate("/appointment")
                 Swal.fire('Success', '', 'success')
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info')
@@ -176,11 +174,11 @@ const AddAPatient = () => {
 
                 </form>
             </section>
-            {
+            {/* {
                 <Appointment
                 newPatient={newPatient}
                 ></Appointment>
-            }
+            } */}
 
 
 
