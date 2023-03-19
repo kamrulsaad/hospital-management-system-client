@@ -4,32 +4,12 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import Appointment from '../Appointment/Appointment';
 const AddAPatient = () => {
-    const [error, setError] = useState();
-    const [newPatient, setNewPatient] = useState();
+    const [error, setError] = useState("");
+    const [newPatient, setNewPatient] = useState({});
     console.log(newPatient);
     const navigate = useNavigate();
     // js date function 
     const currDate = new Date().toLocaleDateString();
-    // Show Alert 
-    const alert = () => {
-        Swal.fire({
-            title: 'Patient Added SuccessFully. Do You Want To Book Appointment For This Patient?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Book',
-            denyButtonText: `Don't Book`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                navigate("/appointment")
-                Swal.fire('Success', '', 'success')
-            } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
-            }
-        })
-
-
-    }
 
     const handleSubmit = event => {
 
@@ -78,21 +58,28 @@ const AddAPatient = () => {
             .then(result => {
                 console.log(result);
                 setNewPatient(result);
-
-                // toast.success(`Patient Added Successful`);
+                Swal.fire({
+                    title: 'Patient Added SuccessFully. Do You Want To Book Appointment For This Patient?',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Book',
+                    denyButtonText: `Don't Book`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        navigate(`/appointment/${newPatient.data._id}`)
+                        Swal.fire('Success', '', 'success')
+                    } else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
                 form.reset();
 
             })
             .catch(error => {
                 console.error(error)
                 setError(error.message);
-                toast.danger(`Patient Added Unsuccessful`);
-            });
-
-
-        // const handBookAppointment = (id) => {
-        //     navigate(`dashboard/addapatient/${id}`);
-        // };
+            })
 
     }
     return (
@@ -167,7 +154,7 @@ const AddAPatient = () => {
                             </div>
 
                             <div>
-                                <button type="submit" onClick={alert} className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
+                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
                             </div>
                         </div>
                     </fieldset>

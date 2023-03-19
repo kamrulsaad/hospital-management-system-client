@@ -9,11 +9,7 @@ const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     // if login token not available login redirect
-    if (!localStorage.getItem("LoginToken")) {
-      navigate('/login')
-    }
-    // if login token expired login redirect
-    if (user.status === 'fail') {
+    if (!localStorage.getItem("LoginToken")||(user.status === 'fail')) {
       navigate('/login')
     }
     // const { user } = useContext(UserContext);
