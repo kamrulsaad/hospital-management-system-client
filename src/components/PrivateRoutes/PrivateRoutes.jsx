@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-// import { UserContext } from '../Context/UserProvider/UserProvider';
-// import Spinner from '../Shared/Spinner';
-
-
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import Spinner from "../Shared/Spinner";
 
 const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState({});
@@ -44,6 +41,7 @@ const PrivateRoute = ({ children }) => {
             replace></Navigate>
     }
     return children;
+
 };
 
 export default PrivateRoute;
