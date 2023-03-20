@@ -13,6 +13,7 @@ const Login = () => {
 
     const handleUserNamePassword = event => {
         event.preventDefault();
+        setLoading(true);
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
@@ -22,7 +23,6 @@ const Login = () => {
         };
         console.log(loginData);
         // login send to backend 
-        setLoading(false);
         fetch('https://hms.uniech.com/api/v1/user/login', {
             method: 'POST',
             headers: {
@@ -32,7 +32,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(result => {
-                setLoading(true);
+                setLoading(false);
                 console.log(result);
 
                 if (result.status === "fail") {
@@ -81,7 +81,7 @@ const Login = () => {
                     </div>
                     <div className="space-y-2">
                         <div>
-                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">Login</button>
+                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='assets/loading.png'/> : 'Login'}</button>
                         </div>
 
                     </div>
