@@ -8,7 +8,7 @@ const AllPatients = () => {
   const [loading, setLoading] = useState(null);
   const [patients, setPatients] = useState([]);
   // const [patient, setPatient] = useState([]);
-  // console.log(patient);
+  // console.log(patients);
 
   // All Patient fetch data
   useEffect(() => {
@@ -21,31 +21,10 @@ const AllPatients = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
+        console.log(data);
         setPatients(data?.data);
       });
   }, []);
-
-
-
-  // const patientDetails = () => {
-
-  //   // All Patient fetch data onClick={patientDetails(patient?._id)}
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     fetch(`https://hms.uniech.com/api/v1/patient/${_id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setLoading(false);
-  //         setPatient(data?.data);
-  //       });
-  //   }, []);
-  // };
-
-
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
@@ -57,7 +36,7 @@ const AllPatients = () => {
       <h1 className='text-5xl font-bold mt-20 '>Patients</h1>
       <Link to="/dashboard/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
       <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Patients</button>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
@@ -82,12 +61,6 @@ const AllPatients = () => {
                   {/* <td>{ patient?.email}</td> */}
                   <td>{patient?.phone}</td>
                   <td><button className='btn btn-xs'>Details</button></td>
-                  {/* onClick={() => handleDeleteUser(user._id)} */}
-                  <td>
-                    {/* { patient?.role !== 'admin' &&  */}
-                    <button className='btn btn-xs bg-tahiti-red'>Delete</button>
-                    {/* // } */}
-                  </td>
                 </tr>)
             }
 

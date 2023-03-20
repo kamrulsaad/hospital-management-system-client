@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Spinner from '../../Shared/Spinner';
 
 const Login = () => {
+    const [loading, setLoading] = useState(null);
     const [error, setError] = useState();
     // Redirect to current path
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ const Login = () => {
         };
         console.log(loginData);
         // login send to backend 
+        setLoading(false);
         fetch('https://hms.uniech.com/api/v1/user/login', {
             method: 'POST',
             headers: {
@@ -29,6 +32,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(result => {
+                setLoading(true);
                 console.log(result);
 
                 if (result.status === "fail") {
@@ -46,6 +50,7 @@ const Login = () => {
                 console.error(error)
                 setError(error.message);
             });
+            if (loading) return <Spinner></Spinner>;
     }
 
 

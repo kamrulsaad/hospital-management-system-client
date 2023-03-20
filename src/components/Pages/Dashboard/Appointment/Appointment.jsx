@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { useParams } from 'react-router-dom';
+import Spinner from '../../../Shared/Spinner';
 
-const Appointment = ({ newPatient }) => {
+const Appointment = () => {
     const [error, setError] = useState("");
+    const [newPatient,setNewPatient]= useState({});
+    const [loading,setLoading]= useState({});
     console.log(newPatient);
+    const {id} = useParams();
+    console.log(id);
+
+
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+          setLoading(true);
+          const response = await fetch(`https://hms.uniech.com/api/v1/patient/${id}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            }
+          })
+          const data = await response.json();
+          setNewPatient(data);
+          setLoading(false);
+    };
+        fetchUserData();
+    }, []);
+
+    if (loading) return <Spinner></Spinner>;
+
 
     const handleSubmit = event => {
-
-
         // Getting From Data 
         event.preventDefault();
         const form = event.target;
@@ -25,29 +50,6 @@ const Appointment = ({ newPatient }) => {
         };
         console.log(patientData);
 
-
-
-        // login send to backend 
-        fetch('https://hms.uniech.com/api/v1/user/signup', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(patientData)
-        })
-            .then(res => res.json())
-            .then(result => {
-                console.log(result);
-                toast.success(`User Added Successful`);
-                form.reset();
-
-            })
-            .catch(error => {
-                console.error(error)
-                setError(error.message);
-            });
-
     }
 
     return (
@@ -58,15 +60,15 @@ const Appointment = ({ newPatient }) => {
 
                     <div className=''>
                         <div className=''>
-                            Patient Name :<input  type="patientName" name="patientName" id="patientName" placeholder="" className="input w-full max-w-xl rounded-none border-2 border-tahiti-dark " />
+                            Patient Name : <input type="patientName" name="patientName" id="patientName" defaultValue={newPatient.data.name} placeholder="" className="input w-full max-w-xl font-semibold text-lg rounded-none border-2 border-tahiti-dark " />
                         </div>
-                        <div>
-                            Symptoms :  <textarea type="symptoms" name="symptoms" id="symptoms"  className="textarea rounded-none w-full lg:mt-10 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
+                        <div className='grid grid-cols-2 content-start'>
+                            Symptoms :  <textarea type="symptoms" name="symptoms" id="symptoms" className="textarea rounded-none w-full lg:mt-10 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
                         </div>
-                        <div>
-                            Diagnosis <textarea type="diagnosis" name="diagnosis" id="diagnosis"  className="textarea  rounded-none w-full lg:mt-5 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
+                        <div className='grid grid-cols-2 content-start'>
+                            Diagnosis : <textarea type="diagnosis" name="diagnosis" id="diagnosis" className="textarea  rounded-none w-full lg:mt-5 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
                         </div>
-                        <button type ="submit" className="btn btn-outline btn-wide bg-tahiti-darkGreen text-tahiti-white flex mt-12 mx-auto rounded-full">Button</button>
+                        <button type="submit" className="btn btn-outline btn-wide bg-tahiti-darkGreen text-tahiti-white flex mt-12 mx-auto rounded-full">Button</button>
                     </div>
                     <div>
                         <div className='grid justify-items-center'>
@@ -77,7 +79,7 @@ const Appointment = ({ newPatient }) => {
                                     <DateCalendar />
                                 </LocalizationProvider>
                             </div>
-                      
+
                         </div>
                         <div >
                             <p className='text-center text-2xl mb-5 font-semibold '>Select Slot</p>
@@ -98,7 +100,7 @@ const Appointment = ({ newPatient }) => {
             </form>
 
 
-            <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
+            {/* <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
                 <div className="mb-8 text-center">
                     <h1 className="my-3 text-4xl font-bold">Sign in</h1>
                     <p className="text-sm dark:text-gray-400">Sign in to access your account</p>
@@ -126,7 +128,7 @@ const Appointment = ({ newPatient }) => {
                         </p>
                     </div>
                 </form>
-            </div>
+            </div> */}
 
 
 

@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Swal from 'sweetalert2'
-import Appointment from '../Appointment/Appointment';
 const AddAPatient = () => {
     const [error, setError] = useState("");
-    const [newPatient, setNewPatient] = useState({});
-    console.log(newPatient.data._id);
     const navigate = useNavigate();
     // js date function 
     const currDate = new Date().toLocaleDateString();
 
     const handleSubmit = event => {
-
-
         // Getting Form-Data 
         event.preventDefault();
         const form = event.target;
@@ -57,21 +51,18 @@ const AddAPatient = () => {
             .then(res => res.json())
             .then(result => {
                 console.log(result);
-                setNewPatient(result);
+                // setNewPatient(result);
                 Swal.fire({
-                    title: 'Patient Added SuccessFully. Do You Want To Book Appointment For This Patient?',
-                    showDenyButton: true,
+                    title: `Add Appointment for ${name} now?`,
                     showCancelButton: true,
                     confirmButtonText: 'Book',
-                    denyButtonText: `Don't Book`,
-                }).then((result) => {
+                })
+                .then((results) => {
                     /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        navigate(`/appointment/${newPatient.data._id}`)
+                    if (results.isConfirmed) {
+                        navigate(`/appointment/${result.data._id}`)
                         Swal.fire('Success', '', 'success')
-                    } else if (result.isDenied) {
-                        Swal.fire('Changes are not saved', '', 'info')
-                    }
+                    } 
                 })
                 form.reset();
 
