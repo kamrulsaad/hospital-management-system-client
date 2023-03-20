@@ -6,7 +6,6 @@ module.exports = {
   ],
   theme: {
     colors: {
-    
       'tahiti': {
         primary: '#00CC99',
         dark: '#000000',
@@ -19,7 +18,8 @@ module.exports = {
         lightGreen: '#27cd9a',
         lightBlue: '#C9F7F5',
         cyan: '#1BC5BD ',
-        blue: '#3699FF ',
+        blue: 'rgba(164, 238, 219, 0.56) ',
+        mainBlue: '#3699FF',
         
 
       }},

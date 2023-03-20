@@ -3,7 +3,7 @@ import React from 'react';
 const AvailableDoctor = () => {
     return (
         <div>
-            <div className="card card-side bg-base-100 shadow-xl w-80 lg:mt-10">
+            <div className="card card-side bg-base-100 shadow-xl shadow-tahiti-blue w-80 lg:mt-10">
                 <figure className='p-5 bg-tahiti-darkGreen shadow-xl'>
 
                     <svg width="64" height="70" viewBox="0 0 37 42" fill="none" xmlns="http://www.w3.org/2000/svg">
