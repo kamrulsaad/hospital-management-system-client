@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import Login from '../Pages/Login/Login';
 import Register from '../Pages/Register/Register';
 import ErrorPage from './ErrorPage';
-import Home from '../Pages/Home/Home';
 import Main from './Main/Main';
 import DashBoard from '../Pages/Dashboard/DashBoradHome/DashBoard';
 import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
@@ -18,13 +17,12 @@ const router = createBrowserRouter([
 
     {
       path:'/',
-      element:<Main></Main>,
+      element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
       children:[
         
             {
                 path:'/',
-                element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
-                
+                element:<DashBoard><DashBoardLayouts></DashBoardLayouts></DashBoard>
             },
             // {
             //     path:'/home',
@@ -32,75 +30,63 @@ const router = createBrowserRouter([
                 
             // }
             {
-                path:'/*',
-                element:<ErrorPage></ErrorPage>,
-    
+                path:'/patients',
+                element:<AllPatients></AllPatients>
             },
             {
-                path:'/login',
-                element:<Login></Login>,
-    
+                path:'/doctors',
+                element:<Doctors></Doctors>
             },
-           
             {
                 path:'/signup',
-                element:<Register></Register>,
-    
+                element:<Register></Register>
+            },
+            {
+                path:'/addapatient',
+                element:<AddAPatient></AddAPatient>
+            },
+            {
+                path:'/userprofile',
+                element:<UserProfile></UserProfile>
+            },
+            {
+                path:'/alluser',
+                element:<AllUser></AllUser>
             }, 
-            {
-                path:'/appointment',
-                element:<Appointment></Appointment>
-            },
-            {
-                path:'/appointment/:id',
-                element:<Appointment></Appointment>
-            },
+          
+         
          
            
         ]},
         {
-            path:'/dashboard',
-            element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
+            path:'/user',
+            element:<Main></Main>,
             children :[
+              
                 {
-                    path:'/dashboard',
-                    element:<DashBoard></DashBoard>
+                    path:'/user/login',
+                    element:<Login></Login>,
+        
                 },
-                {
-                    path:'/dashboard/Home',
-                    element:<DashBoard><Home></Home></DashBoard>
-                },
-                {
-                    path:'/dashboard/patients',
-                    element:<AllPatients></AllPatients>
-                },
-                {
-                    path:'/dashboard/doctors',
-                    element:<Doctors></Doctors>
-                },
-                {
-                    path:'/dashboard/signup',
-                    element:<Register></Register>
-                },
-                {
-                    path:'/dashboard/addapatient',
-                    element:<AddAPatient></AddAPatient>
-                },
-                {
-                    path:'/dashboard/userprofile',
-                    element:<UserProfile></UserProfile>
-                },
-                {
-                    path:'/dashboard/alluser',
-                    element:<AllUser></AllUser>
-                },
+               
                 // {
-                //     path:'/dashboard/appointment',
-                //     element:<Appointment></Appointment>
-                // },
-
-                
-            
+                //     path:'/user/signup',
+                //     element:<Register></Register>,
+        
+                // }, 
+                {
+                    path:'/user/appointment',
+                    element:<Appointment></Appointment>
+                },
+                {
+                    path:'/user/appointment/:id',
+                    element:<Appointment></Appointment>
+                },
+                {
+                    path:'/*',
+                    element:<ErrorPage></ErrorPage>,
+        
+                },
             ]
             
         }

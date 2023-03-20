@@ -60,7 +60,7 @@ const AddAPatient = () => {
                 .then((results) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (results.isConfirmed) {
-                        navigate(`/appointment/${result.data._id}`)
+                        navigate(`/user/appointment/${result.data._id}`)
                         Swal.fire('Success', '', 'success')
                     } 
                 })

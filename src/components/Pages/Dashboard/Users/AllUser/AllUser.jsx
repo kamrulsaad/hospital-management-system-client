@@ -28,26 +28,6 @@ const AllUser = () => {
 
 
 
-  // const patientDetails = () => {
-
-  //   // All Patient fetch data onClick={patientDetails(patient?._id)}
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     fetch(`https://hms.uniech.com/api/v1/patient/${_id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setLoading(false);
-  //         setPatient(data?.data);
-  //       });
-  //   }, []);
-  // };
-
-
-
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
   if (users.length === 0)
@@ -56,7 +36,7 @@ const AllUser = () => {
   return (
     <div className='lg:ml-20 '>
       <h1 className='text-5xl font-bold mt-20 '>Users</h1>
-      <Link to="/dashboard/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
+      <Link to="/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
       {/* <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All User</button> */}
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
@@ -68,7 +48,6 @@ const AllUser = () => {
               {/* <th>Last Name</th> */}
               <th>Role</th>
               <th>Details</th>
-              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -83,12 +62,7 @@ const AllUser = () => {
                   {/* <td>{ user?.email}</td> */}
                   <td>{user?.role}</td>
                   <td><button className='btn btn-xs btn-ghost bg-tahiti-darkGreen text-tahiti-white '>Details</button></td>
-                  {/* onClick={() => handleDeleteUser(user._id)} */}
-                  <td>
-                    {/* { user?.role !== 'admin' &&  */}
-                    <button className='btn btn-xs bg-tahiti-red btn-ghost text-tahiti-white '>Delete</button>
-                    {/* // } */}
-                  </td>
+              
                 </tr>)
             }
 
