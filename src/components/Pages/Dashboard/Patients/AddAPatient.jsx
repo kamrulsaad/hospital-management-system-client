@@ -6,7 +6,7 @@ import Appointment from '../Appointment/Appointment';
 const AddAPatient = () => {
     const [error, setError] = useState("");
     const [newPatient, setNewPatient] = useState({});
-    console.log(newPatient);
+    console.log(newPatient.data._id);
     const navigate = useNavigate();
     // js date function 
     const currDate = new Date().toLocaleDateString();
