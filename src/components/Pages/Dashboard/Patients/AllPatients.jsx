@@ -40,13 +40,11 @@ const AllPatients = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th></th>
-              <th>Patient ID</th>
-              <th>Name</th>
-              {/* <th>Last Name</th> */}
-              <th>Phone</th>
-              <th>Details</th>
-              <th>Delete</th>
+              <th className='border border-tahiti-lightGreen'>Index</th>
+              <th className='border border-tahiti-lightGreen'>Patient ID</th>
+              <th className='border border-tahiti-lightGreen'>Name</th>
+              <th className='border border-tahiti-lightGreen'>Phone</th>
+              <th className='border border-tahiti-lightGreen'>Details</th>
             </tr>
           </thead>
           <tbody>
@@ -54,13 +52,11 @@ const AllPatients = () => {
             {
               patients.map((patient, i) =>
                 <tr key={patient?._id}>
-                  <th>{i + 1}</th>
-                  <td>{patient?._id}</td>
-                  <td>{patient?.name}</td>
-                  {/* <td>{ patient?.lastName}</td> */}
-                  {/* <td>{ patient?.email}</td> */}
-                  <td>{patient?.phone}</td>
-                  <td><button className='btn btn-xs'>Details</button></td>
+                  <th className='border border-tahiti-lightGreen'>{i + 1}</th>
+                  <td className='border border-tahiti-lightGreen'>{patient?._id}</td>
+                  <td className='border border-tahiti-lightGreen'>{patient?.name}</td>
+                  <td className='border border-tahiti-lightGreen'>{patient?.phone}</td>
+                  <td className='border border-tahiti-lightGreen'><button className='btn btn-xs'>Details</button></td>
                 </tr>)
             }
 

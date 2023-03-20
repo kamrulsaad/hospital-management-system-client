@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             //     path:'/home',
             //     element:,
                 
-            // },
+            // }
             {
                 path:'/*',
                 element:<ErrorPage></ErrorPage>,

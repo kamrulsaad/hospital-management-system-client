@@ -40,24 +40,24 @@ const [loading,setLoading] =useState(null);
                 <table className="table w-full">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Details</th>
+                            <th className='border border-tahiti-lightGreen'>Index</th>
+                            <th className='border border-tahiti-lightGreen'>First Name</th>
+                            <th className='border border-tahiti-lightGreen'>Last Name</th>
+                            <th className='border border-tahiti-lightGreen'>Email</th>
+                            <th className='border border-tahiti-lightGreen'>Details</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         {
                             doctors.map((doctor, i) => <tr key={ doctor._id}>
-                                <th>{i + 1}</th>
+                                <th className='border border-tahiti-lightGreen'>{i + 1}</th>
                                 {/* <td>{ doctor?._id}</td> */}
-                                <td>{ doctor?.firstName}</td>
-                                <td>{ doctor?.lastName}</td>
-                                <td>{ doctor?.email}</td>
+                                <td className='border border-tahiti-lightGreen'>{ doctor?.firstName}</td>
+                                <td className='border border-tahiti-lightGreen'>{ doctor?.lastName}</td>
+                                <td className='border border-tahiti-lightGreen'>{ doctor?.email}</td>
                                 {/* <td>{ doctor?.phone}</td> */}
-                                <td><button className='btn btn-xs bg-tahiti-darkGreen'>Details</button></td>
+                                <td className='border border-tahiti-lightGreen'><button className='btn btn-xs bg-tahiti-darkGreen'>Details</button></td>
                             </tr>)
                         }
 
