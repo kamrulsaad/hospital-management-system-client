@@ -3,27 +3,27 @@ import { Link } from "react-router-dom";
 import Spinner from "../../../Shared/Spinner";
 
 const NewPatientTable = () => {
-    const [loading, setLoading] = useState(null);
-    const [patient, setPatients] = useState([]);
-    // Using .reverse for new Patients
-    const patients = patient.slice(0, 5).concat().reverse();
-    // All Patient fetch data
-    useEffect(() => {
-        setLoading(true);
-        fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setLoading(false);
-                setPatients(data?.data);
-            });
-    }, []);
+  const [loading, setLoading] = useState(null);
+  const [patient, setPatients] = useState([]);
+  // Using .reverse for new Patients
+  const patients = patient.slice(0, 5).concat().reverse();
+  // All Patient fetch data
+  useEffect(() => {
+    setLoading(true);
+    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setPatients(data?.data);
+      });
+  }, []);
 
 
-  
+
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
@@ -35,10 +35,12 @@ const NewPatientTable = () => {
     );
 
   return (
-    <div className="">
-      <h1 className="text-3xl font-bold mt-10 ">New Patients</h1>
-
-      <div className="overflow-x-auto shadow-2xl rounded-xl">
+    <div className="p-8">
+      <div  className="flex justify-between mt-5 ">
+        <h1 className="text-3xl font-bold">New Patients</h1>
+        <Link to="/dashboard/addapatient"><button class="btn btn-sm btn-ghost bg-tahiti-blue  text-tahiti-white">Add New</button></Link>
+      </div>
+      <div className="overflow-x-auto shadow-2xl mt-5  rounded-xl">
         <table className="table w-full bg-tahiti-white ">
           <thead>
             <tr>
