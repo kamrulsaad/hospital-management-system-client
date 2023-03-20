@@ -38,9 +38,9 @@ const NewPatientTable = () => {
     <div className="p-8">
       <div  className="flex justify-between mt-5 ">
         <h1 className="text-3xl font-bold">New Patients</h1>
-        <Link to="/dashboard/addapatient"><button class="btn btn-sm btn-ghost bg-tahiti-blue  text-tahiti-white">Add New</button></Link>
+        <Link to="/dashboard/addapatient"><button class="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">Add New</button></Link>
       </div>
-      <div className="overflow-x-auto shadow-2xl mt-5  rounded-xl">
+      <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-5  rounded-xl">
         <table className="table w-full bg-tahiti-white ">
           <thead>
             <tr>

@@ -7,7 +7,7 @@ const PrivateRoute = ({ children }) => {
     const navigate = useNavigate();
     // if login token not available login redirect
     if (!localStorage.getItem("LoginToken")||(user.status === 'fail')) {
-      navigate('/login')
+      navigate('/user/login')
     }
     // const { user } = useContext(UserContext);
     // const [loading, useLoading] = useState();
@@ -36,7 +36,7 @@ const PrivateRoute = ({ children }) => {
     //     return <Spinner></Spinner>
     // }
     if (!user) {
-        return <Navigate to="/login"
+        return <Navigate to="/user/login"
             state={{ from: location }}
             replace></Navigate>
     }

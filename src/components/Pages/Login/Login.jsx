@@ -42,7 +42,7 @@ const Login = () => {
                 localStorage.setItem('LoginToken', result.data.token);
                 toast.success(`Login is successful`);
                 navigate(from, { replace: true });
-                navigate("/dashboard/Home")
+                navigate("/")
                 form.reset();
 
             })
