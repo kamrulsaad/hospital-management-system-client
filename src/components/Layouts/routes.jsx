@@ -48,7 +48,11 @@ const router = createBrowserRouter([
                 path:'/alluser',
                 element:<AllUser></AllUser>
             }, 
-          
+            {
+                path:'/*',
+                element:<ErrorPage></ErrorPage>,
+    
+            },
          
          
            
@@ -77,11 +81,11 @@ const router = createBrowserRouter([
                     path:'/user/appointment/:id',
                     element:<Appointment></Appointment>
                 },
-                {
-                    path:'/*',
-                    element:<ErrorPage></ErrorPage>,
+                // {
+                //     path:'/*',
+                //     element:<ErrorPage></ErrorPage>,
         
-                },
+                // },
             ]
             
         }
