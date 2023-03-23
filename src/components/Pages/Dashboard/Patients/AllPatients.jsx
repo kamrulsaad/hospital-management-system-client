@@ -81,7 +81,7 @@ const AllPatients = () => {
               patients.map((patient, i) =>
                 <tr key={patient?._id}>
                   <th>{i + 1}</th>
-                  <td>{patient?._id}</td>
+                  <td>{patient?.serialId}</td>
                   <td>{patient?.name}</td>
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}

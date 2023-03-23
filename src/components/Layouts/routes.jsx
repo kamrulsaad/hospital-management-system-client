@@ -12,6 +12,7 @@ import AddAPatient from '../Pages/Dashboard/Patients/AddAPatient';
 import UserProfile from '../Pages/Dashboard/Users/UserProfie/UserProfile';
 import AllUser from '../Pages/Dashboard/Users/AllUser/AllUser';
 import Appointment from '../Pages/Dashboard/Appointment/Appointment';
+import PatientProfile from '../Pages/Dashboard/Patients/PatientProfile';
 
 const router = createBrowserRouter([
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             {
                 path:'/alluser',
                 element:<AllUser></AllUser>
+            }, 
+            {
+                path:'/patientprofile/:id',
+                element:<PatientProfile></PatientProfile>
             }, 
             {
                 path:'/*',
