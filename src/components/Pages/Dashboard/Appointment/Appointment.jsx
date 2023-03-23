@@ -60,7 +60,7 @@ const Appointment = () => {
 
                     <div className=''>
                         <div className=''>
-                            Patient Name : <input type="patientName" name="patientName" id="patientName" defaultValue={newPatient.data.name} placeholder="" className="input w-full max-w-xl font-semibold text-lg rounded-none border-2 border-tahiti-dark " />
+                            Patient Name : <input type="patientName" name="patientName" id="patientName" defaultValue={newPatient?.data?.name} placeholder="" className="input w-full max-w-xl font-semibold text-lg rounded-none border-2 border-tahiti-dark " />
                         </div>
                         <div className='grid grid-cols-2 content-start'>
                             Symptoms :  <textarea type="symptoms" name="symptoms" id="symptoms" className="textarea rounded-none w-full lg:mt-10 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
