@@ -2,8 +2,9 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Profile from '../../Pages/Dashboard/Users/UserProfie/Profile';
 
 const DashBoardLayouts = () => {
+    // LogOutButton
     const logOut = () => {
-        localStorage.clear();
+        localStorage.removeItem("LoginToken");
         return;
     }
     const navigate = useNavigate();
@@ -62,9 +63,11 @@ const DashBoardLayouts = () => {
 
 
                 </div>
+           
                 <div className="drawer-side grid grid-rows-4">
                     <div onClick={changeRoute} className='flex justify-center hidden lg:block  '>
                         <div className='lg:mt-20 hidden lg:block'>
+                            <h1 className=' text-4xl font-bold -mt-16 ml-5 mb-10'><span className='text-tahiti-lightGreen'>UNICEH </span><span className='text-tahiti-white'>HMS</span></h1>
                             <Profile></Profile>
 
                         </div>

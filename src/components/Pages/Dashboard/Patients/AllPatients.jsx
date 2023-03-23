@@ -72,7 +72,7 @@ const AllPatients = () => {
               {/* <th>Last Name</th> */}
               <th>Phone</th>
               <th>Details</th>
-              <th>Delete</th>
+            
             </tr>
           </thead>
           <tbody>
