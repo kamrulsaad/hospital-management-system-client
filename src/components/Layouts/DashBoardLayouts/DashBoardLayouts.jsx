@@ -1,7 +1,40 @@
+import { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Profile from '../../Pages/Dashboard/Users/UserProfie/Profile';
+import Spinner from '../../Shared/Spinner';
 
 const DashBoardLayouts = () => {
+
+
+
+    // Role Api from login Data
+
+    // const [userData, setUserData] = useState(null);
+    const [userRole, setUserRole] = useState(null);
+    // console.log(userRole);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            setLoading(true);
+            const response = await fetch('https://hms.uniech.com/api/v1/user/user-info', {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+                }
+            })
+            const data = await response.json();
+            // setUserData(data?.data);
+            setUserRole(data?.data?.role);
+            setLoading(false);
+        };
+        fetchUserData();
+    }, []);
+    // if (loading) return <Spinner></Spinner>
+
+
+
+
     // LogOutButton
     const logOut = () => {
         localStorage.removeItem("LoginToken");
@@ -14,8 +47,9 @@ const DashBoardLayouts = () => {
     }
     const changeRoute = () => {
         navigate("/userprofile")
+
+
     }
-    
 
     return (
 
@@ -63,7 +97,7 @@ const DashBoardLayouts = () => {
 
 
                 </div>
-           
+
                 <div className="drawer-side grid grid-rows-4">
                     <div onClick={changeRoute} className='flex justify-center hidden lg:block  '>
                         <div className='lg:mt-20 hidden lg:block'>
@@ -120,11 +154,15 @@ const DashBoardLayouts = () => {
 
 
 
-                            <li  ><Link to="/alluser"> <svg width="30" height="30" viewBox="0 0 56 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M34 38H22C9.75 38 0 47.875 0 60C0 62.25 1.75 64 4 64H52C54.125 64 56 62.25 56 60C56 47.875 46.125 38 34 38ZM6 58C7 50.125 13.75 44 22 44H34C42.125 44 48.875 50.125 49.875 58H6ZM28 32C36.75 32 44 24.875 44 16C44 7.25 36.75 0 28 0C19.125 0 12 7.25 12 16C12 24.875 19.125 32 28 32ZM28 6C33.5 6 38 10.5 38 16C38 21.625 33.5 26 28 26C22.375 26 18 21.625 18 16C18 10.5 22.375 6 28 6Z" fill="white" />
-                            </svg>
-                                <span className='text-2xl font-semibold text-tahiti-white'>Users</span></Link>
-                            </li>
+                            {
+                                (userRole === "super-admin") && <>
+                                    <li  ><Link to="/alluser"> <svg width="30" height="30" viewBox="0 0 56 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M34 38H22C9.75 38 0 47.875 0 60C0 62.25 1.75 64 4 64H52C54.125 64 56 62.25 56 60C56 47.875 46.125 38 34 38ZM6 58C7 50.125 13.75 44 22 44H34C42.125 44 48.875 50.125 49.875 58H6ZM28 32C36.75 32 44 24.875 44 16C44 7.25 36.75 0 28 0C19.125 0 12 7.25 12 16C12 24.875 19.125 32 28 32ZM28 6C33.5 6 38 10.5 38 16C38 21.625 33.5 26 28 26C22.375 26 18 21.625 18 16C18 10.5 22.375 6 28 6Z" fill="white" />
+                                    </svg>
+                                        <span className='text-2xl font-semibold text-tahiti-white'>Users</span></Link>
+                                    </li>
+                                </>
+                            }
 
 
                         </ul></div>

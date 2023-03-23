@@ -34,11 +34,8 @@ const AddAPatient = () => {
                 relation: relation,
             },
         }
-
         console.log(patientData);
-
-
-
+        
         // All Patient Send To Backend 
         fetch('https://hms.uniech.com/api/v1/patient/add-new-patient', {
             method: 'POST',

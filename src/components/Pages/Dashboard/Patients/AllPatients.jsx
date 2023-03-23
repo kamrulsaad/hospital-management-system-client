@@ -94,14 +94,12 @@ const AllPatients = () => {
         </table>
       </div>
 
+
       {/* Pagination Button */}
-
       <div class="flex flex-col items-center mt-5 mb-5 text-xl">
-
         <span class="text-sm text-gray-700 dark:text-gray-400">
           Showing Page <span class="font-semibold text-gray-900 dark:text-white">{pageNumber}</span><span class="font-semibold text-gray-900 dark:text-white"></span> of <span class="font-semibold text-gray-900 dark:text-white">{pages}</span> Pages
         </span>
-
         <div class="inline-flex mt-2 xs:mt-0">
           <button onClick={decreasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
             Prev
