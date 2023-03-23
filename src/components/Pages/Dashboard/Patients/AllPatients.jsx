@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { useQuery } from 'react-query';
@@ -7,13 +8,37 @@ const AllPatients = () => {
 
   const [loading, setLoading] = useState(null);
   const [patients, setPatients] = useState([]);
-  // const [patient, setPatient] = useState([]);
   // console.log(patients);
 
-  // All Patient fetch data
+  // pagination
+  const [count, setCount] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [size, setSize] = useState(10);
+  const pages = Math.ceil(count / size);
+  // console.log(pages);
+
+  const increasePageNumber = () => {
+   if(pageNumber<pages){
+    setPageNumber(pageNumber + 1)
+    console.log(pageNumber);
+   }
+  }
+
+  const decreasePageNumber = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1)
+      console.log(pageNumber);
+    }
+    else {
+      setPageNumber(1)
+    }
+  }
+
+
+  // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
-    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
+    fetch(`https://hms.uniech.com/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -22,9 +47,10 @@ const AllPatients = () => {
       .then((data) => {
         setLoading(false);
         console.log(data);
+        setCount(data.total);
         setPatients(data?.data);
       });
-  }, []);
+  }, [pageNumber, size]);
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
@@ -67,7 +93,27 @@ const AllPatients = () => {
           </tbody>
         </table>
       </div>
-    </div>
+
+      {/* Pagination Button */}
+
+      <div class="flex flex-col items-center mt-5 mb-5 text-xl">
+
+        <span class="text-sm text-gray-700 dark:text-gray-400">
+          Showing Page <span class="font-semibold text-gray-900 dark:text-white">{pageNumber}</span><span class="font-semibold text-gray-900 dark:text-white"></span> of <span class="font-semibold text-gray-900 dark:text-white">{pages}</span> Pages
+        </span>
+
+        <div class="inline-flex mt-2 xs:mt-0">
+          <button onClick={decreasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+            Prev
+          </button>
+          <button onClick={increasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+            Next
+          </button>
+        </div>
+      </div>
+
+
+    </div >
   );
 };
 
