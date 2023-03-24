@@ -59,7 +59,7 @@ const MyAppointments = () => {
 
   return (
     <div className='lg:ml-20 '>
-      <h1 className='text-5xl font-bold mt-20 '>All Appointments</h1>
+      <h1 className='text-5xl font-bold mt-20 mb-5 '>All Appointments</h1>
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
@@ -68,8 +68,8 @@ const MyAppointments = () => {
               <th>Patient ID</th>
               <th>Name</th>
               {/* <th>Last Name</th> */}
-              <th>Phone</th>
-              <th>Details</th>
+              <th>Reason</th>
+              <th>Update Status</th>
             </tr>
           </thead>
           <tbody>
@@ -79,11 +79,11 @@ const MyAppointments = () => {
                 <tr key={appointment?._id}>
                   <th>{i + 1}</th>
                   <td>{appointment?.serialId}</td>
-                  <td>{appointment?.name}</td>
+                  <td>{appointment?.patient?.name}</td>
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}
-                  <td>{appointment?.phone}</td>
-                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Details</Link></button></td>
+                  <td>{appointment?.reason}</td>
+                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Update</Link></button></td>
                 </tr>)
             }
 
