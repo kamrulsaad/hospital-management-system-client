@@ -25,11 +25,6 @@ const router = createBrowserRouter([
                 path:'/',
                 element:<DashBoard><DashBoardLayouts></DashBoardLayouts></DashBoard>
             },
-            // {
-            //     path:'/home',
-            //     element:,
-                
-            // }
             {
                 path:'/patients',
                 element:<AllPatients></AllPatients>
@@ -86,24 +81,7 @@ const router = createBrowserRouter([
         
                 },
                
-                // {
-                //     path:'/user/signup',
-                //     element:<Register></Register>,
-        
-                // }, 
-                // {
-                //     path:'/user/appointment',
-                //     element:<Appointment></Appointment>
-                // },
-                // {
-                //     path:'/user/appointment/:id',
-                //     element:<Appointment></Appointment>
-                // },
-                // {
-                //     path:'/*',
-                //     element:<ErrorPage></ErrorPage>,
-        
-                // },
+    
             ]
             
         }
