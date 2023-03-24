@@ -2,85 +2,86 @@ import { createBrowserRouter } from 'react-router-dom';
 import Login from '../Pages/Login/Login';
 import Register from '../Pages/Register/Register';
 import ErrorPage from './ErrorPage';
-import Home from '../Pages/Home/Home';
 import Main from './Main/Main';
-import DashBoard from '../Pages/Dashboard/DashBoard.jsx';
+import DashBoard from '../Pages/Dashboard/DashBoradHome/DashBoard';
 import DashBoardLayouts from '../Layouts/DashBoardLayouts/DashBoardLayouts'
 import AllPatients from '../Pages/Dashboard/Patients/AllPatients';
 import Doctors from '../Pages/Dashboard/Doctors/Doctors';
 import PrivateRoute from '../PrivateRoutes/PrivateRoutes';
 import AddAPatient from '../Pages/Dashboard/Patients/AddAPatient';
-import UserProfile from '../Pages/Dashboard/UserProfie/UserProfile';
+import UserProfile from '../Pages/Dashboard/Users/UserProfie/UserProfile';
+import AllUser from '../Pages/Dashboard/Users/AllUser/AllUser';
+import Appointment from '../Pages/Dashboard/Appointment/Appointment';
+import PatientProfile from '../Pages/Dashboard/Patients/PatientProfile';
 
 const router = createBrowserRouter([
 
     {
       path:'/',
-      element:<Main></Main>,
+      element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
       children:[
         
             {
                 path:'/',
-                element:<PrivateRoute><Home></Home></PrivateRoute>,
-                
+                element:<DashBoard><DashBoardLayouts></DashBoardLayouts></DashBoard>
             },
-            // {
-            //     path:'/home',
-            //     element:,
-                
-            // },
+            {
+                path:'/patients',
+                element:<AllPatients></AllPatients>
+            },
+            {
+                path:'/doctors',
+                element:<Doctors></Doctors>
+            },
+            {
+                path:'/signup',
+                element:<Register></Register>
+            },
+            {
+                path:'/addapatient',
+                element:<AddAPatient></AddAPatient>
+            },
+            {
+                path:'/userprofile',
+                element:<UserProfile></UserProfile>
+            },
+            {
+                path:'/alluser',
+                element:<AllUser></AllUser>
+            }, 
+            {
+                path:'/patientprofile/:id',
+                element:<PatientProfile></PatientProfile>
+            }, 
+            {
+                path:'/appointment',
+                element:<Appointment></Appointment>
+            }, 
+            {
+                path:'/appointment/:id',
+                element:<Appointment></Appointment>
+            }, 
             {
                 path:'/*',
                 element:<ErrorPage></ErrorPage>,
     
             },
-            {
-                path:'/login',
-                element:<Login></Login>,
-    
-            },
-           
-            {
-                path:'/signup',
-                element:<Register></Register>,
-    
-            },
+         
          
            
         ]},
         {
-            path:'/dashboard',
-            element:<PrivateRoute><DashBoardLayouts></DashBoardLayouts></PrivateRoute>,
+            path:'/user',
+            element:<Main></Main>,
             children :[
+              
                 {
-                    path:'/dashboard',
-                    element:<DashBoard></DashBoard>
+                    path:'/user/login',
+                    element:<Login></Login>,
+        
                 },
-                {
-                    path:'/dashboard/Home',
-                    element:<DashBoard><Home></Home></DashBoard>
-                },
-                {
-                    path:'/dashboard/patients',
-                    element:<AllPatients></AllPatients>
-                },
-                {
-                    path:'/dashboard/doctors',
-                    element:<Doctors></Doctors>
-                },
-                {
-                    path:'/dashboard/signup',
-                    element:<Register></Register>
-                },
-                {
-                    path:'/dashboard/addapatient',
-                    element:<AddAPatient></AddAPatient>
-                },
-                {
-                    path:'/dashboard/userprofile',
-                    element:<UserProfile></UserProfile>
-                },
-            
+               
+    
             ]
             
         }

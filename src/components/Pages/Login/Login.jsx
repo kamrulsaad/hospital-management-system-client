@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Spinner from '../../Shared/Spinner';
 
 const Login = () => {
+    const [loading, setLoading] = useState(null);
     const [error, setError] = useState();
     // Redirect to current path
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ const Login = () => {
 
     const handleUserNamePassword = event => {
         event.preventDefault();
+        setLoading(true);
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
@@ -29,6 +32,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(result => {
+                setLoading(false);
                 console.log(result);
 
                 if (result.status === "fail") {
@@ -36,9 +40,9 @@ const Login = () => {
                 }
                 // set JWT token in local storage 
                 localStorage.setItem('LoginToken', result.data.token);
-                toast.success(`Login is successful`);
+                toast.success(`Login successful`);
                 navigate(from, { replace: true });
-                navigate("/dashboard/Home")
+                navigate("/")
                 form.reset();
 
             })
@@ -46,6 +50,7 @@ const Login = () => {
                 console.error(error)
                 setError(error.message);
             });
+            if (loading) return <Spinner></Spinner>;
     }
 
 
@@ -70,12 +75,13 @@ const Login = () => {
                             </div>
                             <input type="password" name="password" id="password" placeholder="password" className="w-full focus:outline-none pb-3 text-xs text-tahiti-primary" />
                             <hr className="w-full text-tahiti-primary" />
+                            <a rel="noopener noreferrer" href="#" className="text-xs hover:underline text-tahiti-primary ">Forgot password?</a>
                         </div>
                         {error && <p className='text-tahiti-red'> {error} </p>}
                     </div>
                     <div className="space-y-2">
                         <div>
-                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">Login</button>
+                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='/public/assets/loading.png'/> : 'Login'}</button>
                         </div>
 
                     </div>
