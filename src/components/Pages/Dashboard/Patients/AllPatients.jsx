@@ -73,6 +73,11 @@ const AllPatients = () => {
               <th>Phone</th>
               <th>Details</th>
             
+              <th className='border border-tahiti-lightGreen'>Index</th>
+              <th className='border border-tahiti-lightGreen'>Patient ID</th>
+              <th className='border border-tahiti-lightGreen'>Name</th>
+              <th className='border border-tahiti-lightGreen'>Phone</th>
+              <th className='border border-tahiti-lightGreen'>Details</th>
             </tr>
           </thead>
           <tbody>
@@ -87,6 +92,11 @@ const AllPatients = () => {
                   {/* <td>{ patient?.email}</td> */}
                   <td>{patient?.phone}</td>
                   <td><button className='btn btn-xs'><Link to={`/patientprofile/${patient._id}`}>Details</Link></button></td>
+                  <th className='border border-tahiti-lightGreen'>{i + 1}</th>
+                  <td className='border border-tahiti-lightGreen'>{patient?._id}</td>
+                  <td className='border border-tahiti-lightGreen'>{patient?.name}</td>
+                  <td className='border border-tahiti-lightGreen'>{patient?.phone}</td>
+                  <td className='border border-tahiti-lightGreen'><button className='btn btn-xs'>Details</button></td>
                 </tr>)
             }
 
