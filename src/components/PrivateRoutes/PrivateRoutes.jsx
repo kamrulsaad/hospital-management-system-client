@@ -6,8 +6,8 @@ const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     // if login token not available login redirect
-    if (!localStorage.getItem("LoginToken")||(user.status === 'fail')) {
-      navigate('/user/login')
+    if (!localStorage.getItem("LoginToken") || (user.status === 'fail')) {
+        navigate('/user/login')
     }
     // const { user } = useContext(UserContext);
     // const [loading, useLoading] = useState();
@@ -26,7 +26,12 @@ const PrivateRoute = ({ children }) => {
             },
         })
             .then((res) => res.json())
-            .then((data) => setUser(data))
+            .then((data) => {
+                if (data.status === 'fail') {
+                    navigate('/user/login')   
+                }
+            })
+
             .catch((err) => console.log(err));
 
     }, []);

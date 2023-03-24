@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const useUserData = () => {
   const [userData, setUserData] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  console.log(userRole);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
