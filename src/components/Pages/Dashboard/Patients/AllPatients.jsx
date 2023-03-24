@@ -86,7 +86,7 @@ const AllPatients = () => {
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}
                   <td>{patient?.phone}</td>
-                  <td><button className='btn btn-xs'>Details</button></td>
+                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${patient._id}`}>Details</Link></button></td>
                 </tr>)
             }
 

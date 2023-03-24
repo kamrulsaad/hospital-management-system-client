@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
 
 
 
-    console.log(user);
+    // console.log(user);
     // fetching userInfo from backend
     useEffect(() => {
         fetch("https://hms.uniech.com/api/v1/user/user-info", {
