@@ -47,6 +47,7 @@ const AllUser = () => {
       .then((data) => {
         setLoading(false);
         setUsers(data?.data);
+        console.log(data);
         setCount(data.total);
       });
   }, [pageNumber,size]);

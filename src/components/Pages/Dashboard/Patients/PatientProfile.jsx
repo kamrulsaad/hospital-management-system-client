@@ -58,7 +58,7 @@ const PatientProfile = () => {
                         <h3 className='text-center text-2xl  mt-4'>Phone - {newPatient?.data?.emergency_contact?.phone}</h3>
                         <h3 className='text-center text-2xl  mt-2'>Relation - {newPatient?.data?.emergency_contact?.relation}</h3>
                         <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60  font-medium mt-4" >
-                        <Link to={`/user/appointment/${newPatient?.data?._id}`}>Add Apppointment</Link></button>
+                        <Link to={`/appointment/${newPatient?.data?._id}`}>Add Apppointment</Link></button>
                     </div>
                   
                 </div>

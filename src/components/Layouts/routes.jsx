@@ -59,6 +59,14 @@ const router = createBrowserRouter([
                 element:<PatientProfile></PatientProfile>
             }, 
             {
+                path:'/appointment',
+                element:<Appointment></Appointment>
+            }, 
+            {
+                path:'/appointment/:id',
+                element:<Appointment></Appointment>
+            }, 
+            {
                 path:'/*',
                 element:<ErrorPage></ErrorPage>,
     
@@ -83,14 +91,14 @@ const router = createBrowserRouter([
                 //     element:<Register></Register>,
         
                 // }, 
-                {
-                    path:'/user/appointment',
-                    element:<Appointment></Appointment>
-                },
-                {
-                    path:'/user/appointment/:id',
-                    element:<Appointment></Appointment>
-                },
+                // {
+                //     path:'/user/appointment',
+                //     element:<Appointment></Appointment>
+                // },
+                // {
+                //     path:'/user/appointment/:id',
+                //     element:<Appointment></Appointment>
+                // },
                 // {
                 //     path:'/*',
                 //     element:<ErrorPage></ErrorPage>,
