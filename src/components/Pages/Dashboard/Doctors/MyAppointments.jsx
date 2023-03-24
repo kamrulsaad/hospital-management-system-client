@@ -54,7 +54,7 @@ const MyAppointments = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  if (appointments.length === 0)
+  if (count === 0)
     return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Appointments Found</h2>;
 
   return (

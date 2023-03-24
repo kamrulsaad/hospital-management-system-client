@@ -58,7 +58,7 @@ const AddAPatient = () => {
                     /* Read more about isConfirmed, isDenied below */
                     if (results.isConfirmed) {
                         navigate(`/appointment/${result.data._id}`)
-                        Swal.fire('Success', '', 'success')
+                        // Swal.fire('Success', '', 'success')
                     } 
                 })
                 form.reset();
