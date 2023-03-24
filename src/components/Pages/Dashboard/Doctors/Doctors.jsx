@@ -48,7 +48,7 @@ const Doctors = () => {
                 setDoctors(data?.data);
                 setCount(data.total);
             });
-    }, []);
+    }, [pageNumber,size]);
     if (loading) return <Spinner></Spinner>
 
 

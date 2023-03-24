@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Doctor = () => {
+
+    const [count, setCount] = useState(0);
+    const [loading, setLoading] = useState(null);
+    console.log(count);
+    // ALL Doctors Fetch Api
+    useEffect(() => {
+        setLoading(true);
+        fetch(`https://hms.uniech.com/api/v1/user/all-doctors`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setLoading(false);
+                setDoctors(data?.data);
+                setCount(data.total);
+            });
+    }, []);
     return (
         <div>
             <div className="card card-side bg-base-100 shadow-xl shadow-tahiti-blue xl:w-80 lg:w-80 md:w-80 ">
@@ -15,7 +34,7 @@ const Doctor = () => {
 
                         <div className='text-3xl font-semibold'>Doctor</div>
                     </div>
-                    <h1 className='text-5xl text-tahiti-lightGreen'>5</h1>
+                    <h1 className='text-5xl text-tahiti-lightGreen'>{count}</h1>
                 </div>
             </div>
 

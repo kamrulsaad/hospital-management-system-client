@@ -49,7 +49,7 @@ const AllUser = () => {
         setUsers(data?.data);
         setCount(data.total);
       });
-  }, []);
+  }, [pageNumber,size]);
 
 
 

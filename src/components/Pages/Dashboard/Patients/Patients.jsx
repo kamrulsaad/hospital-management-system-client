@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Spinner from '../../../Shared/Spinner';
 
 const Patients = () => {
+    const [loading, setLoading] = useState(null);
+    // const [patients, setPatients] = useState([]);
+    const [count, setCount] = useState(0);
+    console.log(count);
+
+    // All Patient fetch data  ?page=1&limit=10
+    useEffect(() => {
+        setLoading(true);
+        fetch(`https://hms.uniech.com/api/v1/patient/all-patient`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setLoading(false);
+                console.log(data);
+                setCount(data.total);
+                // setPatients(data?.data);
+            });
+    }, []);
+    // if (loading) return <Spinner></Spinner>;
     return (
         <div>
             <div className="card card-side bg-base-100 shadow-xl shadow-tahiti-blue xl:w-80 lg:w-80 md:w-80 ">
@@ -11,12 +34,12 @@ const Patients = () => {
 
                 </figure>
                 <div className="card-body">
-                        <div className=''>
-                          
-                            <div className='text-3xl font-semibold'>Patients</div>
-                        </div>
-                        <h1 className='text-5xl text-tahiti-lightGreen'>5</h1>
+                    <div className=''>
+
+                        <div className='text-3xl font-semibold'>Patients</div>
                     </div>
+                    <h1 className='text-5xl text-tahiti-lightGreen'>{count}</h1>
+                </div>
             </div>
 
 
