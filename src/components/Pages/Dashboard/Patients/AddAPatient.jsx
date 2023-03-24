@@ -5,7 +5,7 @@ const AddAPatient = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     // js date function 
-    const currDate = new Date().toLocaleDateString();
+    // const currDate = new Date().toLocaleDateString();
 
     const handleSubmit = event => {
         // Getting Form-Data 
@@ -14,7 +14,7 @@ const AddAPatient = () => {
         const name = form.name.value;
         const phone = form.phone.value;
         const address = form.address.value;
-        const date = form.date.value;
+        const age = form.number.value;
         const bloodGroup = form.bloodGroup.value;
         const gender = form.gender.value;
         const emergencyContactName = form.emergencyContactName.value;
@@ -25,7 +25,7 @@ const AddAPatient = () => {
             name: name,
             phone: phone,
             address: address,
-            date: date,
+            age: age,
             bloodGroup: bloodGroup,
             gender: gender,
             emergency_contact: {
@@ -34,11 +34,8 @@ const AddAPatient = () => {
                 relation: relation,
             },
         }
-
         console.log(patientData);
-
-
-
+        
         // All Patient Send To Backend 
         fetch('https://hms.uniech.com/api/v1/patient/add-new-patient', {
             method: 'POST',
@@ -60,7 +57,7 @@ const AddAPatient = () => {
                 .then((results) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (results.isConfirmed) {
-                        navigate(`/user/appointment/${result.data._id}`)
+                        navigate(`/appointment/${result.data._id}`)
                         Swal.fire('Success', '', 'success')
                     } 
                 })
@@ -119,8 +116,8 @@ const AddAPatient = () => {
                                 <option className='font-bold ' >Other</option>
                             </select>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="date" className="text-tahiti-lightGreen">DATE</label>
-                                <input id="date" type="date" placeholder="DD/MM/YYYY" defaultValue={currDate} className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
+                                <label for="number" className="text-tahiti-lightGreen">Age</label>
+                                <input id="number" type="number" placeholder="" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
                                 <hr className='text-tahiti-lightGreen' />
                             </div>
 

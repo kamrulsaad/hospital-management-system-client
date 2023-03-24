@@ -1,34 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Spinner from '../../../Shared/Spinner';
 
 const Appointment = () => {
     const [error, setError] = useState("");
-    const [newPatient,setNewPatient]= useState({});
-    const [loading,setLoading]= useState({});
-    console.log(newPatient);
-    const {id} = useParams();
+    const [doctors, setDoctors] = useState({});
+    const [loading, setLoading] = useState({});
+    console.log(doctors);
+    const { id } = useParams();
     console.log(id);
 
 
-
+    // fetch doctors data from backend
     useEffect(() => {
         const fetchUserData = async () => {
-          setLoading(true);
-          const response = await fetch(`https://hms.uniech.com/api/v1/patient/${id}`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-            }
-          })
-          const data = await response.json();
-          setNewPatient(data);
-          setLoading(false);
-    };
+            setLoading(true);
+            const response = await fetch(`https://hms.uniech.com/api/v1/user/all-doctors`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+                }
+            })
+            const data = await response.json();
+            setDoctors(data.data);
+            setLoading(false);
+        };
         fetchUserData();
     }, []);
 
@@ -39,99 +36,88 @@ const Appointment = () => {
         // Getting From Data 
         event.preventDefault();
         const form = event.target;
-        const patientName = form.patientName.value;
-        const symptoms = form.symptoms.value;
-        const diagnosis = form.diagnosis.value;
-        const patientData = {
-            patientName: patientName,
-            symptoms: symptoms,
-            diagnosis: diagnosis,
+        const reason = form.reason.value;
+        const appointed_to = form.appointed_to.value;
+        const paymentCompleted = form.paymentCompleted.value;
 
+        const appointmentData = {
+            reason: reason,
+            appointed_to: appointed_to,
+            paymentCompleted: paymentCompleted,
         };
-        console.log(patientData);
+        console.log(appointmentData);
+
+
+
+
+        // add appointment to the backend
+        setLoading(true);
+        fetch(`https://hms.uniech.com/api/v1/appointment/${id}`, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+            body: JSON.stringify(appointmentData)
+        })
+            .then(res => res.json())
+            .then(result => {
+                setLoading(false);
+                console.log(result);
+                if (result.status === "success") {
+                    toast.success("Appointment Added")
+                }
+                else{
+                    toast.error(result.error)
+                }
+                form.reset();
+
+            })
+            .catch(error => {
+                console.error(error)
+                setError(error.message);
+            });
 
     }
 
     return (
-        <div className='bg-tahiti-white'>
-            <h1 className=' text-tahiti-lightGreen font-bold text-center xl:pt-5 text-5xl mb-10'>Appointment</h1>
-            <form onSubmit={handleSubmit} novalidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
-                <div className=' grid grid-cols-2'>
+        <div className='bg-tahiti-white m-20 shadow-lg rounded-md'>
+            <h1 className=' text-tahiti-lightGreen font-bold text-center  text-5xl pt-10'>Appointment</h1>
+            <form onSubmit={handleSubmit} noValidate="" action="" className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
+                <fieldset className="lg:px-32 py-20">
 
-                    <div className=''>
-                        <div className=''>
-                            Patient Name : <input type="patientName" name="patientName" id="patientName" defaultValue={newPatient.data.name} placeholder="" className="input w-full max-w-xl font-semibold text-lg rounded-none border-2 border-tahiti-dark " />
+                    <div className="">
+                        <div className="mt-5">
+                            <label for="reason" className="text-tahiti-lightGreen">Reason</label>
+                            <input id="reason" type="reason" placeholder="" className="w-full focus:outline-none" />
+                            <hr className='text-tahiti-lightGreen' />
                         </div>
-                        <div className='grid grid-cols-2 content-start'>
-                            Symptoms :  <textarea type="symptoms" name="symptoms" id="symptoms" className="textarea rounded-none w-full lg:mt-10 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
-                        </div>
-                        <div className='grid grid-cols-2 content-start'>
-                            Diagnosis : <textarea type="diagnosis" name="diagnosis" id="diagnosis" className="textarea  rounded-none w-full lg:mt-5 textarea-lg h-48 max-w-xl border-2 border-tahiti-dark" placeholder=""></textarea>
-                        </div>
-                        <button type="submit" className="btn btn-outline btn-wide bg-tahiti-darkGreen text-tahiti-white flex mt-12 mx-auto rounded-full">Button</button>
-                    </div>
-                    <div>
-                        <div className='grid justify-items-center'>
-                            <p className='text-center text-2xl font-semibold '>Select Date</p>
-                            <div className='lg:mt-20  xl:w-80 rounded-xl shadow-2xl mb-10'>
 
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateCalendar />
-                                </LocalizationProvider>
-                            </div>
+                        <div className="mt-5 grid grid-cols-2 gap-x-2">
+                            <select type="appointed_to" name="appointed_to" id="appointed_to" className="select bg-tahiti-primary font-bold  text-tahiti-white">
+                                <option disabled selected>Appointed To</option>
+                                {
+                                    doctors.map((doctor) =>
+                                        <option className='font-bold ' key={doctor?._id} value={doctor?._id} >
+                                            {doctor?.firstName} {doctor?.lastName}</option>
+                                    )
+                                }
+                            </select>
 
+                            <select type="paymentCompleted" name="paymentCompleted" id="paymentCompleted" className="select bg-tahiti-primary font-bold  text-tahiti-white">
+                                <option disabled selected>Payment Status</option>
+                                <option className='font-bold ' >true</option>
+                                <option className='font-bold ' >false</option>
+
+                            </select>
                         </div>
-                        <div >
-                            <p className='text-center text-2xl mb-5 font-semibold '>Select Slot</p>
-                            <div className='grid grid-cols-3'>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                                <button className="btn btn-outline mt-5 mr-5 rounded-full">Button</button>
-                            </div>"
+                        <div>
+                            <button type="submit" className=" block mx-auto p-2 px-4 mt-20 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-md hover:bg-tahiti-lightGreen">Add Appointment</button>
                         </div>
                     </div>
-                </div>
+                </fieldset>
+
             </form>
-
-
-            {/* <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-900 dark:text-gray-100">
-                <div className="mb-8 text-center">
-                    <h1 className="my-3 text-4xl font-bold">Sign in</h1>
-                    <p className="text-sm dark:text-gray-400">Sign in to access your account</p>
-                </div>
-                <form novalidate="" action="" className="space-y-12 ng-untouched ng-pristine ng-valid">
-                    <div className="space-y-4">
-                        <div>
-                            <label for="email" className="block mb-2 text-sm">Email address</label>
-                            <input type="email" name="email" id="email" placeholder="leroy@jenkins.com" className="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" />
-                        </div>
-                        <div>
-                            <div className="flex justify-between mb-2">
-                                <label for="password" className="text-sm">Password</label>
-                                <a rel="noopener noreferrer" href="#" className="text-xs hover:underline dark:text-gray-400">Forgot password?</a>
-                            </div>
-                            <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <div>
-                            <button type="button" className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">Sign in</button>
-                        </div>
-                        <p className="px-6 text-sm text-center dark:text-gray-400">Don't have an account yet?
-                            <a rel="noopener noreferrer" href="#" className="hover:underline dark:text-violet-400">Sign up</a>.
-                        </p>
-                    </div>
-                </form>
-            </div> */}
-
-
-
 
         </div>
     );

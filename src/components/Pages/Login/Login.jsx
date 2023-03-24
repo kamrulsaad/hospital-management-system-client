@@ -40,7 +40,7 @@ const Login = () => {
                 }
                 // set JWT token in local storage 
                 localStorage.setItem('LoginToken', result.data.token);
-                toast.success(`Login is successful`);
+                toast.success(`Login successful`);
                 navigate(from, { replace: true });
                 navigate("/")
                 form.reset();
@@ -81,7 +81,7 @@ const Login = () => {
                     </div>
                     <div className="space-y-2">
                         <div>
-                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='assets/loading.png'/> : 'Login'}</button>
+                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='/public/assets/loading.png'/> : 'Login'}</button>
                         </div>
 
                     </div>

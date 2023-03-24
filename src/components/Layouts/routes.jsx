@@ -12,6 +12,7 @@ import AddAPatient from '../Pages/Dashboard/Patients/AddAPatient';
 import UserProfile from '../Pages/Dashboard/Users/UserProfie/UserProfile';
 import AllUser from '../Pages/Dashboard/Users/AllUser/AllUser';
 import Appointment from '../Pages/Dashboard/Appointment/Appointment';
+import PatientProfile from '../Pages/Dashboard/Patients/PatientProfile';
 
 const router = createBrowserRouter([
 
@@ -24,11 +25,6 @@ const router = createBrowserRouter([
                 path:'/',
                 element:<DashBoard><DashBoardLayouts></DashBoardLayouts></DashBoard>
             },
-            // {
-            //     path:'/home',
-            //     element:,
-                
-            // }
             {
                 path:'/patients',
                 element:<AllPatients></AllPatients>
@@ -53,7 +49,23 @@ const router = createBrowserRouter([
                 path:'/alluser',
                 element:<AllUser></AllUser>
             }, 
-          
+            {
+                path:'/patientprofile/:id',
+                element:<PatientProfile></PatientProfile>
+            }, 
+            {
+                path:'/appointment',
+                element:<Appointment></Appointment>
+            }, 
+            {
+                path:'/appointment/:id',
+                element:<Appointment></Appointment>
+            }, 
+            {
+                path:'/*',
+                element:<ErrorPage></ErrorPage>,
+    
+            },
          
          
            
@@ -69,24 +81,7 @@ const router = createBrowserRouter([
         
                 },
                
-                // {
-                //     path:'/user/signup',
-                //     element:<Register></Register>,
-        
-                // }, 
-                {
-                    path:'/user/appointment',
-                    element:<Appointment></Appointment>
-                },
-                {
-                    path:'/user/appointment/:id',
-                    element:<Appointment></Appointment>
-                },
-                {
-                    path:'/*',
-                    element:<ErrorPage></ErrorPage>,
-        
-                },
+    
             ]
             
         }
