@@ -46,13 +46,10 @@ const Appointment = () => {
             paymentCompleted: paymentCompleted,
         };
         console.log(appointmentData);
-
-
-
-
+        
         // add appointment to the backend
         setLoading(true);
-        fetch(`https://hms.uniech.com/api/v1/appointment/${id}`, {
+        fetch(`https://hms.uniech.com/api/v1/appointment/add-appointment/${id}`, {
             method: 'POST',
             headers: {
                 "content-type": "application/json",
