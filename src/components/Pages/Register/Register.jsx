@@ -143,7 +143,7 @@ const Register = () => {
                 </label>
                 <input
                   name="confirmPassword"
-                  type="confirmPassword"
+                  type="password"
                   placeholder=""
                   className="w-full focus:outline-none"
                 />

@@ -8,7 +8,7 @@ import useUserData from "../../../Hooks/useUserData";
 const AllApointments = () => {
   const [loading, setLoading] = useState(null);
   const [delLoading, setDelLoading] = useState(null);
-  const [refetch, setRefetch] = useState(true)
+  const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
   const [user, role] = useUserData();
 
@@ -33,8 +33,7 @@ const AllApointments = () => {
   };
 
   const handleDelete = (id) => {
-
-    setDelLoading(true)
+    setDelLoading(true);
 
     var myHeaders = new Headers();
     myHeaders.append(
@@ -53,12 +52,12 @@ const AllApointments = () => {
       .then((result) => {
         if (result.status === "success") toast.success(result.message);
         else toast.error(result.error);
-        setRefetch(!refetch)
-        setDelLoading(false)
+        setRefetch(!refetch);
+        setDelLoading(false);
       })
       .catch((error) => {
-        toast.error(error)
-        setDelLoading(false)
+        toast.error(error);
+        setDelLoading(false);
       });
   };
 
@@ -83,8 +82,7 @@ const AllApointments = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-
-  if (appointments.length === 0)
+  else if (appointments.length === 0)
     return (
       <h2 className="text-tahiti-red text-center mt-60 text-2xl ">
         No Data Found
@@ -93,12 +91,7 @@ const AllApointments = () => {
 
   return (
     <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Appointment</h1>
-      <Link to="/patients">
-        <button className=" lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-          Add New
-        </button>
-      </Link>
+      <h1 className="text-5xl font-bold mb-10 mt-20">Appointment</h1>
 
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
@@ -137,13 +130,18 @@ const AllApointments = () => {
 
                 {(role.includes("super-admin") || role.includes("admin")) && (
                   <td>
-                    {
-                      delLoading ? <img className="w-6 animate-spin mx-auto" src="assets/loading.png" alt="" /> :
+                    {delLoading ? (
+                      <img
+                        className="w-6 animate-spin mx-auto"
+                        src="assets/loading.png"
+                        alt=""
+                      />
+                    ) : (
                       <FaTrash
-                      onClick={() => handleDelete(appointment?._id)}
-                      className="text-tahiti-red cursor-pointer mx-auto"
-                    ></FaTrash>
-                    }
+                        onClick={() => handleDelete(appointment?._id)}
+                        className="text-tahiti-red cursor-pointer mx-auto"
+                      ></FaTrash>
+                    )}
                   </td>
                 )}
               </tr>
