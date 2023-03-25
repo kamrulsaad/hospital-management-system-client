@@ -37,7 +37,7 @@ const AddAPatient = () => {
         console.log(patientData);
         
         // All Patient Send To Backend 
-        fetch('https://hms.uniech.com/api/v1/patient/add-new-patient', {
+        fetch('http://localhost:5000/api/v1/patient/add-new-patient', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
