@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../../../Shared/Spinner";
+import { Link } from "react-router-dom";
 
 const NewPatientTable = () => {
   const [loading, setLoading] = useState(null);
@@ -29,7 +28,7 @@ const NewPatientTable = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-full">
-        <img className="animate-spin w-10" src="assets/loading.png" alt="" />
+        <img src="assets/preloader.gif" alt="" />
       </div>
     );
 
@@ -41,7 +40,7 @@ const NewPatientTable = () => {
     )
 
   return (
-    <div className="p-8">
+    <div className="py-8 pr-28">
       <div className="flex justify-between mt-5 ">
         <h1 className="text-3xl font-bold">New Patients</h1>
         <Link to="/addapatient">

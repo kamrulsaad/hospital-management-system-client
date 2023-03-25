@@ -63,10 +63,10 @@ const Register = () => {
             <span className="text-tahiti-primary">UNIECH</span>
             <span className="text-tahiti-dark"> HMS</span>{" "}
           </h1>
-          <p className="  text-xl font-semibold">
+          <p className="text-xl font-semibold">
             {" "}
-            <span className="text-tahiti-dark">Register A New </span>{" "}
-            <span className="text-tahiti-primary">User</span>{" "}
+            <span className="text-tahiti-dark">Register  </span>{" "}
+            <span className="text-tahiti-primary">New User</span>{" "}
           </p>
         </div>
         <form
