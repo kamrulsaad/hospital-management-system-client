@@ -100,7 +100,7 @@ const UpdatePresciption = () => {
                             </div>
 
                             <div>
-                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-full">Update Presciption</button>
+                                <button type="submit" className="w-full pt-2  pb-2 mt-20 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-full">Update Presciption</button>
                             </div>
                         </div>
                     </fieldset>
