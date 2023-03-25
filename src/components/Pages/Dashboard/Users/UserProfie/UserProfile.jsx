@@ -2,6 +2,45 @@ import React, { useEffect, useState } from 'react';
 
 const UserProfile = () => {
 
+
+    const [image, setImage] = useState(null)
+    console.log(image);
+    const imageInput = (e) => {
+        const file = e.target.files[0]
+        setImage(file)
+    }
+
+
+   // login send to backend
+   fetch("https://hms.uniech.com/api/v1/user/upload-picture", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(image),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      setLoginResult(result);
+      toast.success(`User Added Successful`);
+      form.reset();
+    })
+    .catch((error) => {
+      console.error(error);
+      setError(error.message);
+    });
+
+
+
+
+
+
+
+
+
+
     const [user, setUser] = useState({});
     // fetching userInfo from backend
     useEffect(() => {
@@ -69,7 +108,7 @@ const UserProfile = () => {
                                     <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                                    Phone - {user?.data?.phone}
                                 </div>
-                                <button class="btn btn-xs btn-ghost text-tahiti-white bg-tahiti-lightGreen ">Edit</button>
+                                <input type="file" onChange={imageInput} name="file" id="file" placeholder="" className="w-full px-3 py-2 rounded-md " />
                             </div>
                        
                         </div>
