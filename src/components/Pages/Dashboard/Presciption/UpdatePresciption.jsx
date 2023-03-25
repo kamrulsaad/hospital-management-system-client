@@ -284,7 +284,7 @@ const UpdatePresciption = () => {
           >
             {loading ? (
               <img
-                src="/public/assets/loading.png"
+                src="assets/loading.png"
                 className="animate-spin w-6 mx-12"
               />
             ) : (

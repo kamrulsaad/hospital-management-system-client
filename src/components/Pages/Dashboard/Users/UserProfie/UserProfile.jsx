@@ -57,7 +57,7 @@ const UserProfile = () => {
     <div className="grid justify-items-center  ">
       <section class="pt-16 bg-blueGray-50 w-full p-56 ">
         <div class="w-full  px-4 mx-auto  ">
-          <div class="relative bg-tahiti-white  shadow-2xl  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
+          <div class="relative bg-tahiti-white  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
             <div class="px-6">
               <div class="flex flex-wrap justify-center">
                 <div class="w-full px-4 flex justify-center">
@@ -100,7 +100,7 @@ const UserProfile = () => {
                 <div class="w-full px-4 text-center mt-20"></div>
               </div>
               <div class="text-center mt-12 pb-20">
-                <h3 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+                <h3 class="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
                   {user?.data?.firstName} {user?.data?.lastName}
                 </h3>
                 <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">

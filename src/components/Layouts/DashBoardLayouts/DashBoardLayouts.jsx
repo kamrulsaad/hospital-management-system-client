@@ -95,7 +95,7 @@ const DashBoardLayouts = () => {
         <div className="drawer-side grid grid-rows-4">
           <div
             onClick={changeRoute}
-            className="flex justify-center hidden lg:block  "
+            className="flex justify-center lg:block  "
           >
             <div className="lg:mt-20 hidden lg:block">
               <h1 className=" text-4xl font-bold -mt-16 ml-5 mb-10">
