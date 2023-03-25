@@ -45,7 +45,6 @@ const Register = () => {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        setLoginResult(result);
         toast.success(`User Added Successful`);
         form.reset();
       })

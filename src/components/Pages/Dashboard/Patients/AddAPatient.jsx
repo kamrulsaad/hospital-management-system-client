@@ -74,10 +74,9 @@ const AddAPatient = () => {
         <div className='lg:p-20'>
             <section className="p-6  bg-tahiti-white shadow-xl rounded-xl ">
                 <div className="mb-8 text-center">
-                    <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>PATIENT</span><span className='text-tahiti-dark'> IMFORNATION</span> </h1>
-
+                    <h1 className="my-3 text-4xl font-bold pb-10"><span className='text-tahiti-primary'>PATIENT</span><span className='text-tahiti-dark'> IMFORNATION</span></h1>
                 </div>
-                <form onSubmit={handleSubmit} noValidate="" action="" className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
+                <form onSubmit={handleSubmit} noValidate="" action="" className="container flex flex-col mx-auto space-y-12 ng-untouched ng-pristine ng-valid">
                     <fieldset className="grid grid-cols-4 gap-6 p-6 ">
 
                         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
