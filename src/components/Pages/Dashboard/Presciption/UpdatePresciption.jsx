@@ -10,7 +10,7 @@ const UpdatePresciption = () => {
   const [medicines, setMedicines] = useState([]);
   const [tests, setTests] = useState([]);
 
-  const [loading, setLoading] = useState(null)
+  const [loading, setLoading] = useState(null);
   const [dosageError, setDosageError] = useState("");
 
   const addDiagnosis = () => {
@@ -42,7 +42,7 @@ const UpdatePresciption = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setLoading(true)
+    setLoading(true);
 
     const form = event.target;
 
@@ -70,13 +70,13 @@ const UpdatePresciption = () => {
         })
           .then((res) => res.json())
           .then((result) => {
-            if(result.status === 'success') toast.success(result.message)
+            if (result.status === "success") toast.success(result.message);
             console.log(result);
-            setLoading(false)
+            setLoading(false);
           })
           .catch((error) => {
             console.error(error);
-            setLoading(false)
+            setLoading(false);
             toast.error(error);
           });
       }
@@ -282,7 +282,14 @@ const UpdatePresciption = () => {
             type="submit"
             className="w-fit px-6 block mx-auto py-2 mt-4 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-full"
           >
-            {loading ? <img src="/public/assets/loading.png" className="animate-spin w-6 mx-12"/> : "Complete Presciption"}
+            {loading ? (
+              <img
+                src="/public/assets/loading.png"
+                className="animate-spin w-6 mx-12"
+              />
+            ) : (
+              "Complete Presciption"
+            )}
           </button>
         </form>
       </section>
