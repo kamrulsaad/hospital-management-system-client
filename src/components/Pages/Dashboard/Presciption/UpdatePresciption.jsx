@@ -13,26 +13,12 @@ const UpdatePresciption = () => {
         const form = event.target;
         const name = form.name.value;
         const diagnosis = form.diagnosis.value;
-        const age = form.number.value;
-        const bloodGroup = form.bloodGroup.value;
-        const gender = form.gender.value;
-        const emergencyContactName = form.emergencyContactName.value;
-        const emergencyContactPhone = form.emergencyContactPhone.value;
-        const relation = form.relation.value;
 
-        const patientData = {
+        const presciptionData = {
             name: name,
             diagnosis: diagnosis,
-            age: age,
-            bloodGroup: bloodGroup,
-            gender: gender,
-            emergency_contact: {
-                name: emergencyContactName,
-                phone: emergencyContactPhone,
-                relation: relation,
-            },
         }
-        console.log(patientData);
+        console.log(presciptionData);
         
         // All Patient Send To Backend 
         fetch('https://hms.uniech.com/api/v1/patient/add-new-patient', {
@@ -41,7 +27,7 @@ const UpdatePresciption = () => {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
                 "content-type": "application/json",
             },
-            body: JSON.stringify(patientData)
+            body: JSON.stringify(presciptionData)
         })
             .then(res => res.json())
             .then(result => {
@@ -102,20 +88,19 @@ const UpdatePresciption = () => {
             
                             </select>
                             </div>
-                            <select type="gender" name="gender" id="gender" className="select bg-tahiti-primary font-bold w-full text-tahiti-white">
-                                <option disabled selected>Gender</option>
-                                <option className='font-bold ' >Male</option>
-                                <option className='font-bold ' >Female</option>
-                                <option className='font-bold ' >Other</option>
-                            </select>
                             <div className="col-span-full sm:col-span-3">
-                                <label for="number" className="text-tahiti-lightGreen">Age</label>
-                                <input id="number" type="number" placeholder="" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
+                                <label for="date" className="text-tahiti-lightGreen">Follow Up</label>
+                                <input id="date" type="date" placeholder="" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
+                                <hr className='text-tahiti-lightGreen' />
+                            </div>
+                            <div className="col-span-full sm:col-span-3">
+                                <label for="test" className="text-tahiti-lightGreen">Tests</label>
+                                <input id="test" type="test" placeholder="" className="w-full placeholder-tahiti-lightGreen focus:outline-none" />
                                 <hr className='text-tahiti-lightGreen' />
                             </div>
 
                             <div>
-                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-dark text-tahiti-white rounded-full">Add Patient</button>
+                                <button type="submit" className="w-full pt-2 pb-2 mt-20 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-full">Update Presciption</button>
                             </div>
                         </div>
                     </fieldset>
