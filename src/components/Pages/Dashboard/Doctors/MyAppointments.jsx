@@ -8,7 +8,7 @@ const MyAppointments = () => {
 
   const [loading, setLoading] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  // console.log(appointments);
+  // console.log(appointments.data);
 
   // pagination
   const [count, setCount] = useState(0);
@@ -20,14 +20,14 @@ const MyAppointments = () => {
   const increasePageNumber = () => {
    if(pageNumber<pages){
     setPageNumber(pageNumber + 1)
-    console.log(pageNumber);
+    // console.log(pageNumber);
    }
   }
 
   const decreasePageNumber = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1)
-      console.log(pageNumber);
+      // console.log(pageNumber);
     }
     else {
       setPageNumber(1)
@@ -78,12 +78,13 @@ const MyAppointments = () => {
               appointments.map((appointment, i) =>
                 <tr key={appointment?._id}>
                   <th>{i + 1}</th>
+                  
                   <td>{appointment?.serialId}</td>
                   <td>{appointment?.patient?.name}</td>
                   {/* <td>{ patient?.lastName}</td> */}
                   {/* <td>{ patient?.email}</td> */}
                   <td>{appointment?.reason}</td>
-                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Update</Link></button></td>
+                  <td><button className='btn btn-xs'><Link to={`/updatepresciption/${appointment._id}`}>Update</Link></button></td>
                 </tr>)
             }
 

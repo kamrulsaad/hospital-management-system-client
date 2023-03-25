@@ -70,7 +70,7 @@ const router = createBrowserRouter([
                 element:<MyAppointments></MyAppointments>
             }, 
             {
-                path:'/updatepresciption',
+                path:'/updatepresciption/:id',
                 element:<UpdatePresciption></UpdatePresciption>
             }, 
             {
