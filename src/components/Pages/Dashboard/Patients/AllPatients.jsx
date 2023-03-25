@@ -37,7 +37,7 @@ const AllPatients = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `http://localhost:5000/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}`,
+      `https://hms.uniech.com/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -72,11 +72,11 @@ const AllPatients = () => {
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 ">Patients</h1>
       <Link to="/addapatient">
-        <button className=" lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+        <button className=" lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
           Add New
         </button>
       </Link>
-      <button className="lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black">
+      <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
         All Patients
       </button>
       <div className="overflow-x-auto pr-10">

@@ -28,7 +28,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/patient/${id}`, requestOptions)
+        fetch(`https://hms.uniech.com/api/v1/patient/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
@@ -41,6 +41,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
             setDelLoading(false);
           });
       }
+      if(results.isDismissed) setDelLoading(false)
     });
   };
 

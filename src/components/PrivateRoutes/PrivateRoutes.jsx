@@ -20,7 +20,7 @@ const PrivateRoute = ({ children }) => {
     // console.log(user);
     // fetching userInfo from backend
     useEffect(() => {
-        fetch("http://localhost:5000/api/v1/user/user-info", {
+        fetch("https://hms.uniech.com/api/v1/user/user-info", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },

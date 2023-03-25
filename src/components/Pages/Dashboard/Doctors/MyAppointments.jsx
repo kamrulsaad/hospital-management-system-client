@@ -38,7 +38,7 @@ const MyAppointments = () => {
   // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/appointment/my-appointments?page=${pageNumber}&limit=${size}`, {
+    fetch(`https://hms.uniech.com/api/v1/appointment/my-appointments?page=${pageNumber}&limit=${size}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },

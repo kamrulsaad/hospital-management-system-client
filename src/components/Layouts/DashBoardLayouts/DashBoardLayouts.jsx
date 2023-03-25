@@ -13,7 +13,7 @@ const DashBoardLayouts = () => {
     const fetchUserData = async () => {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:5000/api/v1/user/user-info",
+        "https://hms.uniech.com/api/v1/user/user-info",
         {
           method: "GET",
           headers: {

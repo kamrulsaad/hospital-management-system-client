@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const AppointmentsRow = ({ appointment, index, role, refetch, setRefetch }) => {
-    
   const [delLoading, setDelLoading] = useState(null);
   const handleDelete = (id) => {
     setDelLoading(true);
@@ -29,7 +28,7 @@ const AppointmentsRow = ({ appointment, index, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/appointment/${id}`, requestOptions)
+        fetch(`https://hms.uniech.com/api/v1/appointment/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
@@ -42,6 +41,7 @@ const AppointmentsRow = ({ appointment, index, role, refetch, setRefetch }) => {
             setDelLoading(false);
           });
       }
+      if (results.isDismissed) setDelLoading(false);
     });
   };
 
