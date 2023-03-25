@@ -15,7 +15,7 @@ const DashBoard = () => {
 
     return (
         <div >
-            <div className='grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 grid justify-items-stretch lg:mt-10 lg:ml-20 sm:ml-20'>
+            <div className='grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 justify-items-stretch lg:mt-10 lg:ml-20 sm:ml-20'>
                 <Patients></Patients>
                 <Doctor></Doctor>
                 <Bed></Bed>

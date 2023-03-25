@@ -117,10 +117,10 @@ const DashBoardLayouts = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <rect x="18" width="15" height="9" fill="#00CC99" />
-                    <rect width="15" height="19" fill="#00CC99" />
-                    <rect x="18" y="12" width="15" height="21" fill="#00CC99" />
-                    <rect y="21" width="15" height="12" fill="#00CC99" />
+                    <rect x="18" width="15" height="9" fill="#FFFFFF" />
+                    <rect width="15" height="19" fill="#FFFFFF" />
+                    <rect x="18" y="12" width="15" height="21" fill="#FFFFFF" />
+                    <rect y="21" width="15" height="12" fill="#FFFFFF" />
                   </svg>
 
                   <span className="text-2xl font-semibold text-tahiti-white  ">

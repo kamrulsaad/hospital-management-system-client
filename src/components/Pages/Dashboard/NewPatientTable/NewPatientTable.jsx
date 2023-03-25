@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../../../Shared/Spinner";
+import { Link } from "react-router-dom";
 
 const NewPatientTable = () => {
   const [loading, setLoading] = useState(null);
   const [patient, setPatients] = useState([]);
   // console.log(patient);
 
-  
   // Using .reverse for new Patients
   const patients = patient.slice(0, 5).concat().reverse();
   // All Patient fetch data
@@ -26,20 +24,30 @@ const NewPatientTable = () => {
       });
   }, []);
 
-  // Loading functionality 
-  if (loading) return <Spinner></Spinner>;
+  // Loading functionality
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <img src="assets/preloader.gif" alt="" />
+      </div>
+    );
+
   if (patients?.length === 0)
     return (
       <h2 className="text-tahiti-darkGreen text-center mt-60 text-5xl ">
         No Patient Found
       </h2>
-    );
+    )
 
   return (
-    <div className="p-8">
+    <div className="py-8 pr-28">
       <div className="flex justify-between mt-5 ">
         <h1 className="text-3xl font-bold">New Patients</h1>
-        <Link to="/addapatient"><button class="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">Add New</button></Link>
+        <Link to="/addapatient">
+          <button class="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+            Add New
+          </button>
+        </Link>
       </div>
       <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-5  rounded-xl">
         <table className="table w-full bg-tahiti-white ">
@@ -66,7 +74,8 @@ const NewPatientTable = () => {
                   <Link to={`/patientprofile/${patient._id}`}>
                     <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
                       Details
-                    </button></Link>
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}
