@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../../../Shared/Spinner";
+import { FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import useUserData from "../../../Hooks/useUserData";
 
 const AllApointments = () => {
   const [loading, setLoading] = useState(null);
+  const [delLoading, setDelLoading] = useState(null);
+  const [refetch, setRefetch] = useState(true)
   const [appointments, setAppointment] = useState([]);
-  console.log(appointments);
+  const [user, role] = useUserData();
 
   // pagination
   const [count, setCount] = useState(0);
@@ -27,6 +32,36 @@ const AllApointments = () => {
     }
   };
 
+  const handleDelete = (id) => {
+
+    setDelLoading(true)
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("LoginToken")}`
+    );
+
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`http://localhost:5000/api/v1/appointment/${id}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === "success") toast.success(result.message);
+        else toast.error(result.error);
+        setRefetch(!refetch)
+        setDelLoading(false)
+      })
+      .catch((error) => {
+        toast.error(error)
+        setDelLoading(false)
+      });
+  };
+
   // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
@@ -44,7 +79,7 @@ const AllApointments = () => {
         setCount(data.total);
         setAppointment(data?.data);
       });
-  }, [pageNumber, size]);
+  }, [pageNumber, size, refetch]);
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
@@ -59,7 +94,7 @@ const AllApointments = () => {
   return (
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 ">Appointment</h1>
-      <Link to="/addapatient">
+      <Link to="/patients">
         <button className=" lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white">
           Add New
         </button>
@@ -69,28 +104,48 @@ const AllApointments = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th>SL No</th>
-              <th>Appointment ID</th>
-              <th>Reason</th>
-              {/* <th>Last Name</th> */}
-              <th>Patient's Phone</th>
-              <th>Details</th>
+              <th className="text-center">SL</th>
+              <th className="text-center">Appointment ID</th>
+              <th className="text-center">Reason</th>
+              <th className="text-center">Payment Status</th>
+              <th className="text-center">Patient's Phone</th>
+              <th className="text-center">Details</th>
+              {(role.includes("super-admin") || role.includes("admin")) && (
+                <th className="text-center">Delete</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {appointments.map((appointment, i) => (
               <tr key={appointment?._id}>
-                <th>{i + 1}</th>
-                <td>{appointment?._id}</td>
-                <td>{appointment?.reason}</td>
-                <td>{appointment?.patient?.phone}</td>
-                <td>
+                <th className="text-center">{i + 1}</th>
+                <td className="text-center">{appointment?.serialId}</td>
+                <td className="text-center">{appointment?.reason}</td>
+                <td className="text-center">
+                  {appointment?.paymentCompleted ? (
+                    <span className="text-tahiti-darkGreen">YES</span>
+                  ) : (
+                    <span className="text-tahiti-red">NO</span>
+                  )}
+                </td>
+                <td className="text-center">{appointment?.patient?.phone}</td>
+                <td className="text-center">
                   <button className="btn btn-xs">
-                    <Link to={`/patientprofile/${appointment._id}`}>
-                      Details
-                    </Link>
+                    <Link to={`/appointment`}>Details</Link>
                   </button>
                 </td>
+
+                {(role.includes("super-admin") || role.includes("admin")) && (
+                  <td>
+                    {
+                      delLoading ? <img className="w-6 animate-spin mx-auto" src="assets/loading.png" alt="" /> :
+                      <FaTrash
+                      onClick={() => handleDelete(appointment?._id)}
+                      className="text-tahiti-red cursor-pointer mx-auto"
+                    ></FaTrash>
+                    }
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
