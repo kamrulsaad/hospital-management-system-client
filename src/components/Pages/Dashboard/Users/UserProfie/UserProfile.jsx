@@ -9,11 +9,12 @@ const UserProfile = () => {
     setImage(file);
   };
 
-const updateProfilePic =()=>{
-
+  // Update Profile Picture
+  const updateProfilePic = () => {
     const formData = new FormData();
-    formData.append("image", image);
-    // login send to backend
+    formData.append("image", image, image?.name);
+    // console.log(image.name);
+    //  send to backend
     fetch("https://hms.uniech.com/api/v1/user/upload-picture", {
       method: "POST",
       headers: {
@@ -24,20 +25,17 @@ const updateProfilePic =()=>{
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        if (result.status === "success") toast.success("Profile Picture Updated");
-        else{
-          toast.error(result.error)
+        if (result.status === "success")
+          toast.success("Profile Picture Updated");
+        else {
+          toast.error(result.error);
         }
       })
       .catch((error) => {
         console.error(error);
         setError(error.message);
       });
-  
-
-}
-
-
+  };
 
   const [user, setUser] = useState({});
   // fetching userInfo from backend
@@ -52,10 +50,11 @@ const updateProfilePic =()=>{
       .catch((err) => console.log(err));
     // setLoading(true);
   }, []);
+  console.log(user?.data?.imageURL);
+  
 
   return (
     <div className="grid justify-items-center  ">
-    
       <section class="pt-16 bg-blueGray-50 w-full p-56 ">
         <div class="w-full  px-4 mx-auto  ">
           <div class="relative bg-tahiti-white  shadow-2xl  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
@@ -63,6 +62,26 @@ const updateProfilePic =()=>{
               <div class="flex flex-wrap justify-center">
                 <div class="w-full px-4 flex justify-center">
                   <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white   mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+                  
+                  
+                  
+                  {/* {
+                    (user?.data?.imageUR)&&<>
+                    
+                    
+                    
+                    
+                    
+                    </>
+                  }
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-24 w-24 "
@@ -74,7 +93,8 @@ const updateProfilePic =()=>{
                         d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                         clipRule="evenodd"
                       />
-                    </svg>
+                    </svg> */}
+                    <img src={user?.data?.imageURL} className="rounded-full w-48 h-48 object-cover" alt="" />
                   </div>
                 </div>
                 <div class="w-full px-4 text-center mt-20"></div>
@@ -103,7 +123,12 @@ const updateProfilePic =()=>{
                   placeholder=""
                   className="w-full px-3 py-2 rounded-md "
                 />
-                <button className="btn btn-ghost bg-tahiti-primary" onClick={updateProfilePic}>Update Profile PIcture</button>
+                <button
+                  className="btn btn-ghost bg-tahiti-primary"
+                  onClick={updateProfilePic}
+                >
+                  Update Profile PIcture
+                </button>
               </div>
             </div>
           </div>
