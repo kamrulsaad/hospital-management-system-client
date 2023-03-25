@@ -1,13 +1,16 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useUserData from "../../../Hooks/useUserData";
 // import { useQuery } from 'react-query';
 import Spinner from "../../../Shared/Spinner";
+import PatientsRow from "./PatientsRow";
 
 const AllPatients = () => {
   const [loading, setLoading] = useState(null);
   const [patients, setPatients] = useState([]);
-  console.log(patients);
+  const [refetch, setRefetch] = useState(true);
+  const [user, role] = useUserData();
 
   // pagination
   const [count, setCount] = useState(0);
@@ -19,14 +22,12 @@ const AllPatients = () => {
   const increasePageNumber = () => {
     if (pageNumber < pages) {
       setPageNumber(pageNumber + 1);
-      console.log(pageNumber);
     }
   };
 
   const decreasePageNumber = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1);
-      console.log(pageNumber);
     } else {
       setPageNumber(1);
     }
@@ -46,11 +47,10 @@ const AllPatients = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        console.log(data);
         setCount(data.total);
         setPatients(data?.data);
       });
-  }, [pageNumber, size]);
+  }, [pageNumber, size, refetch]);
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
@@ -86,26 +86,24 @@ const AllPatients = () => {
               <th className="text-center">Sl</th>
               <th className="text-center">Patient ID</th>
               <th className="text-center">Name</th>
-              <th className="text-center"></th>
+              <th className="text-center">Age</th>
               <th className="text-center">Phone</th>
               <th className="text-center">Details</th>
+              {(role.includes("super-admin") || role.includes("admin")) && (
+                <th className="text-center">Delete</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {patients.map((patient, i) => (
-              <tr key={patient?._id}>
-                <th>{i + 1}</th>
-                <td>{patient?.serialId}</td>
-                <td>{patient?.name}</td>
-                {/* <td>{ patient?.lastName}</td> */}
-                {/* <td>{ patient?.email}</td> */}
-                <td>{patient?.phone}</td>
-                <td>
-                  <button className="btn btn-xs">
-                    <Link to={`/patientprofile/${patient._id}`}>Details</Link>
-                  </button>
-                </td>
-              </tr>
+              <PatientsRow
+                key={patient._id}
+                patient={patient}
+                i={i}
+                role={role}
+                refetch={refetch}
+                setRefetch={setRefetch}
+              ></PatientsRow>
             ))}
           </tbody>
         </table>
