@@ -109,7 +109,7 @@ const DashBoardLayouts = () => {
             <label htmlFor="dashboardDrawer" className="drawer-overlay"></label>
             <ul className="menu  p-4 w-80  text-base-content  ">
               <li>
-                <NavLink activeClassName="active" className="" to="/">
+                <NavLink activeclassname="active" className="" to="/">
                   <svg
                     width="25"
                     height="25"
@@ -132,7 +132,7 @@ const DashBoardLayouts = () => {
               {userRole === "super-admin" && (
                 <>
                   <li>
-                    <NavLink activeClassName="active" to="/alluser">
+                    <NavLink activeclassname="active" to="/alluser">
                       {" "}
                       <svg
                         width="30"
@@ -157,7 +157,7 @@ const DashBoardLayouts = () => {
               {(userRole === "super-admin" || userRole === "admin") && (
                 <>
                   <li>
-                    <NavLink activeClassName="active" to="/doctors">
+                    <NavLink activeclassname="active" to="/doctors">
                       <svg
                         width="32"
                         height="32"
@@ -183,7 +183,7 @@ const DashBoardLayouts = () => {
                 userRole === "receptionist") && (
                 <>
                   <li>
-                    <NavLink activeClassName="active" to="/patients">
+                    <NavLink activeclassname="active" to="/patients">
                       <svg
                         width="30"
                         height="30"
@@ -202,7 +202,7 @@ const DashBoardLayouts = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink activeClassName="active" to="/appointment">
+                    <NavLink activeclassname="active" to="/appointment">
                       {" "}
                       <svg
                         width="30"
@@ -227,7 +227,7 @@ const DashBoardLayouts = () => {
                 (userRole === "doctor")&&<>
                 
                 <li>
-                    <NavLink activeClassName="active" to="/myappointment">
+                    <NavLink activeclassname="active" to="/myappointment">
                       {" "}
                       <svg
                         width="30"

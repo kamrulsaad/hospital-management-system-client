@@ -94,15 +94,15 @@ const MyAppointments = () => {
 
 
       {/* Pagination Button */}
-      <div class="flex flex-col items-center mt-5 mb-5 text-xl">
-        <span class="text-sm text-gray-700 dark:text-gray-400">
-          Showing Page <span class="font-semibold text-gray-900 dark:text-white">{pageNumber}</span><span class="font-semibold text-gray-900 dark:text-white"></span> of <span class="font-semibold text-gray-900 dark:text-white">{pages}</span> Pages
+      <div className="flex flex-col items-center mt-5 mb-5 text-xl">
+        <span className="text-sm text-gray-700 dark:text-gray-400">
+          Showing Page <span className="font-semibold text-gray-900 dark:text-white">{pageNumber}</span><span className="font-semibold text-gray-900 dark:text-white"></span> of <span className="font-semibold text-gray-900 dark:text-white">{pages}</span> Pages
         </span>
-        <div class="inline-flex mt-2 xs:mt-0">
-          <button onClick={decreasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+        <div className="inline-flex mt-2 xs:mt-0">
+          <button onClick={decreasePageNumber} className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
             Prev
           </button>
-          <button onClick={increasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+          <button onClick={increasePageNumber} className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
             Next
           </button>
         </div>

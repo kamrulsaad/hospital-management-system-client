@@ -44,7 +44,7 @@ const NewPatientTable = () => {
       <div className="flex justify-between mt-5 ">
         <h1 className="text-3xl font-bold">New Patients</h1>
         <Link to="/addapatient">
-          <button class="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+          <button className="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
             Add New
           </button>
         </Link>
