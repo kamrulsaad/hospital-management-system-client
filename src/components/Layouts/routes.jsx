@@ -16,6 +16,7 @@ import PatientProfile from '../Pages/Dashboard/Patients/PatientProfile';
 import MyAppointments from '../Pages/Dashboard/Doctors/MyAppointments';
 import UpdatePassword from '../Pages/Dashboard/Users/UserProfie/UpdatePassword';
 import UpdatePresciption from '../Pages/Dashboard/Presciption/UpdatePresciption';
+import AllApointments from '../Pages/Dashboard/Appointment/AllApointments';
 
 const router = createBrowserRouter([
 
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
             }, 
             {
                 path:'/appointment',
-                element:<Appointment></Appointment>
+                element:<AllApointments></AllApointments>
             }, 
             {
                 path:'/appointment/:id',
