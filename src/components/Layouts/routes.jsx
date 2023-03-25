@@ -13,6 +13,9 @@ import UserProfile from '../Pages/Dashboard/Users/UserProfie/UserProfile';
 import AllUser from '../Pages/Dashboard/Users/AllUser/AllUser';
 import Appointment from '../Pages/Dashboard/Appointment/Appointment';
 import PatientProfile from '../Pages/Dashboard/Patients/PatientProfile';
+import MyAppointments from '../Pages/Dashboard/Doctors/MyAppointments';
+import UpdatePassword from '../Pages/Dashboard/Users/UserProfie/UpdatePassword';
+import UpdatePresciption from '../Pages/Dashboard/Presciption/UpdatePresciption';
 
 const router = createBrowserRouter([
 
@@ -25,6 +28,7 @@ const router = createBrowserRouter([
                 path:'/',
                 element:<DashBoard><DashBoardLayouts></DashBoardLayouts></DashBoard>
             },
+
             {
                 path:'/patients',
                 element:<AllPatients></AllPatients>
@@ -60,6 +64,14 @@ const router = createBrowserRouter([
             {
                 path:'/appointment/:id',
                 element:<Appointment></Appointment>
+            }, 
+            {
+                path:'/myappointment',
+                element:<MyAppointments></MyAppointments>
+            }, 
+            {
+                path:'/updatepresciption/:id',
+                element:<UpdatePresciption></UpdatePresciption>
             }, 
             {
                 path:'/*',
