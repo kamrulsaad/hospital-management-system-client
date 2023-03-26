@@ -41,7 +41,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
             setDelLoading(false);
           });
       }
-      if(results.isDismissed) setDelLoading(false)
+      if (results.isDismissed) setDelLoading(false);
     });
   };
 
@@ -53,9 +53,15 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
       <td className="text-center">{patient?.age}</td>
       <td className="text-center">{patient?.phone}</td>
       <td className="text-center">
-        <button className="btn btn-xs">
-          <Link to={`/patientprofile/${patient._id}`}>Details</Link>
-        </button>
+        {role.includes("accountant") ? (
+          <button className="btn btn-xs">
+            <Link to={`/createinvoice/${patient._id}`}>Make payment</Link>
+          </button>
+        ) : (
+          <button className="btn btn-xs">
+            <Link to={`/patientprofile/${patient._id}`}>Details</Link>
+          </button>
+        )}
       </td>
 
       {(role.includes("super-admin") || role.includes("admin")) && (

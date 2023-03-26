@@ -45,8 +45,13 @@ const Register = () => {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
+       if(result.status==="success"){
         toast.success(`User Added Successful`);
         form.reset();
+       }
+       else{
+        toast.error(result.error)
+       }
       })
       .catch((error) => {
         console.error(error);
