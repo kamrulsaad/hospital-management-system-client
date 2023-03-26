@@ -11,7 +11,7 @@ const PatientProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true);
-            const response = await fetch(`https://hms.uniech.com/api/v1/patient/${id}`, {
+            const response = await fetch(`http://localhost:5000/api/v1/patient/${id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

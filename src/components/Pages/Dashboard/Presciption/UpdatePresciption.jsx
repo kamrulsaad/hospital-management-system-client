@@ -60,7 +60,7 @@ const UpdatePresciption = () => {
       confirmButtonText: "Book",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`https://hms.uniech.com/api/v1/appointment/${id}`, {
+        fetch(`http://localhost:5000/api/v1/appointment/${id}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
