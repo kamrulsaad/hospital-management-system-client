@@ -18,6 +18,7 @@ import UpdatePassword from "../Pages/Dashboard/Users/UserProfie/UpdatePassword";
 import UpdatePresciption from "../Pages/Dashboard/Presciption/UpdatePresciption";
 import AllApointments from "../Pages/Dashboard/Appointment/AllApointments";
 import CreateInvoice from "../Pages/Dashboard/Invoice/CreateInvoice";
+import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,12 @@ const router = createBrowserRouter([
         path: "/createinvoice/:patientId",
         element: <CreateInvoice></CreateInvoice>,
       },
+      
+      {
+        path: "/allinvoice",
+        element: <AllInvoice></AllInvoice>,
+      },
+      
       {
         path: "/*",
         element: <ErrorPage></ErrorPage>,

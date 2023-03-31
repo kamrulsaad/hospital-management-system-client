@@ -13,7 +13,7 @@ const DashBoardLayouts = () => {
     const fetchUserData = async () => {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:5000/api/v1/user/user-info",
+        "https://hms-server.onrender.com/api/v1/user/user-info",
         {
           method: "GET",
           headers: {
@@ -180,7 +180,7 @@ const DashBoardLayouts = () => {
               {(userRole === "super-admin" || userRole === "accountant") && (
                 <>
                   <li>
-                    <NavLink activeclassname="active" to="/createinvoice">
+                    <NavLink activeclassname="active" to="/allinvoice">
                       <svg
                         width="32"
                         height="32"

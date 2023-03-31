@@ -15,7 +15,7 @@ const UserProfile = () => {
     formData.append("image", image, image?.name);
     // console.log(image.name);
     //  send to backend
-    fetch("http://localhost:5000/api/v1/user/upload-picture", {
+    fetch("https://hms-server.onrender.com/api/v1/user/upload-picture", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -40,7 +40,7 @@ const UserProfile = () => {
   const [user, setUser] = useState({});
   // fetching userInfo from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/v1/user/user-info", {
+    fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },

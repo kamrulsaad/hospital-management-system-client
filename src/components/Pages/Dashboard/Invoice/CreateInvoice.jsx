@@ -28,7 +28,7 @@ const CreateInvoice = ({ appointment, index }) => {
     setLoading(true);
 
     // add appointment to the backend
-    fetch(`http://localhost:5000/api/v1/invoice/create/${patientId}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/invoice/create/${patientId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
