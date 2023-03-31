@@ -17,6 +17,9 @@ import MyAppointments from "../Pages/Dashboard/Doctors/MyAppointments";
 import UpdatePassword from "../Pages/Dashboard/Users/UserProfie/UpdatePassword";
 import UpdatePresciption from "../Pages/Dashboard/Presciption/UpdatePresciption";
 import AllApointments from "../Pages/Dashboard/Appointment/AllApointments";
+import CreateInvoice from "../Pages/Dashboard/Invoice/CreateInvoice";
+import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
+import NewPatientProfile from "../Pages/Dashboard/Patients/NewPatientProfile";
 
 const router = createBrowserRouter([
   {
@@ -60,10 +63,10 @@ const router = createBrowserRouter([
         path: "/alluser",
         element: <AllUser></AllUser>,
       },
-      {
-        path: "/patientprofile/:id",
-        element: <PatientProfile></PatientProfile>,
-      },
+      // {
+      //   path: "/patientprofile/:id",
+      //   element: <PatientProfile></PatientProfile>,
+      // },
       {
         path: "/appointment",
         element: <AllApointments></AllApointments>,
@@ -81,6 +84,16 @@ const router = createBrowserRouter([
         element: <UpdatePresciption></UpdatePresciption>,
       },
       {
+        path: "/createinvoice/:patientId",
+        element: <CreateInvoice></CreateInvoice>,
+      },
+      
+      {
+        path: "/allinvoice",
+        element: <AllInvoice></AllInvoice>,
+      },
+      
+      {
         path: "/*",
         element: <ErrorPage></ErrorPage>,
       },
@@ -93,6 +106,20 @@ const router = createBrowserRouter([
       {
         path: "/user/login",
         element: <Login></Login>,
+      },
+    ],
+  },
+  {
+    path: "/patient",
+    element: <Main></Main>,
+    children: [
+      {
+        path: "/patient/patientprofile/:id",
+        element: <PatientProfile></PatientProfile>,
+      },
+      {
+        path: "/patient/newpatientprofile/:id",
+        element: <NewPatientProfile></NewPatientProfile>,
       },
     ],
   },

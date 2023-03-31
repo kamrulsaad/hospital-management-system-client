@@ -23,7 +23,7 @@ const Login = () => {
         };
         console.log(loginData);
         // login send to backend 
-        fetch('https://hms.uniech.com/api/v1/user/login', {
+        fetch('https://hms-server.onrender.com/api/v1/user/login', {
             method: 'POST',
             headers: {
                 "content-type": "application/json",
@@ -81,7 +81,7 @@ const Login = () => {
                     </div>
                     <div className="space-y-2">
                         <div>
-                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='/public/assets/loading.png'/> : 'Login'}</button>
+                            <button type="submit" className="w-full px-8 py-3 font-semibold rounded-md bg-tahiti-primary ">{loading ? <img className='animate-spin w-6 inline-block' src='/assets/loading.png'/> : 'Login'}</button>
                         </div>
 
                     </div>
