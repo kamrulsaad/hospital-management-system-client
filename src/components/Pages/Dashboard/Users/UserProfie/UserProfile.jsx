@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { MdUpload } from "react-icons/md";
 
 const UserProfile = () => {
   const [image, setImage] = useState(null);
@@ -62,38 +63,7 @@ const UserProfile = () => {
               <div class="flex flex-wrap justify-center">
                 <div class="w-full px-4 flex justify-center">
                   <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white   mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                  
-                  
-                  
-                  {/* {
-                    (user?.data?.imageUR)&&<>
-                    
-                    
-                    
-                    
-                    
-                    </>
-                  }
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-24 w-24 "
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clipRule="evenodd"
-                      />
-                    </svg> */}
+    
                     <img src={user?.data?.imageURL} className="rounded-full w-48 h-48 object-cover" alt="" />
                   </div>
                 </div>
@@ -115,6 +85,8 @@ const UserProfile = () => {
                   <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                   Phone - {user?.data?.phone}
                 </div>
+
+           
                 <input
                   type="file"
                   onChange={imageInput}
