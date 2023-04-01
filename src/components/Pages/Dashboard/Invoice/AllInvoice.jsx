@@ -59,7 +59,7 @@ const AllInvoice = () => {
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
-          No Patient Found
+          No Invoice Found
         </h2>
         <Link to="/addapatient">
           <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white">

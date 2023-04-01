@@ -12,14 +12,14 @@ import AddAPatient from "../Pages/Dashboard/Patients/AddAPatient";
 import UserProfile from "../Pages/Dashboard/Users/UserProfie/UserProfile";
 import AllUser from "../Pages/Dashboard/Users/AllUser/AllUser";
 import Appointment from "../Pages/Dashboard/Appointment/Appointment";
-import PatientProfile from "../Pages/Dashboard/Patients/PatientProfile";
+import PatientProfile from "../Pages/Dashboard/PatientProfile/PatientProfile";
 import MyAppointments from "../Pages/Dashboard/Doctors/MyAppointments";
 import UpdatePassword from "../Pages/Dashboard/Users/UserProfie/UpdatePassword";
 import UpdatePresciption from "../Pages/Dashboard/Presciption/UpdatePresciption";
 import AllApointments from "../Pages/Dashboard/Appointment/AllApointments";
 import CreateInvoice from "../Pages/Dashboard/Invoice/CreateInvoice";
 import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
-import NewPatientProfile from "../Pages/Dashboard/Patients/NewPatientProfile";
+import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfile";
 
 const router = createBrowserRouter([
   {

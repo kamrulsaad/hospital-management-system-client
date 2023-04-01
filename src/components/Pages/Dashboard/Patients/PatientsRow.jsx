@@ -59,7 +59,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
           </button>
         ) : (
           <button className="btn btn-xs">
-            <Link to={`/patient/patientprofile/${patient._id}`}>Details</Link>
+            <Link to={`/patient/newpatientprofile/${patient._id}`}>Details</Link>
           </button>
         )}
       </td>

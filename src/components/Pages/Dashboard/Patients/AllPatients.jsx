@@ -71,7 +71,7 @@ const AllPatients = () => {
   return (
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 mb-4">Patients</h1>
-      {!role.includes("accountant") && (
+      {!role?.includes("accountant") && (
         <>
           <Link to="/addapatient">
             <button className=" lg:mb-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
@@ -94,7 +94,7 @@ const AllPatients = () => {
               <th className="text-center">Age</th>
               <th className="text-center">Phone</th>
               <th className="text-center">Details</th>
-              {(role.includes("super-admin") || role.includes("admin")) && (
+              {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
             </tr>

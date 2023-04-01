@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import Spinner from "../../../Shared/Spinner";
 import useUserData from "../../../Hooks/useUserData";
 import AppointmentsRow from "./AppointmentsRow";
+import { Link } from "react-router-dom";
 
 const AllApointments = () => {
   const [loading, setLoading] = useState(null);
 
   const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
+  console.log(appointments);
   const [user, role] = useUserData();
 
   // pagination
@@ -30,10 +32,10 @@ const AllApointments = () => {
     }
   };
 
-  // All Patient fetch data  ?page=1&limit=10
+  // All Appointment fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms.uniech.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -48,8 +50,8 @@ const AllApointments = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  if (appointments.length === 0)
-    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
+  if (appointments?.length === 0)
+    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Appointment Found</h2>;
 
   return (
     <div className='lg:ml-20 '>
@@ -60,15 +62,15 @@ const AllApointments = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th className="text-center">SL</th>
-              <th className="text-center">Appointment ID</th>
-              <th className="text-center">Reason</th>
-              <th className="text-center">Payment Status</th>
-              <th className="text-center">Patient's Phone</th>
-              <th className="text-center">Details</th>
-              {(role.includes("super-admin") || role.includes("admin")) && (
+              <th className="">SL</th>
+              <th className="">Appointment ID</th>
+              <th className="">Reason</th>
+              <th className="">Payment Status</th>
+              <th className="">Patient's Phone</th>
+              <th className="">Details</th>
+              {/* {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
-              )}
+              )} */}
             </tr>
           </thead>
           <tbody>
@@ -78,11 +80,11 @@ const AllApointments = () => {
                 <tr key={appointment?._id}>
                   <th>{i + 1}</th>
                   <td>{appointment?.serialId}</td>
-                  <td>{appointment?.name}</td>
-                  {/* <td>{ patient?.lastName}</td> */}
-                  {/* <td>{ patient?.email}</td> */}
-                  <td>{appointment?.phone}</td>
+                  <td>{appointment?.reason}</td>
+                  <td>{String(appointment?.paymentCompleted)}</td>
+                  <td>{appointment?.patient.phone}</td>
                   <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Details</Link></button></td>
+               
                 </tr>)
             }
 
