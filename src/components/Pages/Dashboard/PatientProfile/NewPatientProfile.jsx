@@ -64,8 +64,8 @@ const NewPatientProfile = () => {
 
 
                     <h3 className='text-center text-3xl font-semibold '>{newPatient?.data?.emergency_contact?.name}</h3>
-                    <h3 className='text-center text-xl '>Phone - {newPatient?.data?.emergency_contact?.phone}</h3>
-                    <h3 className='text-center text-xl '>Relation - {newPatient?.data?.emergency_contact?.relation}</h3>
+                    <h3 className='text-center text-xl  '><span className='font-bold'>Phone</span>: {newPatient?.data?.emergency_contact?.phone}</h3>
+                    <h3 className='text-center text-xl '><span></span>: {newPatient?.data?.emergency_contact?.relation}</h3>
                     <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4" >
                         <Link to={`/appointment/${newPatient?.data?._id}`}>Add Apppointment</Link></button>
                 </div>
@@ -75,6 +75,7 @@ const NewPatientProfile = () => {
                     </div>
                 </div>
             </div>
+            <button></button>
         </div>
     );
 };

@@ -137,7 +137,7 @@ const DashBoardLayouts = () => {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink activeClassName="active" to="/appointment">
+                      <NavLink activeClassName="active" to="/myappointment">
                         {" "}
                         <svg
                           width="30"
@@ -158,7 +158,7 @@ const DashBoardLayouts = () => {
                     </li>
                   </>
                 )}
-              {userRole === "doctor" && (
+              {/* {userRole === "doctor" && (
                 <>
                   <li>
                     <NavLink activeClassName="active" to="/myappointment">
@@ -181,7 +181,7 @@ const DashBoardLayouts = () => {
                     </NavLink>
                   </li>
                 </>
-              )}
+              )} */}
             </ul>
           
             </div>
@@ -431,7 +431,7 @@ const DashBoardLayouts = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink activeclassname="active" to="/appointment">
+                    <NavLink activeclassname="active" to="/myappointment">
                       {" "}
                       <svg
                         width="30"
@@ -452,7 +452,7 @@ const DashBoardLayouts = () => {
                   </li>
                 </>
               )}
-              {userRole === "doctor" && (
+              {/* {userRole === "doctor" && (
                 <>
                   <li>
                     <NavLink activeclassname="active" to="/myappointment">
@@ -475,7 +475,7 @@ const DashBoardLayouts = () => {
                     </NavLink>
                   </li>
                 </>
-              )}
+              )} */}
             </ul>
           </div>
         </div>
