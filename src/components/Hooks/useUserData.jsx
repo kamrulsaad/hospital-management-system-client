@@ -3,13 +3,12 @@ import { useState, useEffect } from 'react';
 const useUserData = () => {
   const [userData, setUserData] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  console.log(userRole);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
-      const response = await fetch('https://hms.uniech.com/api/v1/user/user-info', {
+      const response = await fetch('https://hms-server.onrender.com/api/v1/user/user-info', {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

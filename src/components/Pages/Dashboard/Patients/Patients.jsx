@@ -10,7 +10,7 @@ const Patients = () => {
     // All Patient fetch data  ?page=1&limit=10
     useEffect(() => {
         setLoading(true);
-        fetch(`https://hms.uniech.com/api/v1/patient/all-patient`, {
+        fetch(`https://hms-server.onrender.com/api/v1/patient/all-patient`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },

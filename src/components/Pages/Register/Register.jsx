@@ -34,7 +34,7 @@ const Register = () => {
     console.log(signUpData);
 
     // login send to backend
-    fetch("https://hms.uniech.com/api/v1/user/signup", {
+    fetch("https://hms-server.onrender.com/api/v1/user/signup", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -45,9 +45,13 @@ const Register = () => {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        setLoginResult(result);
+       if(result.status==="success"){
         toast.success(`User Added Successful`);
         form.reset();
+       }
+       else{
+        toast.error(result.error)
+       }
       })
       .catch((error) => {
         console.error(error);
@@ -144,7 +148,7 @@ const Register = () => {
                 </label>
                 <input
                   name="confirmPassword"
-                  type="confirmPassword"
+                  type="password"
                   placeholder=""
                   className="w-full focus:outline-none"
                 />

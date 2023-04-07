@@ -8,7 +8,7 @@ const Doctor = () => {
     // ALL Doctors Fetch Api
     useEffect(() => {
         setLoading(true);
-        fetch(`https://hms.uniech.com/api/v1/user/all-doctors`, {
+        fetch(`https://hms-server.onrender.com/api/v1/user/all-doctors`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },

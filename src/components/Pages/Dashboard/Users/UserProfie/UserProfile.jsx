@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { MdUpload } from "react-icons/md";
 
 const UserProfile = () => {
   const [image, setImage] = useState(null);
@@ -15,7 +16,7 @@ const UserProfile = () => {
     formData.append("image", image, image?.name);
     // console.log(image.name);
     //  send to backend
-    fetch("https://hms.uniech.com/api/v1/user/upload-picture", {
+    fetch("https://hms-server.onrender.com/api/v1/user/upload-picture", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -40,7 +41,7 @@ const UserProfile = () => {
   const [user, setUser] = useState({});
   // fetching userInfo from backend
   useEffect(() => {
-    fetch("https://hms.uniech.com/api/v1/user/user-info", {
+    fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -55,66 +56,37 @@ const UserProfile = () => {
 
   return (
     <div className="grid justify-items-center  ">
-      <section class="pt-16 bg-blueGray-50 w-full p-56 ">
-        <div class="w-full  px-4 mx-auto  ">
-          <div class="relative bg-tahiti-white  shadow-2xl  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
-            <div class="px-6">
-              <div class="flex flex-wrap justify-center">
-                <div class="w-full px-4 flex justify-center">
+      <section className="pt-16 bg-blueGray-50 w-full p-56 ">
+        <div className="w-full  px-4 mx-auto  ">
+          <div className="relative bg-tahiti-white  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
+            <div className="px-6">
+              <div className="flex flex-wrap justify-center">
+                <div className="w-full px-4 flex justify-center">
                   <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white   mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                  
-                  
-                  
-                  {/* {
-                    (user?.data?.imageUR)&&<>
-                    
-                    
-                    
-                    
-                    
-                    </>
-                  }
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-24 w-24 "
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clipRule="evenodd"
-                      />
-                    </svg> */}
+    
                     <img src={user?.data?.imageURL} className="rounded-full w-48 h-48 object-cover" alt="" />
                   </div>
                 </div>
-                <div class="w-full px-4 text-center mt-20"></div>
+                <div className="w-full px-4 text-center mt-20"></div>
               </div>
-              <div class="text-center mt-12 pb-20">
-                <h3 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+              <div className="text-center mt-12 pb-20">
+                <h3 className="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
                   {user?.data?.firstName} {user?.data?.lastName}
                 </h3>
-                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                  <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+                <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
                   {user?.data?.role}
                 </div>
-                <div class="mb-2 text-blueGray-600 mt-10">
-                  <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                <div className="mb-2 text-blueGray-600 mt-10">
+                  <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
                   Email - {user?.data?.email}
                 </div>
-                <div class="mb-2 text-blueGray-600">
-                  <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                <div className="mb-2 text-blueGray-600">
+                  <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                   Phone - {user?.data?.phone}
                 </div>
+
+           
                 <input
                   type="file"
                   onChange={imageInput}

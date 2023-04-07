@@ -1,21 +1,22 @@
-import { Button } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-// import { useQuery } from 'react-query';
-import Spinner from '../../../Shared/Spinner'
+import React, { useEffect, useState } from "react";
+import Spinner from "../../../Shared/Spinner";
+import useUserData from "../../../Hooks/useUserData";
+import AppointmentsRow from "./AppointmentsRow";
+import { Link } from "react-router-dom";
 
 const AllApointments = () => {
-
   const [loading, setLoading] = useState(null);
+
+  const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
   console.log(appointments);
+  const [user, role] = useUserData();
 
   // pagination
   const [count, setCount] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [size, setSize] = useState(10);
   const pages = Math.ceil(count / size);
-  // console.log(pages);
 
   const increasePageNumber = () => {
    if(pageNumber<pages){
@@ -29,16 +30,12 @@ const AllApointments = () => {
       setPageNumber(pageNumber - 1)
       console.log(pageNumber);
     }
-    else {
-      setPageNumber(1)
-    }
-  }
+  };
 
-
-  // All Patient fetch data  ?page=1&limit=10
+  // All Appointment fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms.uniech.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -46,16 +43,15 @@ const AllApointments = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        console.log(data);
         setCount(data.total);
         setAppointment(data?.data);
       });
-  }, [pageNumber, size]);
+  }, [pageNumber, size, refetch]);
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  if (appointments.length === 0)
-    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Patient Found</h2>;
+  if (appointments?.length === 0)
+    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Appointment Found</h2>;
 
   return (
     <div className='lg:ml-20 '>
@@ -66,12 +62,15 @@ const AllApointments = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th></th>
-              <th>Patient ID</th>
-              <th>Name</th>
-              {/* <th>Last Name</th> */}
-              <th>Phone</th>
-              <th>Details</th>
+              <th className="">SL</th>
+              <th className="">Appointment ID</th>
+              <th className="">Reason</th>
+              <th className="">Payment Status</th>
+              <th className="">Patient's Phone</th>
+              <th className="">Details</th>
+              {/* {(role?.includes("super-admin") || role?.includes("admin")) && (
+                <th className="text-center">Delete</th>
+              )} */}
             </tr>
           </thead>
           <tbody>
@@ -81,18 +80,17 @@ const AllApointments = () => {
                 <tr key={appointment?._id}>
                   <th>{i + 1}</th>
                   <td>{appointment?.serialId}</td>
-                  <td>{appointment?.name}</td>
-                  {/* <td>{ patient?.lastName}</td> */}
-                  {/* <td>{ patient?.email}</td> */}
-                  <td>{appointment?.phone}</td>
+                  <td>{appointment?.reason}</td>
+                  <td>{String(appointment?.paymentCompleted)}</td>
+                  <td>{appointment?.patient.phone}</td>
                   <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Details</Link></button></td>
+               
                 </tr>)
             }
 
           </tbody>
         </table>
       </div>
-
 
       {/* Pagination Button */}
       <div class="flex flex-col items-center mt-5 mb-5 text-xl">
@@ -108,9 +106,7 @@ const AllApointments = () => {
           </button>
         </div>
       </div>
-
-
-    </div >
+    </div>
   );
 };
 

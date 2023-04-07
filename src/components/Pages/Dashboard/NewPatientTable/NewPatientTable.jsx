@@ -11,7 +11,7 @@ const NewPatientTable = () => {
   // All Patient fetch data
   useEffect(() => {
     setLoading(true);
-    fetch("https://hms.uniech.com/api/v1/patient/all-patient", {
+    fetch("https://hms-server.onrender.com/api/v1/patient/all-patient", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -44,7 +44,7 @@ const NewPatientTable = () => {
       <div className="flex justify-between mt-5 ">
         <h1 className="text-3xl font-bold">New Patients</h1>
         <Link to="/addapatient">
-          <button class="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+          <button className="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
             Add New
           </button>
         </Link>
@@ -71,7 +71,7 @@ const NewPatientTable = () => {
                 {/* <td>{ patient?.email}</td> */}
                 <td>{patient?.phone}</td>
                 <td>
-                  <Link to={`/patientprofile/${patient._id}`}>
+                  <Link to={`/patient/newpatientprofile/${patient._id}`}>
                     <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
                       Details
                     </button>
