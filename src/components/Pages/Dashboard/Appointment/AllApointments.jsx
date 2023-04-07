@@ -83,7 +83,7 @@ const AllApointments = () => {
                   <td>{appointment?.reason}</td>
                   <td>{String(appointment?.paymentCompleted)}</td>
                   <td>{appointment?.patient.phone}</td>
-                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Details</Link></button></td>
+                  <td><button className='btn btn-xs'><Link to={`/patient/newpatientprofile/${appointment._id}`}>Details</Link></button></td>
                
                 </tr>)
             }

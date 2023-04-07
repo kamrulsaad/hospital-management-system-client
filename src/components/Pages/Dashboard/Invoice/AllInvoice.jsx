@@ -61,9 +61,9 @@ const AllInvoice = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
           No Invoice Found
         </h2>
-        <Link to="/addapatient">
+        <Link to="/patients">
           <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white">
-            Add New
+            Add New invoice for patient
           </button>
         </Link>
       </>

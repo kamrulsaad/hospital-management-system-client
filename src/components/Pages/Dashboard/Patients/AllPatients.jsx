@@ -78,9 +78,9 @@ const AllPatients = () => {
               Add New
             </button>
           </Link>
-          <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
+          {/* <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
             All Patients
-          </button>
+          </button> */}
         </>
       )}
 
