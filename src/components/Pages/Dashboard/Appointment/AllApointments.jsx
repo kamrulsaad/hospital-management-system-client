@@ -55,8 +55,8 @@ const AllApointments = () => {
 
   return (
     <div className='lg:ml-20 '>
-      <h1 className='text-5xl font-bold mt-20 '>Appointment</h1>
-      <Link to="/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
+      <h1 className='text-5xl font-bold mt-20 mb-4 '>Appointment</h1>
+      {/* <Link to="/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link> */}
     
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
@@ -83,7 +83,7 @@ const AllApointments = () => {
                   <td>{appointment?.reason}</td>
                   <td>{String(appointment?.paymentCompleted)}</td>
                   <td>{appointment?.patient.phone}</td>
-                  <td><button className='btn btn-xs'><Link to={`/patientprofile/${appointment._id}`}>Details</Link></button></td>
+                  <td><button className='btn btn-xs'><Link to={`/patient/newpatientprofile/${appointment._id}`}>Details</Link></button></td>
                
                 </tr>)
             }

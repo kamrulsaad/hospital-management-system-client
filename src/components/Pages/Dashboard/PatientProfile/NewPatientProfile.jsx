@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PatientReports from './PatientReports';
 import PatientPresciption from './PatientPresciption';
+import Spinner from '../../../Shared/Spinner';
+import QRCode from "react-qr-code";
 
 const NewPatientProfile = () => {
 
@@ -27,9 +29,10 @@ const NewPatientProfile = () => {
         fetchUserData();
     }, []);
 
+    if (loading) return <Spinner></Spinner>
 
     return (
-        <div className='bg-tahiti-darkGreen xl:p-20 sm:p-10 '>
+        <div className='bg-tahiti-darkGreen xl:p-20 sm:p-10 grid justify-items-center '>
             <div className='grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl '>
                 <div className='grid xl:grid-cols-3 sm:grid-cols-1'>
                     <h1 className='text-center text-4xl  font-semibold xl:col-span-3 mt-14'><span>PATIENT</span> <span className='text-tahiti-lightGreen'>INFORMATION</span></h1>
@@ -43,10 +46,10 @@ const NewPatientProfile = () => {
                     </div>
                     <div>
                         <h1 className="text-4xl font-medium text-gray-700 "> {newPatient?.data?.name}, <span className="font-light text-gray-500">{newPatient?.data?.age}</span></h1>
-                        <p className="mt-4 text-gray-500 text-2xl">Patient ID - {newPatient?.data?.serialId}</p>
-                        <p className="mt-2 text-gray-500 text-2xl">Phone - {newPatient?.data?.phone}</p>
-                        <p className="mt-2 text-gray-500 text-2xl">Blood Group - {newPatient?.data?.bloodGroup}</p>
-                        <p className="mt-2 text-gray-500 text-2xl">Gender - {newPatient?.data?.gender}</p>
+                        <p className="mt-4 text-gray-500 text-2xl"><span className='font-bold'>Patient ID</span>: {newPatient?.data?.serialId}</p>
+                        <p className="mt-2 text-gray-500 text-2xl"><span className='font-bold'>Phone</span>: {newPatient?.data?.phone}</p>
+                        <p className="mt-2 text-gray-500 text-2xl"><span className='font-bold'>Blood Group</span>: {newPatient?.data?.bloodGroup}</p>
+                        <p className="mt-2 text-gray-500 text-2xl"><span className='font-bold'>Gender</span>: {newPatient?.data?.gender}</p>
 
                     </div>
 
@@ -56,24 +59,33 @@ const NewPatientProfile = () => {
                         <PatientReports></PatientReports>
                     </div>
                 </div>
+                <div className='grid justify-items-center grid-cols-3'>
 
-                <div className='grid justify-items-center'>
+                    <h1 className='text-center text-4xl font-semibold mt-14 col-span-3'><span>Emergency</span> <span className='text-tahiti-lightGreen'>Contact</span></h1>
+                    <div>
+                        <QRCode
+                        className='ml-20'
+                        style={{ height: "auto", maxWidth: "100%", width: "50%" }}
+                        value={newPatient?.data?._id} />
+                    </div>
+                    <div className=''>
+                        <h3 className='text-center text-3xl font-semibold '>{newPatient?.data?.emergency_contact?.name}</h3>
+                        <h3 className='text-center text-xl  '><span className='font-bold' >Phone</span>: {newPatient?.data?.emergency_contact?.phone}</h3>
+                        <h3 className='text-center text-xl '><span className='font-bold'>Relation</span>: {newPatient?.data?.emergency_contact?.relation}</h3>
+                        <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4" >
+                            <Link to={`/appointment/${newPatient?.data?._id}`}>Add Apppointment</Link></button>
+                    </div>
+                   
 
-                    <h1 className='text-center text-4xl font-semibold mt-14'><span>Emergency</span> <span className='text-tahiti-lightGreen'>Contact</span></h1>
-
-
-
-                    <h3 className='text-center text-3xl font-semibold '>{newPatient?.data?.emergency_contact?.name}</h3>
-                    <h3 className='text-center text-xl '>Phone - {newPatient?.data?.emergency_contact?.phone}</h3>
-                    <h3 className='text-center text-xl '>Relation - {newPatient?.data?.emergency_contact?.relation}</h3>
-                    <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4" >
-                        <Link to={`/appointment/${newPatient?.data?._id}`}>Add Apppointment</Link></button>
                 </div>
                 <div>
                     <div className="overflow-x-auto xl:p-10">
                         <PatientPresciption></PatientPresciption>
                     </div>
                 </div>
+            </div>
+            <div>
+                <Link to="/"><button className='btn btn-ghost mt-5 bg-tahiti-primary text-tahiti-white'>Back to dashBoard</button></Link>
             </div>
         </div>
     );
