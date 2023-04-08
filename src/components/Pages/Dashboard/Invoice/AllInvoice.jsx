@@ -58,11 +58,11 @@ const AllInvoice = () => {
   else if (invoices.length === 0)
     return (
       <>
-        <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
+        <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
         <Link to="/patients">
-          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white">
+          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
             Add New invoice for patient
           </button>
         </Link>
