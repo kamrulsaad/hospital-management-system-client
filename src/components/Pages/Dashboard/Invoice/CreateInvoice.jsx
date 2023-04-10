@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import useUserData from "../../../Hooks/useUserData";
@@ -10,6 +10,7 @@ const CreateInvoice = ({ appointment, index }) => {
   const [amountErr, setAmountErr] = useState("");
   const { patientId } = useParams();
   const [user, role] = useUserData();
+  const navigate = useNavigate()
 
   const addOptions = () => {
     setAmountErr("");
@@ -34,18 +35,17 @@ const CreateInvoice = ({ appointment, index }) => {
         "content-type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
-      body: JSON.stringify(payments),
+      body: JSON.stringify({payments}),
     })
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
         if (result.status === "success") {
           toast.success(result.message);
-          navigate("/patient");
+          navigate("/allinvoice");
         } else {
           toast.error(result.error);
         }
-        form.reset();
       })
       .catch((error) => {
         toast.error(error);

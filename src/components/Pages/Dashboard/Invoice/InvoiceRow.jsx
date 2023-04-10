@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 
-const InvoiceRow = ({ patient, i, role, refetch, setRefetch }) => {
-    console.log(patient)
+const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
+
+  const [delLoading, setDelLoading] = useState(null)
+
+  console.log(invoice)
+
+  // console.log(window.location.host);
+
   return (
-    <tr key={patient?._id}>
+    <tr key={invoice?._id}>
       <th className="text-center">{i + 1}</th>
-      <td className="text-center">{patient?.serialId}</td>
-      <td className="text-center">{patient?.total}</td>
+      <td className="text-center">{invoice?.serialId}</td>
+      <td className="text-center">{invoice?.total}</td>
       <td className="text-center">
-        {role.includes("accountant") ? (
+        {role?.includes("accountant") ? (
           <button className="btn btn-xs">
-            <Link to={`/createinvoice/${patient._id}`}>Make payment</Link>
+            <Link to={`/createinvoice/${invoice._id}`}>Make payment</Link>
           </button>
         ) : (
           <button className="btn btn-xs">
-            <Link to={`/patientprofile/${patient._id}`}>Details</Link>
+            <Link to={`/patientprofile/${invoice._id}`}>Details</Link>
           </button>
         )}
       </td>
 
-      {(role.includes("super-admin") || role.includes("admin")) && (
+      {(role?.includes("super-admin") || role?.includes("admin")) && (
         <td>
           {delLoading ? (
             <img
@@ -30,7 +37,7 @@ const InvoiceRow = ({ patient, i, role, refetch, setRefetch }) => {
             />
           ) : (
             <FaTrash
-              onClick={() => handleDelete(patient?._id)}
+              onClick={() => handleDelete(invoice?._id)}
               className="text-tahiti-red cursor-pointer mx-auto"
             ></FaTrash>
           )}

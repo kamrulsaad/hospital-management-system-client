@@ -20,6 +20,7 @@ import AllApointments from "../Pages/Dashboard/Appointment/AllApointments";
 import CreateInvoice from "../Pages/Dashboard/Invoice/CreateInvoice";
 import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
 import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfile";
+import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,11 @@ const router = createBrowserRouter([
       {
         path: "/allinvoice",
         element: <AllInvoice></AllInvoice>,
+      },
+
+      {
+        path: "/categories",
+        element: <AllCategories></AllCategories>,
       },
       
       {

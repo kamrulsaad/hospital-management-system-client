@@ -77,9 +77,12 @@ const AllInvoice = () => {
           Add New
         </button>
       </Link>
-      <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
-        All Invoices
-      </button>
+      {
+        (role?.includes("super-admin") || role?.includes("admin")) && 
+        <Link to={'/categories'} className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black uppercase">
+        all categories
+      </Link>
+      }
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
@@ -88,7 +91,7 @@ const AllInvoice = () => {
               <th className="text-center">Patient ID</th>
               <th className="text-center">Total Amount</th>
               <th className="text-center">Details</th>
-              {(role.includes("super-admin") || role.includes("admin")) && (
+              {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
             </tr>
@@ -97,7 +100,7 @@ const AllInvoice = () => {
             {invoices.map((patient, i) => (
               <InvoiceRow
                 key={patient._id}
-                patient={patient}
+                invoice={patient}
                 i={i}
                 role={role}
                 refetch={refetch}
