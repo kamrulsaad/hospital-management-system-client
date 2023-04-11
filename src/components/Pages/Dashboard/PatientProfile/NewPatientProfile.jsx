@@ -10,6 +10,7 @@ const NewPatientProfile = () => {
     const [newPatient, setNewPatient] = useState({});
     console.log(newPatient);
     const [loading, setLoading] = useState({});
+    // console.log(`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`);
     const { id } = useParams();
     // console.log(id);
     // patient api call by their id 
@@ -66,7 +67,7 @@ const NewPatientProfile = () => {
                         <QRCode
                         className='ml-20'
                         style={{ height: "auto", maxWidth: "100%", width: "50%" }}
-                        value={newPatient?.data?._id} />
+                        value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`} />
                     </div>
                     <div className=''>
                         <h3 className='text-center text-3xl font-semibold '>{newPatient?.data?.emergency_contact?.name}</h3>

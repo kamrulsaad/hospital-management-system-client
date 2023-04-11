@@ -129,5 +129,15 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/qr",
+    element: <Main></Main>,
+    children: [
+      {
+        path: "/qr/newpatientprofile/:id",
+        element: <NewPatientProfile></NewPatientProfile>,
+      },
+    ],
+  },
 ]);
 export default router;
