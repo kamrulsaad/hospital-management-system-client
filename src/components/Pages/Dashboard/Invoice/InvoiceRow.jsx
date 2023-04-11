@@ -8,7 +8,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
 
   console.log(invoice)
 
-  // console.log(window.location.host);
+  console.log(`${window.location.host}/qr/patient/${invoice?.serialId}`);
 
   return (
     <tr key={invoice?._id}>
