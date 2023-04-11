@@ -58,7 +58,7 @@ const NewPatientProfile = () => {
             </svg>
           </div>
           <div className="col-span-2">
-            <h1 className="text-4xl font-medium text-gray-700 capitalizeok">
+            <h1 className="text-4xl font-medium text-gray-700 capitalize">
               {" "}
               {newPatient?.data?.name},{" "}
               <span className="font-light text-gray-500">
