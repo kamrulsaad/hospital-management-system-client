@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
 
   return (
-    <div className='bg-tahiti-darkGreen ' >
+    <div className='bg-tahiti-darkGreen' >
       <RouterProvider fallbackElement={<Spinner></Spinner>} router={router}></RouterProvider>
       <ToastContainer/>
     </div>
