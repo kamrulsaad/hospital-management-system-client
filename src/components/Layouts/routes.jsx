@@ -20,6 +20,9 @@ import AllApointments from "../Pages/Dashboard/Appointment/AllApointments";
 import CreateInvoice from "../Pages/Dashboard/Invoice/CreateInvoice";
 import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
 import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfile";
+import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
+import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
+import CreateInvoiceCatagory from "../Pages/Dashboard/Invoice/CreateInvoiceCatagory";
 
 const router = createBrowserRouter([
   {
@@ -63,10 +66,7 @@ const router = createBrowserRouter([
         path: "/alluser",
         element: <AllUser></AllUser>,
       },
-      // {
-      //   path: "/patientprofile/:id",
-      //   element: <PatientProfile></PatientProfile>,
-      // },
+  
       {
         path: "/appointment",
         element: <AllApointments></AllApointments>,
@@ -92,10 +92,27 @@ const router = createBrowserRouter([
         path: "/allinvoice",
         element: <AllInvoice></AllInvoice>,
       },
+
+      {
+        path: "/categories",
+        element: <AllCategories></AllCategories>,
+      },
       
       {
         path: "/*",
         element: <ErrorPage></ErrorPage>,
+      },
+      {
+        path: "/payment/invoice/createinvoice/:id",
+        element: <InvoicePage></InvoicePage>,
+      },
+      {
+        path: "/payment/invoice/createinvoice",
+        element: <InvoicePage></InvoicePage>,
+      },
+      {
+        path: "/invoice/createinvoice",
+        element: <CreateInvoiceCatagory></CreateInvoiceCatagory>,
       },
     ],
   },
@@ -123,5 +140,29 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/qr",
+    element: <Main></Main>,
+    children: [
+      {
+        path: "/qr/newpatientprofile/:id",
+        element: <NewPatientProfile></NewPatientProfile>,
+      },
+    ],
+  },
+  // {
+  //   path: "/payment",
+  //   element: <Main></Main>,
+  //   children: [
+  //     {
+  //       path: "/payment/invoice/createinvoice/:id",
+  //       element: <InvoicePage></InvoicePage>,
+  //     },
+  //     {
+  //       path: "/payment/invoice/createinvoice",
+  //       element: <InvoicePage></InvoicePage>,
+  //     },
+  //   ],
+  // },
 ]);
 export default router;

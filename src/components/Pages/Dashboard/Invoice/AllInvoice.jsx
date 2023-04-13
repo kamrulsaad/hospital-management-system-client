@@ -58,11 +58,11 @@ const AllInvoice = () => {
   else if (invoices.length === 0)
     return (
       <>
-        <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
+        <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
         <Link to="/patients">
-          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white">
+          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
             Add New invoice for patient
           </button>
         </Link>
@@ -72,14 +72,17 @@ const AllInvoice = () => {
   return (
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 ">Invoices</h1>
-      <Link to="/addapatient">
+      <Link to="/patients">
         <button className=" lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
           Add New
         </button>
       </Link>
-      <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
-        All Invoices
-      </button>
+      {
+        (role?.includes("super-admin") || role?.includes("admin")) && 
+        <Link to={'/categories'} className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black uppercase">
+        all categories
+      </Link>
+      }
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
@@ -88,7 +91,7 @@ const AllInvoice = () => {
               <th className="text-center">Patient ID</th>
               <th className="text-center">Total Amount</th>
               <th className="text-center">Details</th>
-              {(role.includes("super-admin") || role.includes("admin")) && (
+              {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
             </tr>
@@ -97,7 +100,7 @@ const AllInvoice = () => {
             {invoices.map((patient, i) => (
               <InvoiceRow
                 key={patient._id}
-                patient={patient}
+                invoice={patient}
                 i={i}
                 role={role}
                 refetch={refetch}

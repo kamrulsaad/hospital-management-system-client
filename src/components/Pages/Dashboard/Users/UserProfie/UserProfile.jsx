@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { MdUpload } from "react-icons/md";
+import Spinner from '../../../../Shared/Spinner';
 
 const UserProfile = () => {
+  const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
   console.log(image);
   const imageInput = (e) => {
@@ -25,6 +26,7 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        setLoading(false);
         console.log(result);
         if (result.status === "success")
           toast.success("Profile Picture Updated");
@@ -37,6 +39,7 @@ const UserProfile = () => {
         setError(error.message);
       });
   };
+  // if (loading) return <Spinner></Spinner>
 
   const [user, setUser] = useState({});
   // fetching userInfo from backend
