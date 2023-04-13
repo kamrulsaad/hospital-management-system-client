@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
-import Spinner from '../../../../Shared/Spinner';
-=======
 import useUserData from "../../../../Hooks/useUserData";
 import Spinner from "../../../../Shared/Spinner";
->>>>>>> 8b84d8ba53bdb01a5ba26650c999db29397c32ef
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
-  const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
   const [userData, role, loading] = useUserData();
 
@@ -31,18 +27,10 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-<<<<<<< HEAD
-        setLoading(false);
-        console.log(result);
-        if (result.status === "success")
-          toast.success("Profile Picture Updated");
-        else {
-=======
         if (result.status === "success") {
           toast.success(`Profile Picture Updated.
           Please Refresh to see updated picture`);
         } else {
->>>>>>> 8b84d8ba53bdb01a5ba26650c999db29397c32ef
           toast.error(result.error);
         }
       })
@@ -51,7 +39,6 @@ const UserProfile = () => {
         setError(error.message);
       });
   };
-  // if (loading) return <Spinner></Spinner>
 
   if (loading) return <Spinner></Spinner>;
 
@@ -104,6 +91,9 @@ const UserProfile = () => {
                   <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                   Phone: <b>{userData?.phone}</b>
                 </div>
+                <Link to="/user/updatepassword">
+                  <button className="btn btn-ghost btn-xs bg-tahiti-primary">Update Password</button>
+                </Link><br />
 
                 <input
                   type="file"
@@ -111,14 +101,17 @@ const UserProfile = () => {
                   name="file"
                   id="file"
                   placeholder=""
-                  className="w-full px-3 py-2 rounded-md "
+                  className="mt-5 px-3 py-2 rounded-md "
                 />
                 <button
-                  className="btn btn-ghost bg-tahiti-primary"
+                  className="btn btn-ghost btn-xs bg-tahiti-primary"
                   onClick={updateProfilePic}
                 >
                   Update Profile PIcture
-                </button>
+                </button >
+                {/* <Link to="/user/updatepassword">
+                  <button className="btn btn-ghost bg-tahiti-primary">Update Password</button>
+                </Link> */}
               </div>
             </div>
           </div>
