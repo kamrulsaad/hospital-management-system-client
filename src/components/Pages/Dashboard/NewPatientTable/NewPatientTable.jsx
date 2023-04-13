@@ -20,7 +20,6 @@ const NewPatientTable = () => {
       .then((data) => {
         setLoading(false);
         setPatients(data?.data);
-        console.log(data.data);
       });
   }, []);
 
