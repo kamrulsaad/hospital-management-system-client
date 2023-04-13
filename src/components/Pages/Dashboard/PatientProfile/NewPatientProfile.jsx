@@ -9,6 +9,7 @@ const NewPatientProfile = () => {
   const [newPatient, setNewPatient] = useState({});
   console.log(newPatient);
   const [loading, setLoading] = useState({});
+    // console.log(`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`);
   const { id } = useParams();
   // console.log(id);
   // patient api call by their id
@@ -57,7 +58,7 @@ const NewPatientProfile = () => {
             </svg>
           </div>
           <div className="col-span-2">
-            <h1 className="text-4xl font-medium text-gray-700 capitalizeok">
+            <h1 className="text-4xl font-medium text-gray-700 capitalize">
               {" "}
               {newPatient?.data?.name},{" "}
               <span className="font-light text-gray-500">

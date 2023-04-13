@@ -38,6 +38,7 @@ const UserProfile = () => {
         setError(error.message);
       });
   };
+  // if (loading) return <Spinner></Spinner>
 
   if (loading) return <Spinner></Spinner>;
 
