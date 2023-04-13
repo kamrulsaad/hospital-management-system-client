@@ -190,21 +190,6 @@ const DashBoardLayouts = () => {
 
         </div>
         {/* nabbar */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <button onClick={handleLogOut} className="grid justify-items-stretch">
           <svg
             width="181"

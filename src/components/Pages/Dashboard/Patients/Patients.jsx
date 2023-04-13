@@ -5,7 +5,6 @@ const Patients = () => {
     const [loading, setLoading] = useState(null);
     // const [patients, setPatients] = useState([]);
     const [count, setCount] = useState(0);
-    console.log(count);
 
     // All Patient fetch data  ?page=1&limit=10
     useEffect(() => {
@@ -18,7 +17,6 @@ const Patients = () => {
             .then((res) => res.json())
             .then((data) => {
                 setLoading(false);
-                console.log(data);
                 setCount(data.total);
                 // setPatients(data?.data);
             });

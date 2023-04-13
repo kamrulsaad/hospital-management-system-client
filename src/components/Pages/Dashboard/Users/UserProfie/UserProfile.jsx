@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { MdUpload } from "react-icons/md";
+import useUserData from "../../../../Hooks/useUserData";
+import Spinner from "../../../../Shared/Spinner";
 
 const UserProfile = () => {
   const [image, setImage] = useState(null);
-  console.log(image);
+  const [userData, role, loading] = useUserData();
+
   const imageInput = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -14,7 +16,6 @@ const UserProfile = () => {
   const updateProfilePic = () => {
     const formData = new FormData();
     formData.append("image", image, image?.name);
-    // console.log(image.name);
     //  send to backend
     fetch("https://hms-server.onrender.com/api/v1/user/upload-picture", {
       method: "POST",
@@ -25,10 +26,10 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
-        if (result.status === "success")
-          toast.success("Profile Picture Updated");
-        else {
+        if (result.status === "success") {
+          toast.success(`Profile Picture Updated.
+          Please Refresh to see updated picture`);
+        } else {
           toast.error(result.error);
         }
       })
@@ -38,21 +39,7 @@ const UserProfile = () => {
       });
   };
 
-  const [user, setUser] = useState({});
-  // fetching userInfo from backend
-  useEffect(() => {
-    fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setUser(data))
-      .catch((err) => console.log(err));
-    // setLoading(true);
-  }, []);
-  console.log(user?.data?.imageURL);
-  
+  if (loading) return <Spinner></Spinner>;
 
   return (
     <div className="grid justify-items-center  ">
@@ -63,30 +50,47 @@ const UserProfile = () => {
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 flex justify-center">
                   <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white   mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-    
-                    <img src={user?.data?.imageURL} className="rounded-full w-48 h-48 object-cover" alt="" />
+                    {userData?.imageURL ? (
+                      <img
+                        src={userData?.imageURL}
+                        className="rounded-full w-48 h-48 object-cover"
+                        alt=""
+                      />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-24 w-24 "
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
                   </div>
                 </div>
                 <div className="w-full px-4 text-center mt-20"></div>
               </div>
               <div className="text-center mt-12 pb-20">
                 <h3 className="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
-                  {user?.data?.firstName} {user?.data?.lastName}
+                  {userData?.firstName} {userData?.lastName}
                 </h3>
                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                   <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                  {user?.data?.role}
+                  {role}
                 </div>
                 <div className="mb-2 text-blueGray-600 mt-10">
                   <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                  Email - {user?.data?.email}
+                  Email: <b>{userData?.email}</b>
                 </div>
                 <div className="mb-2 text-blueGray-600">
                   <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                  Phone - {user?.data?.phone}
+                  Phone: <b>{userData?.phone}</b>
                 </div>
 
-           
                 <input
                   type="file"
                   onChange={imageInput}
