@@ -54,22 +54,11 @@ const UserProfile = () => {
                     {userData?.imageURL ? (
                       <img
                         src={userData?.imageURL}
-                        className="rounded-full w-48 h-48 object-cover"
+                        className="rounded-full w-48 h-48 object-cover border border-tahiti-lightGreen"
                         alt=""
                       />
                     ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-24 w-24 "
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                      <FaUserAlt className="text-tahiti-white text-7xl" />
                     )}
                   </div>
                 </div>

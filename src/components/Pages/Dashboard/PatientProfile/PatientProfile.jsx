@@ -3,10 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 
 const PatientProfile = () => {
     const [newPatient, setNewPatient] = useState({});
-    console.log(newPatient);
     const [loading, setLoading] = useState({});
     const { id } = useParams();
-    // console.log(id);
     // patient api call by their id 
     useEffect(() => {
         const fetchUserData = async () => {

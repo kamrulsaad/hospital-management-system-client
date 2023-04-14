@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import Profile from "../../Pages/Dashboard/Users/UserProfie/Profile";
 import { ImList2 } from "react-icons/im";
 import { MdDashboard } from "react-icons/md";
 import { TbFileInvoice } from "react-icons/tb";
-import { FaFilePrescription, FaAccessibleIcon, FaUserMd } from "react-icons/fa";
+import {
+  FaFilePrescription,
+  FaAccessibleIcon,
+  FaUserMd,
+  FaUserAlt,
+} from "react-icons/fa";
 import useUserData from "../../Hooks/useUserData";
 import Spinner from "../../Shared/Spinner";
 
 const DashBoardLayouts = () => {
-
-  const [user, userRole, loading] = useUserData()
+  const [user, userRole, loading] = useUserData();
   const navigate = useNavigate();
 
-  if (loading) return <Spinner></Spinner>
+  if (loading) return <Spinner bg></Spinner>;
 
   // LogOutButton
   const logOut = () => {
@@ -44,7 +47,7 @@ const DashBoardLayouts = () => {
               >
                 <li>
                   <NavLink activeClassName="active" className="" to="/">
-                    <MdDashboard className="" />
+                    <MdDashboard />
                     <span className="text-lg font-semibold text-tahiti-white  ">
                       DashBoard
                     </span>
@@ -56,18 +59,7 @@ const DashBoardLayouts = () => {
                     <li>
                       <NavLink activeClassName="active" to="/alluser">
                         {" "}
-                        <svg
-                          width="30"
-                          height="30"
-                          viewBox="0 0 56 64"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M34 38H22C9.75 38 0 47.875 0 60C0 62.25 1.75 64 4 64H52C54.125 64 56 62.25 56 60C56 47.875 46.125 38 34 38ZM6 58C7 50.125 13.75 44 22 44H34C42.125 44 48.875 50.125 49.875 58H6ZM28 32C36.75 32 44 24.875 44 16C44 7.25 36.75 0 28 0C19.125 0 12 7.25 12 16C12 24.875 19.125 32 28 32ZM28 6C33.5 6 38 10.5 38 16C38 21.625 33.5 26 28 26C22.375 26 18 21.625 18 16C18 10.5 22.375 6 28 6Z"
-                            fill="white"
-                          />
-                        </svg>
+                        <FaUserAlt className="text-tahiti-white text-3xl" />
                         <span className="text-lg font-semibold text-tahiti-white  ">
                           Users
                         </span>
@@ -80,18 +72,7 @@ const DashBoardLayouts = () => {
                   <>
                     <li>
                       <NavLink activeClassName="active" to="/doctors">
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 37 42"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M18.5 21C21.3037 21 23.9926 19.8938 25.9751 17.9246C27.9577 15.9555 29.0714 13.2848 29.0714 10.5C29.0714 7.71523 27.9577 5.04451 25.9751 3.07538C23.9926 1.10625 21.3037 0 18.5 0C15.6963 0 13.0074 1.10625 11.0249 3.07538C9.04234 5.04451 7.92857 7.71523 7.92857 10.5C7.92857 13.2848 9.04234 15.9555 11.0249 17.9246C13.0074 19.8938 15.6963 21 18.5 21ZM10.5714 25.5281C4.45982 27.3082 0 32.9191 0 39.5637C0 40.909 1.09844 42 2.4529 42H34.5471C35.9016 42 37 40.909 37 39.5637C37 32.9191 32.5402 27.3082 26.4286 25.5281V29.6953C28.708 30.2777 30.3929 32.3367 30.3929 34.7812V38.0625C30.3929 38.7844 29.7982 39.375 29.0714 39.375H27.75C27.0232 39.375 26.4286 38.7844 26.4286 38.0625C26.4286 37.3406 27.0232 36.75 27.75 36.75V34.7812C27.75 33.3293 26.569 32.1562 25.1071 32.1562C23.6453 32.1562 22.4643 33.3293 22.4643 34.7812V36.75C23.1911 36.75 23.7857 37.3406 23.7857 38.0625C23.7857 38.7844 23.1911 39.375 22.4643 39.375H21.1429C20.4161 39.375 19.8214 38.7844 19.8214 38.0625V34.7812C19.8214 32.3367 21.5062 30.2777 23.7857 29.6953V25.0113C23.2902 24.9621 22.7864 24.9375 22.2743 24.9375H14.7257C14.2136 24.9375 13.7098 24.9621 13.2143 25.0113V30.3762C15.1221 30.9422 16.5179 32.6977 16.5179 34.7812C16.5179 37.316 14.4449 39.375 11.8929 39.375C9.34085 39.375 7.26786 37.316 7.26786 34.7812C7.26786 32.6977 8.66362 30.9422 10.5714 30.3762V25.5281ZM11.8929 36.75C12.4186 36.75 12.9227 36.5426 13.2944 36.1734C13.6662 35.8042 13.875 35.3034 13.875 34.7812C13.875 34.2591 13.6662 33.7583 13.2944 33.3891C12.9227 33.0199 12.4186 32.8125 11.8929 32.8125C11.3672 32.8125 10.863 33.0199 10.4913 33.3891C10.1195 33.7583 9.91071 34.2591 9.91071 34.7812C9.91071 35.3034 10.1195 35.8042 10.4913 36.1734C10.863 36.5426 11.3672 36.75 11.8929 36.75Z"
-                            fill="#FFFFFF"
-                          />
-                        </svg>
+                        <FaUserMd className="text-tahiti-white text-3xl" />
                         <span className="text-lg font-semibold text-tahiti-white  ">
                           Doctor
                         </span>
@@ -115,18 +96,7 @@ const DashBoardLayouts = () => {
                     <li>
                       <NavLink activeClassName="active" to="/myappointment">
                         {" "}
-                        <svg
-                          width="30"
-                          height="30"
-                          viewBox="0 0 39 34"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M3.25 0C1.45573 0 0 1.42773 0 3.1875V17H9.75C10.3458 17 10.8333 17.4781 10.8333 18.0625C10.8333 18.6469 10.3458 19.125 9.75 19.125H0V23.375H9.75C10.3458 23.375 10.8333 23.8531 10.8333 24.4375C10.8333 25.0219 10.3458 25.5 9.75 25.5H0V30.8125C0 32.5723 1.45573 34 3.25 34H18.0036C17.5771 33.3227 17.3333 32.5258 17.3333 31.6691C17.3333 28.5547 19.0802 25.8387 21.6667 24.4176V18.0492V3.1875C21.6667 1.42773 20.2109 0 18.4167 0H3.25ZM10.2917 4.25H11.375C11.9708 4.25 12.4583 4.72813 12.4583 5.3125V6.90625H14.0833C14.6792 6.90625 15.1667 7.38438 15.1667 7.96875V9.03125C15.1667 9.61563 14.6792 10.0938 14.0833 10.0938H12.4583V11.6875C12.4583 12.2719 11.9708 12.75 11.375 12.75H10.2917C9.69583 12.75 9.20833 12.2719 9.20833 11.6875V10.0938H7.58333C6.9875 10.0938 6.5 9.61563 6.5 9.03125V7.96875C6.5 7.38438 6.9875 6.90625 7.58333 6.90625H9.20833V5.3125C9.20833 4.72813 9.69583 4.25 10.2917 4.25ZM34.6667 18.0625C34.6667 16.6535 34.096 15.3023 33.0802 14.306C32.0643 13.3097 30.6866 12.75 29.25 12.75C27.8134 12.75 26.4357 13.3097 25.4198 14.306C24.404 15.3023 23.8333 16.6535 23.8333 18.0625C23.8333 19.4715 24.404 20.8227 25.4198 21.819C26.4357 22.8153 27.8134 23.375 29.25 23.375C30.6866 23.375 32.0643 22.8153 33.0802 21.819C34.096 20.8227 34.6667 19.4715 34.6667 18.0625ZM19.5 31.6824C19.5 32.9641 20.5562 34 21.863 34H36.637C37.9437 34 39 32.9641 39 31.6824C39 28.2691 36.1766 25.5 32.6964 25.5H25.8036C22.3234 25.5 19.5 28.2691 19.5 31.6824Z"
-                            fill="#FFFFFF"
-                          />
-                        </svg>
+                        <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
                         <span className="text-lg font-semibold text-tahiti-white  ">
                           Appointment
                         </span>
@@ -170,13 +140,15 @@ const DashBoardLayouts = () => {
             className="flex justify-center lg:block  "
           >
             <div className="lg:mt-20 hidden lg:block">
-              <h1 className=" text-4xl font-bold -mt-16 ml-5 mb-10">
-                <span className="text-tahiti-lightGreen">UNICEH </span>
-                <span className="text-tahiti-white">HMS</span>
-              </h1>
+              <Link to='/'>
+                <h1 className=" text-4xl font-bold -mt-16 ml-5 mb-10">
+                  <span className="text-tahiti-lightGreen">UNICEH </span>
+                  <span className="text-tahiti-white">HMS</span>
+                </h1>
+              </Link>
               <Link to="/userprofile">
                 {" "}
-                <Profile></Profile>
+                <Profile userInfo={user}></Profile>
               </Link>
             </div>
           </div>
@@ -185,18 +157,7 @@ const DashBoardLayouts = () => {
             <ul className="menu  p-4 w-80  text-base-content  ">
               <li>
                 <NavLink activeclassname="active" className="" to="/">
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 33 33"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect x="18" width="15" height="9" fill="#FFFFFF" />
-                    <rect width="15" height="19" fill="#FFFFFF" />
-                    <rect x="18" y="12" width="15" height="21" fill="#FFFFFF" />
-                    <rect y="21" width="15" height="12" fill="#FFFFFF" />
-                  </svg>
+                  <MdDashboard className="text-tahiti-white text-3xl" />
 
                   <span className="text-2xl font-semibold text-tahiti-white  ">
                     DashBoard
@@ -209,18 +170,7 @@ const DashBoardLayouts = () => {
                   <li>
                     <NavLink activeclassname="active" to="/alluser">
                       {" "}
-                      <svg
-                        width="30"
-                        height="30"
-                        viewBox="0 0 56 64"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M34 38H22C9.75 38 0 47.875 0 60C0 62.25 1.75 64 4 64H52C54.125 64 56 62.25 56 60C56 47.875 46.125 38 34 38ZM6 58C7 50.125 13.75 44 22 44H34C42.125 44 48.875 50.125 49.875 58H6ZM28 32C36.75 32 44 24.875 44 16C44 7.25 36.75 0 28 0C19.125 0 12 7.25 12 16C12 24.875 19.125 32 28 32ZM28 6C33.5 6 38 10.5 38 16C38 21.625 33.5 26 28 26C22.375 26 18 21.625 18 16C18 10.5 22.375 6 28 6Z"
-                          fill="white"
-                        />
-                      </svg>
+                      <FaUserAlt className="text-tahiti-white text-3xl" />
                       <span className="text-2xl font-semibold text-tahiti-white">
                         Users
                       </span>
@@ -233,9 +183,9 @@ const DashBoardLayouts = () => {
                 <>
                   <li>
                     <NavLink activeclassname="active" to="/doctors">
-                      <FaUserMd className="text-tahiti-white text-3xl"/>
+                      <FaUserMd className="text-tahiti-white text-3xl" />
                       <span className="text-2xl font-semibold text-tahiti-white">
-                        Doctor
+                        Doctors
                       </span>
                     </NavLink>
                   </li>
@@ -254,20 +204,10 @@ const DashBoardLayouts = () => {
                 </>
               )}
 
-              {userRole === "accountant" && (
-                <li>
-                  <NavLink activeclassname="active" to="/patients">
-                    <FaAccessibleIcon className="text-tahiti-white text-3xl"></FaAccessibleIcon>
-                    <span className="text-2xl font-semibold text-tahiti-white">
-                      Patient
-                    </span>
-                  </NavLink>
-                </li>
-              )}
-
               {(userRole === "super-admin" ||
                 userRole === "admin" ||
-                userRole === "receptionist") && (
+                userRole === "receptionist" ||
+                userRole === "accountant") && (
                 <>
                   <li>
                     <NavLink activeClassName="active" to="/patients">
@@ -303,7 +243,7 @@ const DashBoardLayouts = () => {
                       {" "}
                       <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
                       <span className="text-2xl font-semibold text-tahiti-white">
-                        Appointment
+                        My Appointments
                       </span>
                     </NavLink>
                   </li>

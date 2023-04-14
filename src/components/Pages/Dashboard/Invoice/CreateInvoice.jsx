@@ -8,7 +8,6 @@ const CreateInvoice = ({ appointment, index }) => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState({});
   const [categoriesData, setCategoriData] = useState([]);
-  console.log(categoriesData);
   const [amountErr, setAmountErr] = useState("");
   const { patientId } = useParams();
   const [user, role] = useUserData();
@@ -36,7 +35,6 @@ const CreateInvoice = ({ appointment, index }) => {
     setAmountErr("");
     const name = document.getElementById("name").value;
     const text = name.options[name.selectedIndex].text;
-    console.log(text);
     const amount = document.getElementById("amount").value;
     if (!amount || !name) return setAmountErr("Please provide requied values");
     setPayments([...payments, { name, amount }]);

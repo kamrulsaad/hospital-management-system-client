@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const NewPatientTable = () => {
   const [loading, setLoading] = useState(null);
   const [patient, setPatients] = useState([]);
-  // console.log(patient);
 
   // Using .reverse for new Patients
   const patients = patient.slice(0, 5).concat().reverse();

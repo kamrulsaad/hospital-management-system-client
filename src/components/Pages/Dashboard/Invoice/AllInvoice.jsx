@@ -18,7 +18,6 @@ const AllInvoice = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [size, setSize] = useState(10);
   const pages = Math.ceil(count / size);
-  // console.log(pages);
 
   const increasePageNumber = () => {
     if (pageNumber < pages) {

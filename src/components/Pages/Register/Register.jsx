@@ -3,10 +3,8 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const [error, setError] = useState("");
-  // console.log(error);
   // For Error Functionality
   // const [loginResult, setLoginResult] = useState({});
-  // console.log(loginResult.error.keyPattern);
 
   const handleSubmit = (event) => {
     // Getting From Data
@@ -31,7 +29,6 @@ const Register = () => {
       email: email,
       password: password,
     };
-    console.log(signUpData);
 
     // login send to backend
     fetch("https://hms-server.onrender.com/api/v1/user/signup", {
@@ -44,7 +41,6 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
        if(result.status==="success"){
         toast.success(`User Added Successful`);
         form.reset();

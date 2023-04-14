@@ -4,12 +4,9 @@ import useUserData from '../../../Hooks/useUserData';
 const InvoicePage = () => {
     // Role Api from login Data
       const [userData, role] = useUserData();
-    //   console.log(userData);
-    //   console.log(userData?.firstName);
     const [loading, setLoading] = useState(true);
 
     const [invoiceCatagories, setInvoiceCatagories] = useState([]);
-    console.log(invoiceCatagories);
 
 
     useEffect(() => {

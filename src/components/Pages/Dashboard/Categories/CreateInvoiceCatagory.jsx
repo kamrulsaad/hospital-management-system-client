@@ -16,7 +16,6 @@ const CreateInvoiceCategory = () => {
       name: name,
       amount: amount,
     };
-    console.log(createInvoiceCategoryData);
     fetch(`https://hms-server.onrender.com/api/v1/category/create`, {
       method: "POST",
       headers: {
@@ -28,7 +27,6 @@ const CreateInvoiceCategory = () => {
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
-        console.log(result);
         if (result.status === "success") {
           toast.success(result.message);
         } else {

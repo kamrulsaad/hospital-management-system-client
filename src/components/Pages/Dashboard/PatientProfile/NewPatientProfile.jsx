@@ -7,11 +7,10 @@ import QRCode from "react-qr-code";
 
 const NewPatientProfile = () => {
   const [newPatient, setNewPatient] = useState({});
-  console.log(newPatient);
   const [loading, setLoading] = useState({});
-    // console.log(`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`);
+    // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
   const { id } = useParams();
-  // console.log(id);
+  
   // patient api call by their id
   useEffect(() => {
     const fetchUserData = async () => {

@@ -8,34 +8,28 @@ const MyAppointments = () => {
 
   const [loading, setLoading] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  // console.log(appointments.data);
 
   // pagination
   const [count, setCount] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [size, setSize] = useState(10);
   const pages = Math.ceil(count / size);
-  // console.log(pages);
 
   const increasePageNumber = () => {
    if(pageNumber<pages){
     setPageNumber(pageNumber + 1)
-    // console.log(pageNumber);
    }
   }
 
   const decreasePageNumber = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1)
-      // console.log(pageNumber);
     }
     else {
       setPageNumber(1)
     }
   }
 
-
-  // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
     fetch(`https://hms-server.onrender.com/api/v1/appointment/my-appointments?page=${pageNumber}&limit=${size}`, {
@@ -46,7 +40,6 @@ const MyAppointments = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        console.log(data);
         setCount(data.total);
         setAppointments(data?.data);
       });

@@ -17,7 +17,6 @@ const AllPatients = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [size, setSize] = useState(10);
   const pages = Math.ceil(count / size);
-  // console.log(pages);
 
   const increasePageNumber = () => {
     if (pageNumber < pages) {
@@ -54,7 +53,7 @@ const AllPatients = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  else if (patients.length === 0)
+  else if (count === 0)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
@@ -78,9 +77,6 @@ const AllPatients = () => {
               Add New
             </button>
           </Link>
-          {/* <button className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black">
-            All Patients
-          </button> */}
         </>
       )}
 
