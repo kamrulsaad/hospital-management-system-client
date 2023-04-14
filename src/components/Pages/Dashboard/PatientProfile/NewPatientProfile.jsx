@@ -13,8 +13,8 @@ const NewPatientProfile = () => {
   
   // patient api call by their id
   useEffect(() => {
+    setLoading(true);
     const fetchUserData = async () => {
-      setLoading(true);
       const response = await fetch(
         `https://hms-server.onrender.com/api/v1/patient/${id}`,
         {
@@ -26,12 +26,13 @@ const NewPatientProfile = () => {
       );
       const data = await response.json();
       setNewPatient(data);
+      console.log(data);
       setLoading(false);
     };
     fetchUserData();
   }, []);
 
-  if (loading) return <Spinner></Spinner>;
+  if (loading) return <Spinner bg></Spinner>;
 
   return (
     <div className="bg-tahiti-darkGreen xl:p-20 sm:p-10 grid justify-items-center ">

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { GrDocumentUpdate } from "react-icons/gr";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
@@ -53,6 +54,7 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
       <th>{i + 1}</th>
       <td className="text-center">{category?.name}</td>
       <td className="text-center">{category?.amount}৳</td>
+      <td className="text-center"><GrDocumentUpdate></GrDocumentUpdate></td>  
       <td>
         {delLoading ? (
           <img

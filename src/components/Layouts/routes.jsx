@@ -108,11 +108,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment/invoice/createinvoice",
-        element: <InvoicePage></InvoicePage>,
-      },
-      {
-        path: "/invoice/createinvoice",
-        element: <CreateInvoiceCatagory></CreateInvoiceCatagory>,
+        element: <CreateInvoice></CreateInvoice>,
       },
       {
         path: "/user/updatepassword",
