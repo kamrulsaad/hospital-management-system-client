@@ -6,8 +6,6 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
 
   const [delLoading, setDelLoading] = useState(null)
 
-  console.log(invoice)
-
   // console.log(`${window.location.host}/qr/patient/${invoice?.serialId}`);
 
   return (

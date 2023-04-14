@@ -22,7 +22,7 @@ import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
 import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfile";
 import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
-import CreateInvoiceCatagory from "../Pages/Dashboard/Invoice/CreateInvoiceCatagory";
+import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +97,11 @@ const router = createBrowserRouter([
         path: "/categories",
         element: <AllCategories></AllCategories>,
       },
+
+      {
+        path: "/category/new",
+        element: <CreateInvoiceCategory></CreateInvoiceCategory>,
+      },
       
       {
         path: "/*",
@@ -109,10 +114,6 @@ const router = createBrowserRouter([
       {
         path: "/payment/invoice/createinvoice",
         element: <InvoicePage></InvoicePage>,
-      },
-      {
-        path: "/invoice/createinvoice",
-        element: <CreateInvoiceCatagory></CreateInvoiceCatagory>,
       },
     ],
   },
