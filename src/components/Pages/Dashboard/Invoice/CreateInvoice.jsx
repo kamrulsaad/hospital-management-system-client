@@ -4,8 +4,11 @@ import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
 
 const CreateInvoice = () => {
+  const [payments, setPayments] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-
+  const [total, setTotal] = useState(0);
+  const [tempTotal ,setTempTotal] = useState(0);
+  const [grandTotal, setGrandTotal] = useState(0);
   const [loading, setLoading] = useState({});
   const [categoriesData, setCategoriData] = useState([]);
   const { patientId } = useParams();
@@ -37,24 +40,47 @@ const CreateInvoice = () => {
       if (options[i].selected) {
         const option = categoriesData.find((c) => c._id === options[i].value);
         setSelectedOptions([...selectedOptions, option]);
-        setCategoriData(categoriesData.filter((c) => c._id !== options[i].value));
+        setPayments([...payments, options[i].value]);
+        setTotal((previosState) => previosState + option.amount);
+        setGrandTotal((previosState) => previosState + option.amount);
+        setCategoriData(
+          categoriesData.filter((c) => c._id !== options[i].value)
+        );
       }
     }
   };
 
   const handleDelete = (id) => {
     const option = selectedOptions.find((c) => c._id === id);
+    setTotal((previosState) => previosState - option.amount);
+    setGrandTotal((previosState) => previosState - option.amount);
     setSelectedOptions(selectedOptions.filter((option) => option._id !== id));
+    setPayments(payments.filter((p) => p !== id));
     setCategoriData([...categoriesData, option]);
-  }
+  };
+
+  const handleDiscount = (event) => {
+    const discount = Number(event.target.value);
+    discount > 100 && toast.error("Discount can't be more than 100%");
+    discount < 0 && toast.error("Discount can't be less than 0%");
+    setGrandTotal(tempTotal - tempTotal * (discount / 100));
+  };
+
+  const handleTax = (event) => {
+    const tax = Number(event.target.value);
+    tax > 100 && toast.error("Tax can't be more than 100%");
+    tax < 0 && toast.error("Tax can't be less than 0%");
+    setGrandTotal(total + total * (tax / 100));
+    setTempTotal(total + total * (tax / 100));
+  };
 
   const handleSubmit = (event) => {
-    // Getting From Data
     event.preventDefault();
 
     setLoading(true);
 
-    // add appointment to the backend
+    console.log(payments);
+
     fetch(
       `https://hms-server.onrender.com/api/v1/invoice/create/${patientId}`,
       {
@@ -98,18 +124,16 @@ const CreateInvoice = () => {
               for="option"
               className="text-tahiti-lightGreen font-bold text-xl"
             >
-              Option
+              Options
             </label>
             <select
               onChange={addOptions}
-              type="name"
-              name="text"
+              type="text"
+              name="name"
               id="gender"
               className="select mt-1 bg-tahiti-primary col-span-full sm:col-span-3 text-lg focus:outline-none font-bold w-full text-tahiti-white"
             >
-              <option selected>
-                select
-              </option>
+              <option selected>Select</option>
               {categoriesData.map((category) => (
                 <option value={category?._id} key={category._id}>
                   {category?.name}
@@ -118,41 +142,72 @@ const CreateInvoice = () => {
             </select>
           </div>
 
-          <div className="overflow-x-auto w-3/4 mx-auto border rounded-md mt-20">
-            <table className="table w-full bg-tahiti-white">
-              <thead>
-                <tr>
-                  <th className="">Sl</th>
-                  <th className="text-center">Name</th>
-                  <th className="text-center">Amount</th>
-                  <th className="text-center">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedOptions.map((category, i) => (
-                  <tr key={i}>
-                  <th>{i + 1}</th>
-                  <td className="text-center">{category?.name}</td>
-                  <td className="text-center">{category?.amount}৳</td>
-                  <td>
-                    {/* {delLoading ? (
-                      <img
-                        className="w-6 animate-spin mx-auto"
-                        src="assets/loading.png"
-                        alt=""
-                      />
-                    ) : ( */}
-                      <FaTrash
-                        onClick={() => handleDelete(category?._id)}
-                        className="text-tahiti-red cursor-pointer mx-auto text-xl"
-                      ></FaTrash>
-                    {/* )} */}
-                  </td>
-                </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {selectedOptions?.length > 0 && (
+            <div className="overflow-x-auto w-3/4 mx-auto border rounded-md mt-20">
+              <table className="table w-full bg-tahiti-white">
+                <thead>
+                  <tr>
+                    <th className="">Sl</th>
+                    <th>Name</th>
+                    <th className="text-center">Amount</th>
+                    <th className="text-center">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedOptions.map((category, i) => (
+                    <tr key={category._id}>
+                      <th>{i + 1}</th>
+                      <td>{category?.name}</td>
+                      <td className="text-center">{category?.amount}৳</td>
+                      <td>
+                        <FaTrash
+                          onClick={() => handleDelete(category?._id)}
+                          className="text-tahiti-red cursor-pointer mx-auto text-xl"
+                        ></FaTrash>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td className="bg-tahiti-lightBlue"></td>
+                    <th className="bg-tahiti-lightBlue">Sub-Total</th>
+                    <td className="text-center bg-tahiti-lightBlue font-bold">
+                      {total}৳
+                    </td>
+                    <td className="bg-tahiti-lightBlue"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {total > 0 && (
+            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
+              <p className="text-xl w-1/4 font-medium">Tax: </p>
+              <input
+                type="number"
+                className="w-3/4 rounded-md border p-1 "
+                onChange={handleTax}
+              />
+            </div>
+          )}
+
+          {total > 0 && (
+            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
+              <p className="text-xl w-1/4 font-medium">Discount: </p>
+              <input
+                type="number"
+                className="w-3/4 rounded-md border p-1 "
+                onChange={handleDiscount}
+              />
+            </div>
+          )}
+
+          {grandTotal > 0 && (
+            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
+              <p className="text-2xl w-1/2 font-bold">Grand-Total: </p>
+              <p className="w-1/2 text-3xl text-end font-bold">{parseFloat(grandTotal.toFixed(2))}৳</p>
+            </div>
+          )}
 
           <div>
             <button
@@ -162,7 +217,7 @@ const CreateInvoice = () => {
               {loading ? (
                 <img
                   src="/assets/loading.png"
-                  className="w-6 mx-20 animate-spin"
+                  className="w-6 mx-auto animate-spin"
                   alt=""
                 />
               ) : (
