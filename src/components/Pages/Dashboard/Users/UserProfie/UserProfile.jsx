@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import useUserData from "../../../../Hooks/useUserData";
 import Spinner from "../../../../Shared/Spinner";
 import { FaUserAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const [image, setImage] = useState(null);
@@ -79,6 +80,9 @@ const UserProfile = () => {
                   <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                   Phone: <b>{userData?.phone}</b>
                 </div>
+                <Link to="/user/updatepassword">
+                  <button className="btn btn-ghost btn-xs bg-tahiti-primary">Update Password</button>
+                </Link><br />
 
                 <input
                   type="file"
@@ -86,10 +90,10 @@ const UserProfile = () => {
                   name="file"
                   id="file"
                   placeholder=""
-                  className="w-full px-3 py-2 rounded-md "
+                  className="mt-5 px-3 py-2 rounded-md "
                 />
                 <button
-                  className="btn btn-ghost bg-tahiti-primary"
+                  className="btn btn-ghost btn-xs bg-tahiti-primary"
                   onClick={updateProfilePic}
                 >
                   {uploading ? (

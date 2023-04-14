@@ -92,7 +92,6 @@ const router = createBrowserRouter([
         path: "/allinvoice",
         element: <AllInvoice></AllInvoice>,
       },
-
       {
         path: "/categories",
         element: <AllCategories></AllCategories>,
@@ -104,16 +103,24 @@ const router = createBrowserRouter([
       },
       
       {
-        path: "/*",
-        element: <ErrorPage></ErrorPage>,
-      },
-      {
         path: "/payment/invoice/createinvoice/:id",
         element: <InvoicePage></InvoicePage>,
       },
       {
         path: "/payment/invoice/createinvoice",
         element: <InvoicePage></InvoicePage>,
+      },
+      {
+        path: "/invoice/createinvoice",
+        element: <CreateInvoiceCatagory></CreateInvoiceCatagory>,
+      },
+      {
+        path: "/user/updatepassword",
+        element: <UpdatePassword></UpdatePassword>,
+      },
+      {
+        path: "/*",
+        element: <ErrorPage></ErrorPage>,
       },
     ],
   },
