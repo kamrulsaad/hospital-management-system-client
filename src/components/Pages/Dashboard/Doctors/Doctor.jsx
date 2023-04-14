@@ -4,7 +4,6 @@ const Doctor = () => {
 
     const [count, setCount] = useState(0);
     const [loading, setLoading] = useState(null);
-    console.log(count);
     // ALL Doctors Fetch Api
     useEffect(() => {
         setLoading(true);
@@ -16,8 +15,7 @@ const Doctor = () => {
             .then((res) => res.json())
             .then((data) => {
                 setLoading(false);
-                setDoctors(data?.data);
-                setCount(data.total);
+                setCount(total);
             });
     }, []);
     return (
