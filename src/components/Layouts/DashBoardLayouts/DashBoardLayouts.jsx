@@ -98,7 +98,7 @@ const DashBoardLayouts = () => {
                         {" "}
                         <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
                         <span className="text-lg font-semibold text-tahiti-white  ">
-                          Appointment
+                          Appointments
                         </span>
                       </NavLink>
                     </li>
@@ -165,8 +165,16 @@ const DashBoardLayouts = () => {
                 </NavLink>
               </li>
 
-              {userRole === "super-admin" && (
+              {(userRole === "super-admin" || userRole === "admin") && (
                 <>
+                  <li>
+                    <NavLink activeclassname="active" to="/doctors">
+                      <FaUserMd className="text-tahiti-white text-3xl" />
+                      <span className="text-2xl font-semibold text-tahiti-white">
+                        Doctors
+                      </span>
+                    </NavLink>
+                  </li>
                   <li>
                     <NavLink activeclassname="active" to="/alluser">
                       {" "}
@@ -178,20 +186,7 @@ const DashBoardLayouts = () => {
                   </li>
                 </>
               )}
-
-              {(userRole === "super-admin" || userRole === "admin") && (
-                <>
-                  <li>
-                    <NavLink activeclassname="active" to="/doctors">
-                      <FaUserMd className="text-tahiti-white text-3xl" />
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Doctors
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              )}
-              {(userRole === "super-admin" || userRole === "accountant") && (
+              {(userRole === "super-admin" || userRole === "admin" || userRole === "accountant") && (
                 <>
                   <li>
                     <NavLink activeclassname="active" to="/allinvoice">
@@ -243,7 +238,7 @@ const DashBoardLayouts = () => {
                       {" "}
                       <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
                       <span className="text-2xl font-semibold text-tahiti-white">
-                        My Appointments
+                        Appointments
                       </span>
                     </NavLink>
                   </li>

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useUserData from "../../../../Hooks/useUserData";
 import Spinner from "../../../../Shared/Spinner";
+import { FaUserAlt } from "react-icons/fa";
 
 const UserProfile = () => {
   const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(null);
   const [userData, role, loading] = useUserData();
 
   const imageInput = (e) => {
@@ -14,6 +16,7 @@ const UserProfile = () => {
 
   // Update Profile Picture
   const updateProfilePic = () => {
+    setUploading(true);
     const formData = new FormData();
     formData.append("image", image, image?.name);
     //  send to backend
@@ -27,18 +30,14 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((result) => {
         if (result.status === "success") {
-          toast.success(`Profile Picture Updated.
-          Please Refresh to see updated picture`);
+          toast.success(result.message);
+          window.location.reload();
         } else {
           toast.error(result.error);
         }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error.message);
+        setUploading(false);
       });
   };
-  // if (loading) return <Spinner></Spinner>
 
   if (loading) return <Spinner></Spinner>;
 
@@ -58,7 +57,7 @@ const UserProfile = () => {
                         alt=""
                       />
                     ) : (
-                      <FaUserAlt className="text-tahiti-white text-7xl" />
+                      <FaUserAlt className="text-tahiti-dark opacity-50 text-8xl" />
                     )}
                   </div>
                 </div>
@@ -93,7 +92,15 @@ const UserProfile = () => {
                   className="btn btn-ghost bg-tahiti-primary"
                   onClick={updateProfilePic}
                 >
-                  Update Profile PIcture
+                  {uploading ? (
+                    <img
+                      src="assets/loading.png"
+                      className="w-6 mx-8 animate-spin"
+                      alt=""
+                    />
+                  ) : (
+                    "Update Profile Picture"
+                  )}
                 </button>
               </div>
             </div>
