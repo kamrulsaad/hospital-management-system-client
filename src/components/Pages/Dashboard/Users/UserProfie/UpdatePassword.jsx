@@ -4,19 +4,31 @@ import Spinner from '../../../../Shared/Spinner';
 
 const UpdatePassword = () => {
     const [loading, setLoading] = useState();
+    const [error, setError] = useState("");
     const handleSubmit = (event) => {
         // Getting From Data
         event.preventDefault();
         const form = event.target;
         const password = form.password.value;
-        const amount = form.amount.value;
+        const newPassword = form.newPassword.value;
+        const confirmNewPassword = form.confirmNewPassword.value;
+        if (newPassword !== confirmNewPassword) {
+            setError("Password didn't match");
+            return;
+        }
 
+        const vaildation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+
+        if (newPassword !== (vaildation)) {
+            setError("Use Strong Password");
+            return;
+        }
         const UpdatePasswordData = {
             password: password,
             newPassword: newPassword,
 
         };
-        console.log(createInvoiceCategoryData);
+        console.log(UpdatePasswordData);
         // add invoice Category
         fetch(`https://hms-server.onrender.com/api/v1/user/update-password`, {
             method: "POST",
@@ -54,13 +66,14 @@ const UpdatePassword = () => {
                         <input id="password" type="text" className="w-3/4 rounded-md border p-1 " />
                     </div>
                     <div className="col-span-full sm:col-span-3 flex gap-2 ">
-                        <p for="name" className="text-xl  w-1/4 font-medium">New Password: </p>
-                        <input id="name" type="text" className="w-3/4 rounded-md border p-1 " />
+                        <p for="newPassword" className="text-xl  w-1/4 font-medium">New Password: </p>
+                        <input id="newPassword" type="password" className="w-3/4 rounded-md border p-1 " />
                     </div>
                     <div className="col-span-full sm:col-span-3 flex gap-2 ">
-                        <p for="amount" className="text-xl  w-1/4 font-medium">Confirm Password: </p>
-                        <input id="amount" type="number" className="w-3/4 rounded-md border p-1 " />
+                        <p for="confirmNewPassword" className="text-xl  w-1/4 font-medium">Confirm Password: </p>
+                        <input id="confirmNewPassword" type="password" className="w-3/4 rounded-md border p-1 " />
                     </div>
+                    <p className='text-md text-tahiti-red '>{error}</p><br />
                     <button type='submit' className='btn btn-ghost btn-md w-1/2 bg-tahiti-primary block mx-auto col-span-2'>Save</button>
                 </fieldset>
             </form>
