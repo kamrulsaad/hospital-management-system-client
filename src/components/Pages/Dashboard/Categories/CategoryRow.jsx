@@ -54,7 +54,7 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
       <th>{i + 1}</th>
       <td className="text-center">{category?.name}</td>
       <td className="text-center">{category?.amount}৳</td>
-      <td className="text-center"><GrDocumentUpdate></GrDocumentUpdate></td>  
+      <td><GrDocumentUpdate className="text-xl mx-auto cursor-pointer"></GrDocumentUpdate></td>  
       <td>
         {delLoading ? (
           <img
@@ -65,7 +65,7 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
         ) : (
           <FaTrash
             onClick={() => handleDelete(category?._id)}
-            className="text-tahiti-red cursor-pointer mx-auto"
+            className="text-tahiti-red cursor-pointer mx-auto text-xl"
           ></FaTrash>
         )}
       </td>

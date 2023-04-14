@@ -1,7 +1,6 @@
 import {RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import router from './components/Layouts/routes';
-import Spinner from './components/Shared/Spinner';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -9,7 +8,7 @@ function App() {
 
   return (
     <div className='bg-tahiti-darkGreen' >
-      <RouterProvider fallbackElement={<Spinner></Spinner>} router={router}></RouterProvider>
+      <RouterProvider router={router}></RouterProvider>
       <ToastContainer/>
     </div>
   );

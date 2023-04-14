@@ -21,7 +21,7 @@ const Profile = ({ userInfo }) => {
       </div>
       <div>
         <h1 className="text-4xl font-semibold text-tahiti-white">
-          {userInfo?.firstName} {total < 10 && userInfo?.lastName}
+          {userInfo?.firstName} {total < 11 && userInfo?.lastName}
         </h1>
         <h4 className="text-xl font-thin text-tahiti-white">
           {userInfo?.role}

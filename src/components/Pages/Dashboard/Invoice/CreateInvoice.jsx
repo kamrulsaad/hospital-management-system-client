@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-import useUserData from "../../../Hooks/useUserData";
+import { FaTrash } from "react-icons/fa";
 
-const CreateInvoice = ({ appointment, index }) => {
-  const [payments, setPayments] = useState([]);
+const CreateInvoice = () => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
   const [loading, setLoading] = useState({});
   const [categoriesData, setCategoriData] = useState([]);
-  const [amountErr, setAmountErr] = useState("");
   const { patientId } = useParams();
-  const [user, role] = useUserData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,16 +30,23 @@ const CreateInvoice = ({ appointment, index }) => {
     fetchUserData();
   }, []);
 
-  const addOptions = () => {
-    setAmountErr("");
-    const name = document.getElementById("name").value;
-    const text = name.options[name.selectedIndex].text;
-    const amount = document.getElementById("amount").value;
-    if (!amount || !name) return setAmountErr("Please provide requied values");
-    setPayments([...payments, { name, amount }]);
-    document.getElementById("name").value = "";
-    document.getElementById("amount").value = "";
+  const addOptions = (event) => {
+    const options = event.target.options;
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        const option = categoriesData.find((c) => c._id === options[i].value);
+        setSelectedOptions([...selectedOptions, option]);
+        setCategoriData(categoriesData.filter((c) => c._id !== options[i].value));
+      }
+    }
   };
+
+  const handleDelete = (id) => {
+    const option = selectedOptions.find((c) => c._id === id);
+    setSelectedOptions(selectedOptions.filter((option) => option._id !== id));
+    setCategoriData([...categoriesData, option]);
+  }
 
   const handleSubmit = (event) => {
     // Getting From Data
@@ -58,7 +63,7 @@ const CreateInvoice = ({ appointment, index }) => {
           "content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
         },
-        body: JSON.stringify({ payments }),
+        body: JSON.stringify(),
       }
     )
       .then((res) => res.json())
@@ -96,18 +101,57 @@ const CreateInvoice = ({ appointment, index }) => {
               Option
             </label>
             <select
+              onChange={addOptions}
               type="name"
               name="text"
               id="gender"
-              className="select bg-tahiti-primary col-span-full sm:col-span-3 text-lg focus:outline-none font-bold w-full text-tahiti-white"
+              className="select mt-1 bg-tahiti-primary col-span-full sm:col-span-3 text-lg focus:outline-none font-bold w-full text-tahiti-white"
             >
-              <option disabled selected>
+              <option selected>
                 select
               </option>
               {categoriesData.map((category) => (
-                <option key={category._id}>{category?.name}</option>
+                <option value={category?._id} key={category._id}>
+                  {category?.name}
+                </option>
               ))}
             </select>
+          </div>
+
+          <div className="overflow-x-auto w-3/4 mx-auto border rounded-md mt-20">
+            <table className="table w-full bg-tahiti-white">
+              <thead>
+                <tr>
+                  <th className="">Sl</th>
+                  <th className="text-center">Name</th>
+                  <th className="text-center">Amount</th>
+                  <th className="text-center">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedOptions.map((category, i) => (
+                  <tr key={i}>
+                  <th>{i + 1}</th>
+                  <td className="text-center">{category?.name}</td>
+                  <td className="text-center">{category?.amount}৳</td>
+                  <td>
+                    {/* {delLoading ? (
+                      <img
+                        className="w-6 animate-spin mx-auto"
+                        src="assets/loading.png"
+                        alt=""
+                      />
+                    ) : ( */}
+                      <FaTrash
+                        onClick={() => handleDelete(category?._id)}
+                        className="text-tahiti-red cursor-pointer mx-auto text-xl"
+                      ></FaTrash>
+                    {/* )} */}
+                  </td>
+                </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div>

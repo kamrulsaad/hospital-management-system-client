@@ -56,6 +56,7 @@ const AllCategories = () => {
               <th className="">Sl</th>
               <th className="text-center">Name</th>
               <th className="text-center">Amount</th>
+              <th className="text-center">Update</th>
               <th className="text-center">Delete</th>
             </tr>
           </thead>

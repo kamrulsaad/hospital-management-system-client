@@ -71,17 +71,21 @@ const AllInvoice = () => {
   return (
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 ">Invoices</h1>
-      <Link to="/patients">
-        <button className=" lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-          Add New
-        </button>
-      </Link>
-      {
-        (role?.includes("super-admin") || role?.includes("admin")) && 
-        <Link to={'/categories'} className="lg:ml-5 lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black uppercase">
-        all categories
-      </Link>
-      }
+      {role?.includes("accountant") && (
+        <Link to="/patients">
+          <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+            Add New
+          </button>
+        </Link>
+      )}
+      {(role?.includes("super-admin") || role?.includes("admin")) && (
+        <Link
+          to={"/categories"}
+          className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black btn-sm"
+        >
+          all categories
+        </Link>
+      )}
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>

@@ -26,7 +26,6 @@ const NewPatientProfile = () => {
       );
       const data = await response.json();
       setNewPatient(data);
-      console.log(data);
       setLoading(false);
     };
     fetchUserData();
@@ -100,7 +99,7 @@ const NewPatientProfile = () => {
             <QRCode
               className="ml-20"
               style={{ height: "auto", maxWidth: "100%", width: "50%" }}
-              value={newPatient?.data?._id}
+              value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
             />
           </div>
           <div>
