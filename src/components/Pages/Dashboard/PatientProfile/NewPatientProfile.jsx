@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PatientReports from "./PatientReports";
 import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
+import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import { toast } from "react-toastify";
 
 const NewPatientProfile = () => {
   const [newPatient, setNewPatient] = useState({});
   const [loading, setLoading] = useState({});
-    // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
+  // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
   const { id } = useParams();
-  
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => toast.success("Print Patient Profile")
+  });
+
   // patient api call by their id
   useEffect(() => {
     setLoading(true);
@@ -56,15 +64,15 @@ const NewPatientProfile = () => {
               />
             </svg>
           </div>
-          <div className="col-span-2">
-            <h1 className="text-4xl font-medium text-gray-700 capitalize">
+          <div className="col-span-2" ref={componentRef}>
+            <h1 className="text-4xl font-medium text-gray-700 capitalize" >
               {" "}
               {newPatient?.data?.name},{" "}
               <span className="font-light text-gray-500">
                 {newPatient?.data?.age}
               </span>
             </h1>
-            <p className="mt-4 text-gray-500 text-2xl">
+            <p className="mt-4 text-gray-500 text-2xl" >
               <span className="font-bold">Patient ID</span>:{" "}
               {newPatient?.data?.serialId}
             </p>
@@ -88,15 +96,16 @@ const NewPatientProfile = () => {
           </div>
         </div>
         <div className="grid grid-cols-3">
-            <div>
+          <div>
 
-            </div>
-            <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
+          </div>
+          <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
             <span>EMERGENCY</span>{" "}
             <span className="text-tahiti-lightGreen uppercase">Contact</span>
           </h1>
-          <div>
+          <div >
             <QRCode
+              
               className="ml-20"
               style={{ height: "auto", maxWidth: "100%", width: "50%" }}
               value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
@@ -118,6 +127,9 @@ const NewPatientProfile = () => {
               <Link to={`/appointment/${newPatient?.data?._id}`}>
                 Add Apppointment
               </Link>
+            </button>
+            <button onClick={handlePrint} className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4">
+              print
             </button>
           </div>
         </div>

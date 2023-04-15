@@ -81,13 +81,15 @@ const AllUser = () => {
               <tr key={user?._id}>
                 <th>{i + 1}</th>
                 <td>{user?._id}</td>
-                <td className="text-center">{user?.firstName} { user?.lastName}</td>
-                <td className="text-center">{ user?.email}</td>
+                <td className="text-center">{user?.firstName} {user?.lastName}</td>
+                <td className="text-center">{user?.email}</td>
                 <td className="text-center">{user?.role}</td>
                 <td className="text-center">
-                  <button className="btn btn-xs btn-ghost bg-tahiti-darkGreen text-tahiti-white ">
-                    Details
-                  </button>
+                  <Link to="/user/userdetails">
+                    <button className="btn btn-xs btn-ghost bg-tahiti-darkGreen text-tahiti-white ">
+                      Details
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}
