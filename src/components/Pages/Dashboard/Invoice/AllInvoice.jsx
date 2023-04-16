@@ -1,11 +1,8 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../../../Hooks/useUserData";
-// import { useQuery } from 'react-query';
 import Spinner from "../../../Shared/Spinner";
 import InvoiceRow from "./InvoiceRow";
-// import PatientsRow from "./PatientsRow";
 
 const AllInvoice = () => {
   const [loading, setLoading] = useState(null);
@@ -91,8 +88,12 @@ const AllInvoice = () => {
           <thead>
             <tr>
               <th className="text-center">Sl</th>
-              <th className="text-center">Patient ID</th>
-              <th className="text-center">Total Amount</th>
+              <th>Invoice ID</th>
+              <th className="text-center">Patient</th>
+              <th className="text-center">Payment Date</th>
+              <th className="text-center">Sub Total</th>
+              <th className="text-center">Grand Total</th>
+              <th className="text-center">Status</th>
               <th className="text-center">Details</th>
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
