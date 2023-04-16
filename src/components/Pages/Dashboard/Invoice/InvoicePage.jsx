@@ -18,7 +18,7 @@ const InvoicePage = () => {
     const fetchInvoiceData = async () => {
       setLoading(true);
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/invoice/${invoiceId}`,
+        `http://localhost:5000/api/v1/invoice/${invoiceId}`,
         {
           method: "GET",
           headers: {

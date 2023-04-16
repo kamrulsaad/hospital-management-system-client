@@ -32,7 +32,7 @@ const AllUser = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/user/all-user?page=${pageNumber}&limit=${size}`,
+      `http://localhost:5000/api/v1/user/all-user?page=${pageNumber}&limit=${size}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

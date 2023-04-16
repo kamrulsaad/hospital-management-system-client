@@ -4,19 +4,20 @@ import PatientReports from "./PatientReports";
 import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
+import { FaAccessibleIcon } from "react-icons/fa";
 
 const NewPatientProfile = () => {
   const [newPatient, setNewPatient] = useState({});
-  const [loading, setLoading] = useState({});
-    // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
+  const [loading, setLoading] = useState(true);
+  // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
   const { id } = useParams();
-  
+
   // patient api call by their id
   useEffect(() => {
     setLoading(true);
     const fetchUserData = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/patient/${id}`,
+        `http://localhost:5000/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {
@@ -43,18 +44,7 @@ const NewPatientProfile = () => {
             <span className="text-tahiti-lightGreen">INFORMATION</span>
           </h1>
           <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white mx-auto rounded-full shadow-2xl  flex items-center justify-center text-indigo-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-24 w-24 "
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <FaAccessibleIcon className="text-8xl"></FaAccessibleIcon>
           </div>
           <div className="col-span-2">
             <h1 className="text-4xl font-medium text-gray-700 capitalize">
@@ -88,10 +78,8 @@ const NewPatientProfile = () => {
           </div>
         </div>
         <div className="grid grid-cols-3">
-            <div>
-
-            </div>
-            <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
+          <div></div>
+          <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
             <span>EMERGENCY</span>{" "}
             <span className="text-tahiti-lightGreen uppercase">Contact</span>
           </h1>
