@@ -23,6 +23,7 @@ import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfi
 import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
 import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
+import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
         element: <UpdatePassword></UpdatePassword>,
       },
       {
+        path: "/user/userdetails",
+        element: <UserProfileDetails></UserProfileDetails>,
+      },
+      {
         path: "/*",
         element: <ErrorPage></ErrorPage>,
       },
@@ -154,19 +159,5 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/payment",
-  //   element: <Main></Main>,
-  //   children: [
-  //     {
-  //       path: "/payment/invoice/createinvoice/:id",
-  //       element: <InvoicePage></InvoicePage>,
-  //     },
-  //     {
-  //       path: "/payment/invoice/createinvoice",
-  //       element: <InvoicePage></InvoicePage>,
-  //     },
-  //   ],
-  // },
 ]);
 export default router;

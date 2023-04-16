@@ -30,18 +30,18 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
 
       {(role?.includes("super-admin") || role?.includes("admin")) && (
         <td>
-          {delLoading ? (
+          {/* {delLoading ? (
             <img
               className="w-6 animate-spin mx-auto"
               src="assets/loading.png"
               alt=""
             />
-          ) : (
+          ) : ( */}
             <FaTrash
               onClick={() => handleDelete(invoice?._id)}
               className="text-tahiti-red cursor-pointer mx-auto"
             ></FaTrash>
-          )}
+          {/* )} */}
         </td>
       )}
     </tr>

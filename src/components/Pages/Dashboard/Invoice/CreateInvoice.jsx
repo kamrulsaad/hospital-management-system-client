@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
-
 import { useReducer } from "react";
 import Spinner from "../../../Shared/Spinner";
 

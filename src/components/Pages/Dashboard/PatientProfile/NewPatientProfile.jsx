@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PatientReports from "./PatientReports";
 import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
+import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
 
 const NewPatientProfile = () => {
   const [newPatient, setNewPatient] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState({});
   // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
   const { id } = useParams();
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => toast.success("Printed Patient Profile"),
+  });
 
   // patient api call by their id
   useEffect(() => {
@@ -35,7 +43,7 @@ const NewPatientProfile = () => {
   if (loading) return <Spinner bg></Spinner>;
 
   return (
-    <div className="bg-tahiti-darkGreen xl:p-20 sm:p-10 grid justify-items-center ">
+    <div className="bg-tahiti-darkGreen max-h-screen overflow-hidden xl:p-20 sm:p-10 grid justify-items-center ">
       <div className="grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl ">
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-y-2">
           <div></div>
@@ -107,6 +115,12 @@ const NewPatientProfile = () => {
                 Add Apppointment
               </Link>
             </button>
+            <button
+              onClick={handlePrint}
+              className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4"
+            >
+              print
+            </button>
           </div>
         </div>
         <div>
@@ -121,6 +135,23 @@ const NewPatientProfile = () => {
             Back to dashBoard
           </button>
         </Link>
+      </div>
+      <div className="p-4 bg-tahiti-white mt-32" ref={componentRef}>
+        <h1 className="text-xl font-medium text-gray-700 capitalize">
+          {" "}
+          {newPatient?.data?.name}
+        </h1>
+        <p className="mt-2 text-gray-500 text-lg">
+          <span className="font-bold">Patient ID</span>:{" "}
+          {newPatient?.data?.serialId}
+        </p>
+        <div>
+          <QRCode
+            className="mt-4"
+            style={{ height: "auto", maxWidth: "100%", width: "40%" }}
+            value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
+          />
+        </div>
       </div>
     </div>
   );
