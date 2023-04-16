@@ -21,7 +21,6 @@ const Login = () => {
             email: email,
             password: password,
         };
-        console.log(loginData);
         // login send to backend 
         fetch('https://hms-server.onrender.com/api/v1/user/login', {
             method: 'POST',
@@ -33,7 +32,6 @@ const Login = () => {
             .then(res => res.json())
             .then(result => {
                 setLoading(false);
-                console.log(result);
 
                 if (result.status === "fail") {
                     return setError(result.error)

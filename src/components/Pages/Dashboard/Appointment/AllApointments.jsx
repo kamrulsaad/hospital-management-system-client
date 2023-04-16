@@ -9,7 +9,6 @@ const AllApointments = () => {
 
   const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
-  console.log(appointments);
   const [user, role] = useUserData();
 
   // pagination
@@ -21,14 +20,12 @@ const AllApointments = () => {
   const increasePageNumber = () => {
    if(pageNumber<pages){
     setPageNumber(pageNumber + 1)
-    console.log(pageNumber);
    }
   }
 
   const decreasePageNumber = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1)
-      console.log(pageNumber);
     }
   };
 

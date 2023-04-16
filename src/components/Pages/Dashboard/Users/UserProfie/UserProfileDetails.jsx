@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useUserData from "../../../../Hooks/useUserData";
-import Spinner from "../../../../Shared/Spinner";
 import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useUserData from "../../../../Hooks/useUserData";
+import Spinner from "../../../../Shared/Spinner";
 
-const UserProfile = () => {
+const UserProfileDetails = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(null);
   const [userData, role, loading] = useUserData();
@@ -115,4 +115,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfileDetails;

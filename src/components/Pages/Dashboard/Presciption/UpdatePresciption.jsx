@@ -52,7 +52,6 @@ const UpdatePresciption = () => {
       medicines,
       followUp: form.followUp.value,
     };
-    console.log(presciptionData);
 
     Swal.fire({
       title: `Confirm prescription data`,
@@ -71,7 +70,6 @@ const UpdatePresciption = () => {
           .then((res) => res.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
-            console.log(result);
             setLoading(false);
           })
           .catch((error) => {

@@ -11,13 +11,8 @@ const PrivateRoute = ({ children }) => {
     }
     // const { user } = useContext(UserContext);
     // const [loading, useLoading] = useState();
-    // console.log(user);
     const location = useLocation();
 
-
-
-
-    // console.log(user);
     // fetching userInfo from backend
     useEffect(() => {
         fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
@@ -31,8 +26,6 @@ const PrivateRoute = ({ children }) => {
                     navigate('/user/login')   
                 }
             })
-
-            .catch((err) => console.log(err));
 
     }, []);
 

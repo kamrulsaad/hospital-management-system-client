@@ -15,7 +15,7 @@ const Doctor = () => {
             .then((res) => res.json())
             .then((data) => {
                 setLoading(false);
-                setCount(total);
+                setCount(data?.total);
             });
     }, []);
     return (

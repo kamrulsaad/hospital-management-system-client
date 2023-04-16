@@ -7,26 +7,22 @@ const Doctors = () => {
 
     const [loading, setLoading] = useState(null);
     const [doctors, setDoctors] = useState([]);
-    // console.log(doctors);
 
     // pagination
     const [count, setCount] = useState(0);
     const [pageNumber, setPageNumber] = useState(1);
     const [size, setSize] = useState(10);
     const pages = Math.ceil(count / size);
-    // console.log(pages);
 
     const increasePageNumber = () => {
         if (pageNumber < pages) {
             setPageNumber(pageNumber + 1)
-            console.log(pageNumber);
         }
     }
 
     const decreasePageNumber = () => {
         if (pageNumber > 1) {
             setPageNumber(pageNumber - 1)
-            console.log(pageNumber);
         }
         else {
             setPageNumber(1)
@@ -51,18 +47,14 @@ const Doctors = () => {
     }, [pageNumber,size]);
     if (loading) return <Spinner></Spinner>
 
-
-
-
-    if (doctors.length === 0)
+    if (!count)
         return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Doctor Found</h2>;
 
 
     return (
         <div className='lg:ml-20 '>
             <h1 className='text-5xl font-bold mt-20 '>Doctor</h1>
-            <Link to="/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
-            <button className='lg:ml-5 lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-babyPink text-tahiti-black'>All Doctor</button>
+            <Link to="/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
             <div className="overflow-x-auto pr-10">
                 <table className="table w-full">
                     <thead>

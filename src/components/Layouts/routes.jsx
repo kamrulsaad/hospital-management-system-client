@@ -22,7 +22,8 @@ import AllInvoice from "../Pages/Dashboard/Invoice/AllInvoice";
 import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfile";
 import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
-import CreateInvoiceCatagory from "../Pages/Dashboard/Invoice/CreateInvoiceCatagory";
+import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
+import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
 
 const router = createBrowserRouter([
   {
@@ -96,21 +97,27 @@ const router = createBrowserRouter([
         path: "/categories",
         element: <AllCategories></AllCategories>,
       },
+
+      {
+        path: "/category/new",
+        element: <CreateInvoiceCategory></CreateInvoiceCategory>,
+      },
+      
       {
         path: "/payment/invoice/createinvoice/:id",
         element: <InvoicePage></InvoicePage>,
       },
       {
         path: "/payment/invoice/createinvoice",
-        element: <InvoicePage></InvoicePage>,
-      },
-      {
-        path: "/invoice/createinvoice",
-        element: <CreateInvoiceCatagory></CreateInvoiceCatagory>,
+        element: <CreateInvoice></CreateInvoice>,
       },
       {
         path: "/user/updatepassword",
         element: <UpdatePassword></UpdatePassword>,
+      },
+      {
+        path: "/user/userdetails",
+        element: <UserProfileDetails></UserProfileDetails>,
       },
       {
         path: "/*",
@@ -152,19 +159,5 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/payment",
-  //   element: <Main></Main>,
-  //   children: [
-  //     {
-  //       path: "/payment/invoice/createinvoice/:id",
-  //       element: <InvoicePage></InvoicePage>,
-  //     },
-  //     {
-  //       path: "/payment/invoice/createinvoice",
-  //       element: <InvoicePage></InvoicePage>,
-  //     },
-  //   ],
-  // },
 ]);
 export default router;
