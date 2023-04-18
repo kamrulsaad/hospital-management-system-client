@@ -8,7 +8,7 @@ import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
 
-const NewPatientProfile = () => {
+const NewPatientProfile = ({ qr }) => {
   const [newPatient, setNewPatient] = useState({});
   const [loading, setLoading] = useState({});
   // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
@@ -24,18 +24,28 @@ const NewPatientProfile = () => {
   useEffect(() => {
     setLoading(true);
     const fetchUserData = async () => {
-      const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/patient/${id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setNewPatient(data);
-      setLoading(false);
+      if (qr) {
+        //open route api call
+        const response = await fetch(
+          `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
+        );
+        const data = await response.json();
+        setNewPatient(data);
+        setLoading(false);
+      } else {
+        const response = await fetch(
+          `https://hms-server.onrender.com/api/v1/patient/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setNewPatient(data);
+        setLoading(false);
+      }
     };
     fetchUserData();
   }, []);
@@ -43,7 +53,7 @@ const NewPatientProfile = () => {
   if (loading) return <Spinner bg></Spinner>;
 
   return (
-    <div className="bg-tahiti-darkGreen max-h-screen overflow-hidden xl:p-20 sm:p-10 grid justify-items-center ">
+    <div className="bg-tahiti-darkGreen md:max-h-screen md:overflow-hidden xl:p-20 sm:p-10 grid justify-items-center ">
       <div className="grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl ">
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-y-2">
           <div></div>
@@ -136,7 +146,7 @@ const NewPatientProfile = () => {
           </button>
         </Link>
       </div>
-      <div className="p-4 bg-tahiti-white mt-32" ref={componentRef}>
+      <div className="p-4 bg-tahiti-white mt-32 hidden md:block " ref={componentRef}>
         <h1 className="text-xl font-medium text-gray-700 capitalize">
           {" "}
           {newPatient?.data?.name}
