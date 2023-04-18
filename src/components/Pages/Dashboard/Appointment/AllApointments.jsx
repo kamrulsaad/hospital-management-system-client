@@ -59,12 +59,12 @@ const AllApointments = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th className="">SL</th>
-              <th className="">Appointment ID</th>
-              <th className="">Reason</th>
-              <th className="">Payment Status</th>
-              <th className="">Patient's Phone</th>
-              <th className="">Details</th>
+              <th>SL</th>
+              <th>Appointment ID</th>
+              <th>Reason</th>
+              <th className="text-center">Payment Status</th>
+              <th>Patient's Phone</th>
+              <th>Details</th>
               {/* {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )} */}
@@ -78,8 +78,8 @@ const AllApointments = () => {
                   <th>{i + 1}</th>
                   <td>{appointment?.serialId}</td>
                   <td>{appointment?.reason}</td>
-                  <td>{String(appointment?.paymentCompleted)}</td>
-                  <td>{appointment?.patient.phone}</td>
+                  <td className="text-center">{appointment?.paymentCompleted ? "Paid" : "Unpaid"}</td>
+                  <td>{appointment?.patient?.phone}</td>
                   <td><button className='btn btn-xs'><Link to={`/patient/newpatientprofile/${appointment._id}`}>Details</Link></button></td>
                
                 </tr>)

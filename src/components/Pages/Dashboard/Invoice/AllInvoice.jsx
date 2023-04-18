@@ -34,7 +34,7 @@ const AllInvoice = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${pageNumber}&limit=${size}`,
+      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${pageNumber}&limit=${size}&key=serialId&value=20230415INV00002`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -51,7 +51,7 @@ const AllInvoice = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  else if (invoices.length === 0)
+  else if (invoices?.length === 0)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">

@@ -53,7 +53,7 @@ const AllCategories = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th className="">Sl</th>
+              <th >Sl</th>
               <th className="text-center">Name</th>
               <th className="text-center">Amount</th>
               <th className="text-center">Update</th>

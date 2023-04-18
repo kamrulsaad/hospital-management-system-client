@@ -92,7 +92,7 @@ function reducer(state, action) {
     }
     case "updateGrandTotal": {
       const tempTotal = state.total + state.total * (state.tax / 100);
-      const grandTotal = tempTotal - tempTotal * (state.discount / 100);
+      const grandTotal = Math.round(tempTotal - tempTotal * (state.discount / 100));
       return {
         ...state,
         grandTotal,
@@ -224,7 +224,7 @@ const CreateInvoice = () => {
               <table className="table w-full bg-tahiti-white">
                 <thead>
                   <tr>
-                    <th className="">Sl</th>
+                    <th >Sl</th>
                     <th>Name</th>
                     <th className="text-center">Amount</th>
                     <th className="text-center">Delete</th>
@@ -303,7 +303,7 @@ const CreateInvoice = () => {
             <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
               <p className="text-3xl w-1/2 font-bold">Grand-Total: </p>
               <p className="w-1/2 text-3xl text-end font-bold">
-                {parseFloat(state.grandTotal.toFixed(2))}৳
+                {state.grandTotal}৳
               </p>
             </div>
           )}

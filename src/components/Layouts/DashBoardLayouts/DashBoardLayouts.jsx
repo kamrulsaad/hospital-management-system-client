@@ -19,12 +19,8 @@ const DashBoardLayouts = () => {
   if (loading) return <Spinner bg></Spinner>;
 
   // LogOutButton
-  const logOut = () => {
-    localStorage.removeItem("LoginToken");
-    return;
-  };
   const handleLogOut = () => {
-    logOut();
+    localStorage.removeItem("LoginToken");
     navigate("/user/login");
   };
 
@@ -47,7 +43,7 @@ const DashBoardLayouts = () => {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-tahiti-lightBlue rounded-box w-52"
               >
                 <li>
-                  <NavLink activeClassName="active" className="" to="/">
+                  <NavLink activeClassName="active"  to="/">
                     <MdDashboard />
                     <span className="text-lg font-semibold text-tahiti-white  ">
                       DashBoard
@@ -114,7 +110,7 @@ const DashBoardLayouts = () => {
 
 
         {/* Logout Button */}
-        <button onClick={handleLogOut} className="">
+        <button onClick={handleLogOut} >
           <svg
             width="181"
             height="39"
@@ -162,7 +158,7 @@ const DashBoardLayouts = () => {
             <label htmlFor="dashboardDrawer" className="drawer-overlay"></label>
             <ul className="menu  p-4 w-80  text-base-content  ">
               <li>
-                <NavLink activeclassname="active" className="" to="/">
+                <NavLink activeclassname="active"  to="/">
                   <MdDashboard className="text-tahiti-white text-3xl" />
 
                   <span className="text-2xl font-semibold text-tahiti-white  ">

@@ -155,7 +155,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/qr/newpatientprofile/:id",
-        element: <NewPatientProfile></NewPatientProfile>,
+        element: <NewPatientProfile qr></NewPatientProfile>,
       },
       {
         path: "/qr/payment/invoice/:invoiceId",
