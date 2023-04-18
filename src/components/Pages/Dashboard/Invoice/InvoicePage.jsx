@@ -18,7 +18,7 @@ const InvoicePage = () => {
     const fetchInvoiceData = async () => {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:5000/api/v1/invoice/${invoiceId}`,
+        `https://hms-server.onrender.com/api/v1/invoice/${invoiceId}`,
         {
           method: "GET",
           headers: {
@@ -36,7 +36,7 @@ const InvoicePage = () => {
   if (loading) return <Spinner bg></Spinner>;
 
   return (
-    <div className="">
+    <div >
       <div className="p-20">
         <div>
           <p className="text-4xl text-tahiti-lightGreen m-5 font-semibold">
@@ -44,7 +44,7 @@ const InvoicePage = () => {
           </p>
         </div>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
-          <div className="">
+          <div >
             <p>From</p>
             <p className="font-medium">
               {invoice?.createdBy?.firstName} {invoice?.createdBy?.lastName}

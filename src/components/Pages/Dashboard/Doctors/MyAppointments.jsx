@@ -32,7 +32,7 @@ const MyAppointments = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/appointment/my-appointments?page=${pageNumber}&limit=${size}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/appointment/my-appointments?page=${pageNumber}&limit=${size}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },

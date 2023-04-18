@@ -25,7 +25,7 @@ const NewPatientProfile = () => {
     setLoading(true);
     const fetchUserData = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/patient/${id}`,
+        `https://hms-server.onrender.com/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {

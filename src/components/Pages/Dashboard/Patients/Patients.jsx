@@ -3,13 +3,10 @@ import Spinner from '../../../Shared/Spinner';
 
 const Patients = () => {
     const [loading, setLoading] = useState(null);
-    // const [patients, setPatients] = useState([]);
     const [count, setCount] = useState(0);
-
-    // All Patient fetch data  ?page=1&limit=10
     useEffect(() => {
         setLoading(true);
-        fetch(`http://localhost:5000/api/v1/patient/all-patient`, {
+        fetch(`https://hms-server.onrender.com/api/v1/patient/all-patient`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },
@@ -18,7 +15,6 @@ const Patients = () => {
             .then((data) => {
                 setLoading(false);
                 setCount(data.total);
-                // setPatients(data?.data);
             });
     }, []);
     // if (loading) return <Spinner></Spinner>;

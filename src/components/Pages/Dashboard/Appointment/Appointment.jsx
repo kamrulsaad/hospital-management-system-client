@@ -16,7 +16,7 @@ const Appointment = () => {
       const fetchUserData = async () => {
           setLoading(true);
           const response = await fetch(
-              `http://localhost:5000/api/v1/user/all-doctors`,
+              `https://hms-server.onrender.com/api/v1/user/all-doctors`,
               {
                   method: "GET",
                   headers: {
@@ -43,7 +43,7 @@ const handleSubmit = (event) => {
     const appointmentData = { reason, appointed_to, paymentCompleted };
 
     // add appointment to the backend
-    fetch(`http://localhost:5000/api/v1/appointment/add-appointment/${id}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/appointment/add-appointment/${id}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -81,7 +81,7 @@ const handleSubmit = (event) => {
         className="container flex flex-col   mx-auto space-y-12 ng-untouched ng-pristine ng-valid"
       >
         <fieldset className="lg:px-32 py-20">
-          <div className="">
+          <div >
             <div className="mt-5">
               <label for="reason" className="text-tahiti-lightGreen font-bold text-xl">
                 Reason

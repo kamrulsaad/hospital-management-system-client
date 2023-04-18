@@ -13,7 +13,7 @@ const AllCategories = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/category/all`, {
+    fetch(`https://hms-server.onrender.com/api/v1/category/all`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -53,7 +53,7 @@ const AllCategories = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th className="">Sl</th>
+              <th >Sl</th>
               <th className="text-center">Name</th>
               <th className="text-center">Amount</th>
               <th className="text-center">Update</th>
