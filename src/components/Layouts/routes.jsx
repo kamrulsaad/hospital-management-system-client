@@ -157,6 +157,10 @@ const router = createBrowserRouter([
         path: "/qr/newpatientprofile/:id",
         element: <NewPatientProfile></NewPatientProfile>,
       },
+      {
+        path: "/qr/payment/invoice/:invoiceId",
+        element: <InvoicePage></InvoicePage>,
+      },
     ],
   },
 ]);

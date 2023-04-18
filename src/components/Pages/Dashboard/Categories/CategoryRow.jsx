@@ -30,7 +30,7 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
     }).then((results) => {
       if (results.isConfirmed) {
         fetch(
-          `http://localhost:5000/api/v1/category/${id}`,
+          `https://hms-server.onrender.com/api/v1/category/${id}`,
           requestOptions
         )
           .then((response) => response.json())
