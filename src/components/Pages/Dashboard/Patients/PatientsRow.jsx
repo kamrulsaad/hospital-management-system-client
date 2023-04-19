@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
+  
   const handleDelete = (id) => {
     setDelLoading(true);
 

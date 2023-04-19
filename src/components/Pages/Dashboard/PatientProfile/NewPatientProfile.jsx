@@ -5,7 +5,6 @@ import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
-import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
 
 const NewPatientProfile = ({ qr }) => {
@@ -44,7 +43,7 @@ const NewPatientProfile = ({ qr }) => {
   if (loading) return <Spinner bg></Spinner>;
 
   return (
-    <div className="bg-tahiti-darkGreen md:max-h-screen md:overflow-hidden xl:p-20 sm:p-10 grid justify-items-center ">
+    <div className="bg-tahiti-darkGreen min-h-screen xl:p-20 sm:p-10 grid justify-items-center ">
       <div className="grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl ">
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-y-2">
           <div></div>
