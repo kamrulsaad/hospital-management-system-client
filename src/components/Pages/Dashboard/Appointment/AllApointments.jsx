@@ -3,13 +3,26 @@ import Spinner from "../../../Shared/Spinner";
 import useUserData from "../../../Hooks/useUserData";
 import AppointmentsRow from "./AppointmentsRow";
 import { Link } from "react-router-dom";
+import { MdSearch } from "react-icons/md";
 
 const AllApointments = () => {
   const [loading, setLoading] = useState(null);
-
   const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
   const [user, role] = useUserData();
+  const [name, setName] = useState([]);
+  const [value, setValue] = useState([]);
+  const [dataCount, setDataCount] = useState(0);
+
+  const handleSearch = event => {
+    event.preventDefault();
+    setLoading(true);
+    const form = event.target;
+    const name = form.name.value;
+    const value = form.value.value;
+    setName(name)
+    setValue(value)
+  };
 
   // pagination
   const [count, setCount] = useState(0);
@@ -32,13 +45,14 @@ const AllApointments = () => {
   // All Appointment fetch data  ?page=1&limit=10
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms-server.onrender.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
+        setDataCount(data?.total);
         setLoading(false);
         setCount(data.total);
         setAppointment(data?.data);
@@ -52,9 +66,47 @@ const AllApointments = () => {
 
   return (
     <div className='lg:ml-20 '>
-      <h1 className='text-5xl font-bold mt-20 mb-4 '>Appointment</h1>
+      <h1 className='text-5xl font-bold mt-20 mb-4 '>Appointment : {dataCount}</h1>
       {/* <Link to="/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link> */}
-    
+      {/* Search Field */}
+      <div className="flex justify-between pr-10 mb-3">
+
+
+        {/* {!role?.includes("accountant") && (
+          <>
+            <Link to="/addapatient">
+              <button className=" lg:mb-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+                Add New
+              </button>
+            </Link>
+          </>
+        )} */}
+
+
+        <div></div>
+        <form onSubmit={handleSearch} action="" className=" flex gap-2">
+
+          <select
+            type="text"
+            name="name"
+            id="name"
+            className="select select-sm focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
+          >
+            <option disabled selected>
+              Select
+            </option>
+            <option value={"serialId"}>Serial ID </option>
+            <option value={"phone"}>Phone</option>
+          </select>
+          <input type="text" name="value" id="value" className="input input-bordered input-info  input-sm  max-w-xs" />
+          <button type="submit" className="btn btn-sm">
+            <MdSearch
+              className="cursor-pointer mx-auto"
+            />
+          </button>
+        </form>
+      </div>
+
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
