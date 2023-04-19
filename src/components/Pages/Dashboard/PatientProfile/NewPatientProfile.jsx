@@ -4,10 +4,11 @@ import PatientReports from "./PatientReports";
 import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
-import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import ReactToPrint, { useReactToPrint } from "react-to-print";
 import { toast } from "react-toastify";
+import { FaAccessibleIcon } from "react-icons/fa";
 
-const NewPatientProfile = () => {
+const NewPatientProfile = ({ qr }) => {
   const [newPatient, setNewPatient] = useState({});
   const [loading, setLoading] = useState({});
   // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
@@ -16,25 +17,35 @@ const NewPatientProfile = () => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    onAfterPrint: () => toast.success("Print Patient Profile")
+    onAfterPrint: () => toast.success("Printed Patient Profile"),
   });
 
   // patient api call by their id
   useEffect(() => {
     setLoading(true);
     const fetchUserData = async () => {
-      const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/patient/${id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setNewPatient(data);
-      setLoading(false);
+      if (qr) {
+        //open route api call
+        const response = await fetch(
+          `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
+        );
+        const data = await response.json();
+        setNewPatient(data);
+        setLoading(false);
+      } else {
+        const response = await fetch(
+          `https://hms-server.onrender.com/api/v1/patient/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setNewPatient(data);
+        setLoading(false);
+      }
     };
     fetchUserData();
   }, []);
@@ -42,7 +53,7 @@ const NewPatientProfile = () => {
   if (loading) return <Spinner bg></Spinner>;
 
   return (
-    <div className="bg-tahiti-darkGreen xl:p-20 sm:p-10 grid justify-items-center ">
+    <div className="bg-tahiti-darkGreen md:max-h-screen md:overflow-hidden xl:p-20 sm:p-10 grid justify-items-center ">
       <div className="grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl ">
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-y-2">
           <div></div>
@@ -51,28 +62,17 @@ const NewPatientProfile = () => {
             <span className="text-tahiti-lightGreen">INFORMATION</span>
           </h1>
           <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white mx-auto rounded-full shadow-2xl  flex items-center justify-center text-indigo-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-24 w-24 "
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <FaAccessibleIcon className="text-8xl"></FaAccessibleIcon>
           </div>
-          <div className="col-span-2" ref={componentRef}>
-            <h1 className="text-4xl font-medium text-gray-700 capitalize" >
+          <div className="col-span-2">
+            <h1 className="text-4xl font-medium text-gray-700 capitalize">
               {" "}
               {newPatient?.data?.name},{" "}
               <span className="font-light text-gray-500">
                 {newPatient?.data?.age}
               </span>
             </h1>
-            <p className="mt-4 text-gray-500 text-2xl" >
+            <p className="mt-4 text-gray-500 text-2xl">
               <span className="font-bold">Patient ID</span>:{" "}
               {newPatient?.data?.serialId}
             </p>
@@ -96,16 +96,13 @@ const NewPatientProfile = () => {
           </div>
         </div>
         <div className="grid grid-cols-3">
-          <div>
-
-          </div>
+          <div></div>
           <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
             <span>EMERGENCY</span>{" "}
             <span className="text-tahiti-lightGreen uppercase">Contact</span>
           </h1>
-          <div >
+          <div>
             <QRCode
-              
               className="ml-20"
               style={{ height: "auto", maxWidth: "100%", width: "50%" }}
               value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
@@ -128,7 +125,10 @@ const NewPatientProfile = () => {
                 Add Apppointment
               </Link>
             </button>
-            <button onClick={handlePrint} className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4">
+            <button
+              onClick={handlePrint}
+              className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4"
+            >
               print
             </button>
           </div>
@@ -145,6 +145,23 @@ const NewPatientProfile = () => {
             Back to dashBoard
           </button>
         </Link>
+      </div>
+      <div className="p-4 bg-tahiti-white mt-32 hidden md:block " ref={componentRef}>
+        <h1 className="text-xl font-medium text-gray-700 capitalize">
+          {" "}
+          {newPatient?.data?.name}
+        </h1>
+        <p className="mt-2 text-gray-500 text-lg">
+          <span className="font-bold">Patient ID</span>:{" "}
+          {newPatient?.data?.serialId}
+        </p>
+        <div>
+          <QRCode
+            className="mt-4"
+            style={{ height: "auto", maxWidth: "100%", width: "40%" }}
+            value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
+          />
+        </div>
       </div>
     </div>
   );

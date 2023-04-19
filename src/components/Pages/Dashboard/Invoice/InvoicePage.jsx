@@ -1,140 +1,145 @@
-import React, { useEffect, useState } from 'react';
-import useUserData from '../../../Hooks/useUserData';
+import React, { useEffect, useState } from "react";
+import Spinner from "../../../Shared/Spinner";
+import { useParams } from "react-router-dom";
 
 const InvoicePage = () => {
-    // Role Api from login Data
-      const [userData, role] = useUserData();
-    const [loading, setLoading] = useState(true);
+  const { invoiceId } = useParams();
+  const [loading, setLoading] = useState(true);
 
-    const [invoiceCatagories, setInvoiceCatagories] = useState([]);
+  const [invoice, setInvoice] = useState();
 
+  const date = new Date(invoice?.createdAt);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = date
+    .toLocaleDateString("en-US", options)
+    .replace(/ /g, "/");
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            setLoading(true);
-            const response = await fetch(
-                "https://hms-server.onrender.com/api/v1/category/all",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-                    },
-                }
-            );
-            const data = await response.json();
-            // setUserData(data?.data);
-            setInvoiceCatagories(data.data);
-            setLoading(false);
-        };
-        fetchUserData();
-    }, []);
-    return (
-        <div className=''>
-            <div className='p-20'>
-                <div>
-                    <p className='text-4xl text-tahiti-lightGreen m-5 font-semibold'>UNICEH HMS</p>
-                </div>
-                <div className='grid grid-cols-3 bg-tahiti-white p-10'>
-                    <div className=''>
-                        <p>From</p>
-                        <p>{userData?.firstName} {userData?.lastName}</p>
-                        <p>{userData?.role}</p>
-                        <p>Phone: {userData?.phone}</p>
-                        <p>Email: {userData?.email}</p>
-                    </div>
-                    <div>
-                        <p>To:</p>
-                        <p>Patient Name: </p>
-                        <p>Phone:</p>
-                        <p>Email:</p>
-                    </div>
-                    <div>
-                        <p>Invoice Id:</p>
-                        <p>Payment Status:</p>
-                        <p>Date:</p>
-                    </div>
-                </div>
-                <div>
-                    <div className="overflow-x-auto bg-tahiti-white p-10">
-                        <table className="table w-full">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            {
-                                invoiceCatagories.map((invoiceCatagory, i) =>
-                                    <tr key={invoiceCatagory?._id}>
+  useEffect(() => {
+    const fetchInvoiceData = async () => {
+      setLoading(true);
+      const response = await fetch(
+        `https://hms-server.onrender.com/api/v1/invoice/${invoiceId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setInvoice(data?.data);
+      setLoading(false);
+    };
+    fetchInvoiceData();
+  }, []);
 
+  if (loading) return <Spinner bg></Spinner>;
 
-                                        <td>{invoiceCatagory.name}</td>
-                                        <th>{invoiceCatagory.amount}</th>
-
-
-
-                                    </tr>)
-                            }
-                        </table>
-                        {/* <table className="table w-full"> */}
-                            {/* head */}
-                        {/* <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody> */}
-                            {/* row 1 */}
-                            {/* <tr>
-                                <td>Cy Ganderton</td>
-                                <td>Blue</td>
-                            </tr> */}
-                            {/* row 2 */}
-                            {/* <tr>
-                                <td>Hart Hagerty</td>
-                                <td>Purple</td>
-                            </tr> */}
-                            {/* row 3 */}
-                            {/* <tr>
-                                <td>Brice Swyre</td>
-                                <td>Red</td>
-                            </tr>
-                        </tbody>
-                    </table> */}
-                </div>
-            </div>
-            <div className='grid grid-cols-3 bg-tahiti-white'>
-                <div>
-                    <button className='btn btn-ghost btn-xs bg-tahiti-primary'>Print</button>
-                </div>
-                <div></div>
-                <div>
-                    <div className="overflow-x-auto mb-5">
-                        <table className="table">
-                            <tbody>
-                                {/* row 1 */}
-                                <tr>
-                                    <td>Sub Total:</td>
-                                </tr>
-                                <tr>
-                                    <td>Tax:</td>
-                                </tr>
-                                <tr>
-                                    <td>Discount:</td>
-                                </tr>
-                                <tr>
-                                    <td>Grand Total:</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div >
+      <div className="p-20">
+        <div>
+          <p className="text-4xl text-tahiti-lightGreen m-5 font-semibold">
+            UNICEH HMS
+          </p>
         </div>
-        </div >
-    );
+        <div className="grid grid-cols-3 bg-tahiti-white p-10">
+          <div >
+            <p>From</p>
+            <p className="font-medium">
+              {invoice?.createdBy?.firstName} {invoice?.createdBy?.lastName}
+            </p>
+            <p className="font-medium capitalize">{invoice?.createdBy?.role}</p>
+            <p>
+              Phone:{" "}
+              <span className="font-medium">{invoice?.createdBy?.phone}</span>{" "}
+            </p>
+            <p>
+              Email:{" "}
+              <span className="font-medium">{invoice?.createdBy?.email}</span>
+            </p>
+          </div>
+          <div>
+            <p>To</p>
+            <p>Patient Name: {invoice?.patient?.name}</p>
+            <p>Phone: {invoice?.patient?.phone}</p>
+            <p>Id: {invoice?.patient?.serialId}</p>
+          </div>
+          <div>
+            <p>
+              Invoice Id: <span className="font-bold">{invoice?.serialId}</span>
+            </p>
+            <p>
+              Payment Status:{" "}
+              <span className="font-bold">
+                {" "}
+                {invoice?.paymentCompleted ? "Paid" : "Unpaid"}
+              </span>
+            </p>
+            <p>Date: {formattedDate.replace(",", "")}</p>
+          </div>
+        </div>
+        <div className="p-10 bg-tahiti-white">
+          <div className="overflow-x-auto bg-tahiti-white border rounded-lg">
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th>Sl</th>
+                  <th>Item</th>
+                  <th className="text-right">Amount</th>
+                </tr>
+              </thead>
+              {invoice?.payments.map((payment, i) => (
+                <tr key={payment?._id}>
+                  <td>{i + 1}</td>
+                  <td>{payment.name}</td>
+                  <td className="text-right">{payment.amount}৳</td>
+                </tr>
+              ))}
+              <tr>
+                <td className="bg-tahiti-babyPink font-bold">#</td>
+                <td className="bg-tahiti-babyPink font-bold">Sub Total</td>
+                <td className="text-right font-bold bg-tahiti-babyPink">{invoice?.sub_total}৳</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 bg-tahiti-white p-10">
+          <div>
+            <button className="btn btn-ghost btn-xs bg-tahiti-primary">
+              Print
+            </button>
+          </div>
+          <div></div>
+          <div>
+            <div className="overflow-x-auto mb-5">
+              <table className="table w-full">
+                <tbody>
+                  {/* row 1 */}
+                  <tr>
+                    <td>Sub Total: </td>
+                    <td className="font-bold text-right">{invoice?.sub_total}৳</td>
+                  </tr>
+                  <tr>
+                    <td>Tax:</td>
+                    <td className="font-bold text-right">+{invoice?.tax}%</td>
+                  </tr>
+                  <tr>
+                    <td>Discount:</td>
+                    <td className="font-bold text-right">-{invoice?.discount}%</td>
+                  </tr>
+                  <tr>
+                    <td>Grand Total: </td>
+                    <td className="font-bold text-right">{invoice?.grand_total}৳</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default InvoicePage;

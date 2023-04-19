@@ -1,17 +1,30 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../../../Hooks/useUserData";
-// import { useQuery } from 'react-query';
 import Spinner from "../../../Shared/Spinner";
 import InvoiceRow from "./InvoiceRow";
-// import PatientsRow from "./PatientsRow";
+import { MdSearch } from "react-icons/md";
 
 const AllInvoice = () => {
   const [loading, setLoading] = useState(null);
   const [invoices, setInvoices] = useState([]);
+  console.log(invoices);
+  const [name, setName] = useState([]);
+  const [value, setValue] = useState([]);
   const [refetch, setRefetch] = useState(true);
   const [user, role] = useUserData();
+  const [dataCount, setDataCount] = useState(0);
+
+
+  const handleSearch = event => {
+    event.preventDefault();
+    setLoading(true);
+    const form = event.target;
+    const name = form.name.value;
+    const value = form.value.value;
+    setName(name)
+    setValue(value)
+  };
 
   // pagination
   const [count, setCount] = useState(0);
@@ -37,7 +50,7 @@ const AllInvoice = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${pageNumber}&limit=${size}`,
+      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -46,6 +59,7 @@ const AllInvoice = () => {
     )
       .then((res) => res.json())
       .then((data) => {
+        setDataCount(data?.total);
         setLoading(false);
         setCount(data.total);
         setInvoices(data?.data);
@@ -54,7 +68,7 @@ const AllInvoice = () => {
 
   // Loading functionality
   if (loading) return <Spinner></Spinner>;
-  else if (invoices.length === 0)
+  else if (invoices?.length === 0)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
@@ -70,29 +84,63 @@ const AllInvoice = () => {
 
   return (
     <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Invoices</h1>
-      {role?.includes("accountant") && (
-        <Link to="/patients">
-          <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-            Add New
+      <h1 className="text-5xl font-bold mt-20 ">Invoices : {dataCount}</h1>
+
+      <div className="flex justify-between pr-10">
+        {role?.includes("accountant") && (
+          <Link to="/patients">
+            <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
+        {(role?.includes("super-admin") || role?.includes("admin")) && (
+          <Link
+            to={"/categories"}
+            className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white btn-sm"
+          >
+            all categories
+          </Link>
+        )}
+        <form onSubmit={handleSearch} action="" className=" flex gap-2">
+
+          <select
+            type="text"
+            name="name"
+            id="name"
+            className="select select-sm focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
+          >
+            <option disabled selected>
+              Select
+            </option>
+            <option value={"serialId"}>Serial ID </option>
+            <optgroup label="Payment Status">
+              <option value={true}>Unpaid</option>
+              <option value={false}>Paid</option>
+            </optgroup>
+          </select>
+          <input type="text" name="value" id="value" className="input input-bordered input-info  input-sm  w-1/2 focus:outline-none" />
+          <button type="submit" className="btn btn-sm">
+            <MdSearch
+              className="cursor-pointer mx-auto"
+            />
           </button>
-        </Link>
-      )}
-      {(role?.includes("super-admin") || role?.includes("admin")) && (
-        <Link
-          to={"/categories"}
-          className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black btn-sm"
-        >
-          all categories
-        </Link>
-      )}
+        </form>
+      </div>
+
+
+
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
               <th className="text-center">Sl</th>
-              <th className="text-center">Patient ID</th>
-              <th className="text-center">Total Amount</th>
+              <th>Invoice ID</th>
+              <th className="text-center">Patient</th>
+              <th className="text-center">Payment Date</th>
+              <th className="text-center">Sub Total</th>
+              <th className="text-center">Grand Total</th>
+              <th className="text-center">Status</th>
               <th className="text-center">Details</th>
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>

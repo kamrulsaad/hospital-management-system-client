@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { useQuery } from 'react-query';
+import { MdSearch } from "react-icons/md";
 import Spinner from "../../../../Shared/Spinner";
+import useUserData from "../../../../Hooks/useUserData";
 
 const AllUser = () => {
   const [loading, setLoading] = useState(null);
   const [users, setUsers] = useState([]);
-  // const [user, setUser] = useState([]);
+  console.log(users);
+  const [name, setName] = useState([]);
+  const [value, setValue] = useState([]);
+  const [dataCount, setDataCount] = useState(0);
+  const [user, role] = useUserData();
+
+  const handleSearch = event => {
+    event.preventDefault();
+    setLoading(true);
+    const form = event.target;
+    const name = form.name.value;
+    const value = form.value.value;
+    setName(name)
+    setValue(value)
+  };
+
 
   // pagination
   const [count, setCount] = useState(0);
@@ -32,7 +48,7 @@ const AllUser = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/user/all-user?page=${pageNumber}&limit=${size}`,
+      `https://hms-server.onrender.com/api/v1/user/all-user?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -41,6 +57,7 @@ const AllUser = () => {
     )
       .then((res) => res.json())
       .then((data) => {
+        setDataCount(data?.total);
         setLoading(false);
         setUsers(data?.data);
         setCount(data.total);
@@ -58,12 +75,39 @@ const AllUser = () => {
 
   return (
     <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Users</h1>
-      <Link to="/signup">
-        <button className=" lg:mb-5 lg:mt-5 font-semibold p-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-          Add New
-        </button>
-      </Link>
+      <h1 className="text-5xl font-bold mt-20 ">Users : {dataCount}</h1>
+      {/* Search Field */}
+      <div className="flex justify-between pr-10">
+        {role?.includes("super-admin") && role?.includes("admin") && (
+          <>
+            <Link to="/signup"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link>
+          </>
+        )}
+        <form onSubmit={handleSearch} action="" className=" flex gap-2 lg:mt-5 ">
+
+          <select
+            type="text"
+            name="name"
+            id="name"
+            className="select select-sm focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
+          >
+            <option disabled selected>
+              Select
+            </option>
+            <option value={"firstName"}>First Name</option>
+            <option value={"lastName"}>Last Name</option>
+            <option value={"email"}>Email</option>
+            <option value={"phone"}>Phone</option>
+            <option value={"role"}>Role</option>
+          </select>
+          <input type="text" name="value" id="value" className="input input-bordered input-info  input-sm  max-w-xs" />
+          <button type="submit" className="btn btn-sm">
+            <MdSearch
+              className="cursor-pointer mx-auto"
+            />
+          </button>
+        </form>
+      </div>
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
