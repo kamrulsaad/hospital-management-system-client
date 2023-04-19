@@ -24,28 +24,20 @@ const NewPatientProfile = ({ qr }) => {
   useEffect(() => {
     setLoading(true);
     const fetchUserData = async () => {
-      if (qr) {
-        //open route api call
-        const response = await fetch(
-          `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
-        );
-        const data = await response.json();
-        setNewPatient(data);
-        setLoading(false);
-      } else {
-        const response = await fetch(
-          `https://hms-server.onrender.com/api/v1/patient/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setNewPatient(data);
-        setLoading(false);
-      }
+      const response = await fetch(
+        qr
+          ? `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
+          : `https://hms-server.onrender.com/api/v1/patient/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setNewPatient(data);
+      setLoading(false);
     };
     fetchUserData();
   }, []);
@@ -120,16 +112,18 @@ const NewPatientProfile = ({ qr }) => {
               <span className="font-bold">Relation</span>:{" "}
               {newPatient?.data?.emergency_contact?.relation}
             </h3>
-            <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4">
-              <Link to={`/appointment/${newPatient?.data?._id}`}>
-                Add Apppointment
-              </Link>
-            </button>
+            {!qr && (
+              <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4">
+                <Link to={`/appointment/${newPatient?.data?._id}`}>
+                  Add Apppointment
+                </Link>
+              </button>
+            )}
             <button
               onClick={handlePrint}
               className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4"
             >
-              print
+              Print
             </button>
           </div>
         </div>
@@ -140,13 +134,18 @@ const NewPatientProfile = ({ qr }) => {
         </div>
       </div>
       <div>
-        <Link to="/">
-          <button className="btn btn-ghost mt-5 bg-tahiti-primary text-tahiti-white">
-            Back to dashBoard
-          </button>
-        </Link>
+        {!qr && (
+          <Link to="/">
+            <button className="btn btn-ghost mt-5 bg-tahiti-primary text-tahiti-white">
+              Back to dashBoard
+            </button>
+          </Link>
+        )}
       </div>
-      <div className="p-4 bg-tahiti-white mt-32 hidden md:block " ref={componentRef}>
+      <div
+        className="p-4 bg-tahiti-white mt-32 hidden md:block "
+        ref={componentRef}
+      >
         <h1 className="text-xl font-medium text-gray-700 capitalize">
           {" "}
           {newPatient?.data?.name}
