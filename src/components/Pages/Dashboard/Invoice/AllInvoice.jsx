@@ -4,6 +4,7 @@ import useUserData from "../../../Hooks/useUserData";
 import Spinner from "../../../Shared/Spinner";
 import InvoiceRow from "./InvoiceRow";
 import { MdSearch } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const initialState = {
   loading: null,
@@ -57,7 +58,7 @@ const reducer = (state, action) => {
     case "SET_KEY":
       return {
         ...state,
-        name: action.payload,
+        key: action.payload,
       };
     case "SET_VALUE":
       return {
@@ -80,17 +81,11 @@ const reducer = (state, action) => {
 };
 
 const AllInvoice = () => {
-
-  const [user, role] = useUserData();
+  const [user, role, loading] = useUserData();
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const pages = Math.ceil(state.count / state.size);
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-    // dispatch({ type: "SET_LOADING", payload: true });
-  };
+  const pages = Math.ceil(state?.count / state?.size);
 
   useEffect(() => {
     dispatch({ type: "SET_LOADING", payload: true });
@@ -117,18 +112,20 @@ const AllInvoice = () => {
   }, [state.pageNumber, state.size, state.refetch]);
 
   // Loading functionality
-  if (state.loading) return <Spinner></Spinner>;
+  if (state.loading || loading) return <Spinner></Spinner>;
   else if (state.invoices?.length === 0)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
-        <Link to="/patients">
-          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
-            Add New invoice for patient
-          </button>
-        </Link>
+        <button onClick={() => {
+          dispatch({type: "SET_KEY", payload: ""});
+          dispatch({type: "SET_VALUE", payload: ""});
+          dispatch({type: "SET_REFETCH", payload: !state.refetch});
+        }} className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+          Go Back to previous page
+        </button>
       </>
     );
 
@@ -152,15 +149,16 @@ const AllInvoice = () => {
             all categories
           </Link>
         )}
-        <form onSubmit={handleSearch} action="" className="flex gap-2">
+        <div className="flex gap-2">
           <select
             type="text"
             name="name"
             id="name"
             className="select select-sm focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
-            onChange={(e) => {
-              dispatch({ type: "SET_KEY", payload: e.target.value });
-              if (e.target.value === "paymentCompleted")
+            onChange={(event) => {
+              dispatch({ type: "SET_KEY", payload: event.target.value });
+
+              if (event.target.value === "paymentCompleted")
                 dispatch({ type: "SET_DROPDOWN", payload: true });
               else dispatch({ type: "SET_DROPDOWN", payload: false });
             }}
@@ -178,9 +176,9 @@ const AllInvoice = () => {
           {state.dropdown ? (
             <select
               type="text"
-              className="select select-sm focus:outline-none bg-tahiti-primary font-bold text-tahiti-white w-48"
-              onChange={(e) =>
-                dispatch({ type: "SET_VALUE", payload: e.target.value })
+              className="select select-sm select-bordered focus:outline-none bg-tahiti-white font-bold w-48"
+              onChange={(event) =>
+                dispatch({ type: "SET_VALUE", payload: event.target.value })
               }
             >
               <option disabled selected>
@@ -204,10 +202,17 @@ const AllInvoice = () => {
               className="input input-info input-sm w-48 focus:outline-none"
             />
           )}
-          <button type="submit" className="btn btn-sm">
+          <button
+            onClick={() => {
+              if (state.key && state.value) dispatch({ type: "SET_REFETCH", payload: !state.refetch });
+              else toast.error("Please select from options to search");
+            }}
+            type="submit"
+            className="btn btn-sm"
+          >
             <MdSearch className="cursor-pointer mx-auto" />
           </button>
-        </form>
+        </div>
       </div>
 
       <div className="overflow-x-auto pr-10">
@@ -222,8 +227,7 @@ const AllInvoice = () => {
               <th className="text-center">Grand Total</th>
               <th className="text-center">Status</th>
               <th className="text-center">Details</th>
-              {(state.role?.includes("super-admin") ||
-                state.role?.includes("admin")) && (
+              {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
             </tr>
@@ -234,7 +238,7 @@ const AllInvoice = () => {
                 key={patient._id}
                 invoice={patient}
                 i={i}
-                role={state.role}
+                role={role}
                 refetch={state.refetch}
                 setRefetch={() =>
                   dispatch({ type: "SET_REFETCH", payload: !state.refetch })
