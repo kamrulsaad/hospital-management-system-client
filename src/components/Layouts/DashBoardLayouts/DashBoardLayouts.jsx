@@ -122,9 +122,9 @@ const DashBoardLayouts = () => {
         {/* Logout Button */}
         <button onClick={handleLogOut} >
           <div className="flex justify-around mt-1">
-            <p className="text-tahiti-white  text-3xl -mr-5 mt-1 font-bold">Log Out</p>
+            <p className="text-tahiti-white  text-3xl -mr-8 mt-1 -mb-2 font-bold">Log Out</p>
             <svg
-              width="120"
+              width="140"
               height="39"
               viewBox="0 0 181 39"
               fill="none"

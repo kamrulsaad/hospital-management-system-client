@@ -8,7 +8,6 @@ import { MdSearch } from "react-icons/md";
 const AllInvoice = () => {
   const [loading, setLoading] = useState(null);
   const [invoices, setInvoices] = useState([]);
-  console.log(invoices);
   const [name, setName] = useState([]);
   const [value, setValue] = useState([]);
   const [refetch, setRefetch] = useState(true);
