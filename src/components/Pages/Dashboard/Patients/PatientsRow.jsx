@@ -51,6 +51,8 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
       <td className="text-center">{patient?.serialId}</td>
       <td className="text-center">{patient?.name}</td>
       <td className="text-center">{patient?.age}</td>
+      <td className="text-center">{patient?.bloodGroup}</td>
+      <td className="text-center">{patient?.gender}</td>
       <td className="text-center">{patient?.phone}</td>
       <td className="text-center">
         {role?.includes("accountant") ? (

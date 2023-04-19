@@ -1,40 +1,101 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../../../Hooks/useUserData";
 import Spinner from "../../../Shared/Spinner";
 import InvoiceRow from "./InvoiceRow";
+import { MdSearch } from "react-icons/md";
+
+const initialState = {
+  loading: null,
+  invoices: [],
+  key: "",
+  value: "",
+  refetch: true,
+  count: 0,
+  pageNumber: 1,
+  size: 10,
+  dropdown: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "INCREMENT_PAGE_NUMBER":
+      if (state.pageNumber < state.pages) {
+        return { ...state, pageNumber: state.pageNumber + 1 };
+      }
+      return state;
+    case "DECREMENT_PAGE_NUMBER":
+      if (state.pageNumber > 1) {
+        return { ...state, pageNumber: state.pageNumber - 1 };
+      }
+      return state;
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_INVOICES":
+      return {
+        ...state,
+        invoices: action.payload,
+      };
+    case "SET_COUNT":
+      return {
+        ...state,
+        count: action.payload,
+      };
+    case "SET_PAGE_NUMBER":
+      return {
+        ...state,
+        pageNumber: action.payload,
+      };
+    case "SET_SIZE":
+      return {
+        ...state,
+        size: action.payload,
+      };
+    case "SET_KEY":
+      return {
+        ...state,
+        name: action.payload,
+      };
+    case "SET_VALUE":
+      return {
+        ...state,
+        value: action.payload,
+      };
+    case "SET_REFETCH":
+      return {
+        ...state,
+        refetch: action.payload,
+      };
+    case "SET_DROPDOWN":
+      return {
+        ...state,
+        dropdown: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 const AllInvoice = () => {
-  const [loading, setLoading] = useState(null);
-  const [invoices, setInvoices] = useState([]);
-  const [refetch, setRefetch] = useState(true);
+
   const [user, role] = useUserData();
 
-  // pagination
-  const [count, setCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [size, setSize] = useState(10);
-  const pages = Math.ceil(count / size);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const increasePageNumber = () => {
-    if (pageNumber < pages) {
-      setPageNumber(pageNumber + 1);
-    }
+  const pages = Math.ceil(state.count / state.size);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    // dispatch({ type: "SET_LOADING", payload: true });
   };
 
-  const decreasePageNumber = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-    } else {
-      setPageNumber(1);
-    }
-  };
-
-  // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
-    setLoading(true);
+    dispatch({ type: "SET_LOADING", payload: true });
     fetch(
-      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${pageNumber}&limit=${size}`,
+      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -43,15 +104,21 @@ const AllInvoice = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false);
-        setCount(data.total);
-        setInvoices(data?.data);
+        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({
+          type: "SET_COUNT",
+          payload: data?.total,
+        });
+        dispatch({
+          type: "SET_INVOICES",
+          payload: data?.data,
+        });
       });
-  }, [pageNumber, size, refetch]);
+  }, [state.pageNumber, state.size, state.refetch]);
 
   // Loading functionality
-  if (loading) return <Spinner></Spinner>;
-  else if (invoices?.length === 0)
+  if (state.loading) return <Spinner></Spinner>;
+  else if (state.invoices?.length === 0)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
@@ -67,22 +134,82 @@ const AllInvoice = () => {
 
   return (
     <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Invoices</h1>
-      {role?.includes("accountant") && (
-        <Link to="/patients">
-          <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-            Add New
+      <h1 className="text-5xl font-bold mt-20 ">Invoices : {state.count}</h1>
+
+      <div className="flex justify-between items-center pr-10">
+        {role?.includes("accountant") && (
+          <Link to="/patients">
+            <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
+        {(role?.includes("super-admin") || role?.includes("admin")) && (
+          <Link
+            to={"/categories"}
+            className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white btn-sm"
+          >
+            all categories
+          </Link>
+        )}
+        <form onSubmit={handleSearch} action="" className="flex gap-2">
+          <select
+            type="text"
+            name="name"
+            id="name"
+            className="select select-sm focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
+            onChange={(e) => {
+              dispatch({ type: "SET_KEY", payload: e.target.value });
+              if (e.target.value === "paymentCompleted")
+                dispatch({ type: "SET_DROPDOWN", payload: true });
+              else dispatch({ type: "SET_DROPDOWN", payload: false });
+            }}
+          >
+            <option disabled selected>
+              Select
+            </option>
+            <option className="cursor-pointer" value={"serialId"}>
+              Serial ID{" "}
+            </option>
+            <option className="cursor-pointer" value={"paymentCompleted"}>
+              Status
+            </option>
+          </select>
+          {state.dropdown ? (
+            <select
+              type="text"
+              className="select select-sm focus:outline-none bg-tahiti-primary font-bold text-tahiti-white w-48"
+              onChange={(e) =>
+                dispatch({ type: "SET_VALUE", payload: e.target.value })
+              }
+            >
+              <option disabled selected>
+                Select
+              </option>
+              <option className="cursor-pointer" value={"false"}>
+                Unpaid{" "}
+              </option>
+              <option className="cursor-pointer" value={"true"}>
+                Paid
+              </option>
+            </select>
+          ) : (
+            <input
+              type="text"
+              name="value"
+              id="value"
+              onChange={(e) =>
+                dispatch({ type: "SET_VALUE", payload: e.target.value })
+              }
+              className="input input-info input-sm w-48 focus:outline-none"
+            />
+          )}
+          <button type="submit" className="btn btn-sm">
+            <MdSearch className="cursor-pointer mx-auto" />
           </button>
-        </Link>
-      )}
-      {(role?.includes("super-admin") || role?.includes("admin")) && (
-        <Link
-          to={"/categories"}
-          className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-babyPink text-tahiti-black btn-sm"
-        >
-          all categories
-        </Link>
-      )}
+        </form>
+      </div>
+
       <div className="overflow-x-auto pr-10">
         <table className="table w-full bg-tahiti-white">
           <thead>
@@ -95,20 +222,23 @@ const AllInvoice = () => {
               <th className="text-center">Grand Total</th>
               <th className="text-center">Status</th>
               <th className="text-center">Details</th>
-              {(role?.includes("super-admin") || role?.includes("admin")) && (
+              {(state.role?.includes("super-admin") ||
+                state.role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
             </tr>
           </thead>
           <tbody>
-            {invoices.map((patient, i) => (
+            {state.invoices?.map((patient, i) => (
               <InvoiceRow
                 key={patient._id}
                 invoice={patient}
                 i={i}
-                role={role}
-                refetch={refetch}
-                setRefetch={setRefetch}
+                role={state.role}
+                refetch={state.refetch}
+                setRefetch={() =>
+                  dispatch({ type: "SET_REFETCH", payload: !state.refetch })
+                }
               ></InvoiceRow>
             ))}
           </tbody>
@@ -120,7 +250,7 @@ const AllInvoice = () => {
         <span className="text-sm text-gray-700 dark:text-gray-400">
           Showing Page{" "}
           <span className="font-semibold text-gray-900 dark:text-white">
-            {pageNumber}
+            {state.pageNumber}
           </span>
           <span className="font-semibold text-gray-900 dark:text-white"></span>{" "}
           of{" "}
@@ -131,13 +261,13 @@ const AllInvoice = () => {
         </span>
         <div className="inline-flex mt-2 xs:mt-0">
           <button
-            onClick={decreasePageNumber}
+            onClick={() => dispatch({ type: "DECREMENT_PAGE_NUMBER" })}
             className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Prev
           </button>
           <button
-            onClick={increasePageNumber}
+            onClick={() => dispatch({ type: "INCREMENT_PAGE_NUMBER" })}
             className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Next
