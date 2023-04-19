@@ -16,6 +16,7 @@ const initialState = {
   pageNumber: 1,
   size: 10,
   dropdown: false,
+  search: null,
 };
 
 const reducer = (state, action) => {
@@ -68,12 +69,17 @@ const reducer = (state, action) => {
     case "SET_REFETCH":
       return {
         ...state,
-        refetch: action.payload,
+        refetch: !state.refetch,
       };
     case "SET_DROPDOWN":
       return {
         ...state,
         dropdown: action.payload,
+      };
+    case "SET_SEARCH":
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;
@@ -89,8 +95,12 @@ const AllInvoice = () => {
 
   useEffect(() => {
     dispatch({ type: "SET_LOADING", payload: true });
+    dispatch({
+      type: "SET_SEARCH",
+      payload: state.key && state.value ? true : false,
+    });
     fetch(
-      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      `http://localhost:5000/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -119,13 +129,26 @@ const AllInvoice = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
-        <button onClick={() => {
-          dispatch({type: "SET_KEY", payload: ""});
-          dispatch({type: "SET_VALUE", payload: ""});
-          dispatch({type: "SET_REFETCH", payload: !state.refetch});
-        }} className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
-          Go Back to previous page
-        </button>
+        {state.key || state.value ? (
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_KEY", payload: "" });
+              dispatch({ type: "SET_VALUE", payload: "" });
+              dispatch({ type: "SET_REFETCH" });
+            }}
+            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
+          >
+            Go Back to previous page
+          </button>
+        ) : (
+          <Link to={'/patients'}>
+            <button
+            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
+          >
+            Add New Invoice for patients
+          </button>
+          </Link>
+        )}
       </>
     );
 
@@ -204,7 +227,7 @@ const AllInvoice = () => {
           )}
           <button
             onClick={() => {
-              if (state.key && state.value) dispatch({ type: "SET_REFETCH", payload: !state.refetch });
+              if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
               else toast.error("Please select from options to search");
             }}
             type="submit"
@@ -216,6 +239,22 @@ const AllInvoice = () => {
       </div>
 
       <div className="overflow-x-auto pr-10">
+        {state.search && (
+          <p className="mb-2">
+            Showing results for invoices with <b>{state.key}</b> of{" "}
+            <b>{state.value}</b>{" "}
+            <button
+              className="btn btn-xs bg-tahiti-grey text-tahiti-red"
+              onClick={() => {
+                dispatch({ type: "SET_KEY", payload: "" });
+                dispatch({ type: "SET_VALUE", payload: "" });
+                dispatch({ type: "SET_REFETCH" });
+              }}
+            >
+              X
+            </button>{" "}
+          </p>
+        )}
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
@@ -240,9 +279,7 @@ const AllInvoice = () => {
                 i={i}
                 role={role}
                 refetch={state.refetch}
-                setRefetch={() =>
-                  dispatch({ type: "SET_REFETCH", payload: !state.refetch })
-                }
+                setRefetch={() => dispatch({ type: "SET_REFETCH" })}
               ></InvoiceRow>
             ))}
           </tbody>

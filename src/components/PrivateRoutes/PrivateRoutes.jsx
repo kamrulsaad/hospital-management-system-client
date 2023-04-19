@@ -10,12 +10,12 @@ const PrivateRoute = ({ children }) => {
         navigate('/user/login')
     }
     // const { user } = useContext(UserContext);
-    // const [loading, useLoading] = useState();
+    // const [loading, useLoading] = useState(null);
     const location = useLocation();
 
     // fetching userInfo from backend
     useEffect(() => {
-        fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
+        fetch("http://localhost:5000/api/v1/user/user-info", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },

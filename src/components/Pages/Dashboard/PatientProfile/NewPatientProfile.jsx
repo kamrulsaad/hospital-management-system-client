@@ -4,7 +4,7 @@ import PatientReports from "./PatientReports";
 import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { useReactToPrint } from "react-to-print";
 import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
 
@@ -16,8 +16,7 @@ const NewPatientProfile = ({ qr }) => {
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    onAfterPrint: () => toast.success("Printed Patient Profile"),
+    content: () => componentRef.current
   });
 
   // patient api call by their id
@@ -26,8 +25,8 @@ const NewPatientProfile = ({ qr }) => {
     const fetchUserData = async () => {
       const response = await fetch(
         qr
-          ? `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
-          : `https://hms-server.onrender.com/api/v1/patient/${id}`,
+          ? `http://localhost:5000/api/v1/patient/qr/${id}`
+          : `http://localhost:5000/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {
@@ -84,7 +83,7 @@ const NewPatientProfile = ({ qr }) => {
         </div>
         <div>
           <div className="overflow-x-auto  xl:p-10 ">
-            <PatientReports></PatientReports>
+            <PatientReports qr={qr} reports={newPatient?.data?.tests}></PatientReports>
           </div>
         </div>
         <div className="grid grid-cols-3">
@@ -143,7 +142,7 @@ const NewPatientProfile = ({ qr }) => {
         )}
       </div>
       <div
-        className="p-4 bg-tahiti-white mt-32 hidden md:block "
+        className="p-4 bg-tahiti-white mt-32 hidden print:block "
         ref={componentRef}
       >
         <h1 className="text-xl font-medium text-gray-700 capitalize">

@@ -44,7 +44,7 @@ const UpdatePassword = () => {
 
   const handleSubmit = (event) => {
     // Getting From Data
-    setLoading(true)
+    setLoading(true);
     setError("");
     event.preventDefault();
     const form = event.target;
@@ -56,14 +56,21 @@ const UpdatePassword = () => {
       return;
     }
 
-    if(errors.digit || errors.char || errors.length || errors.lower || errors.upper) return;
+    if (
+      errors.digit ||
+      errors.char ||
+      errors.length ||
+      errors.lower ||
+      errors.upper
+    )
+      return;
 
     const UpdatePasswordData = {
       password: password,
       newPassword: newPassword,
     };
-    
-    fetch(`https://hms-server.onrender.com/api/v1/user/update-password`, {
+
+    fetch(`http://localhost:5000/api/v1/user/update-password`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -86,7 +93,6 @@ const UpdatePassword = () => {
         toast.error(error);
       });
   };
-
 
   return (
     <div className="m-20 p-10 bg-tahiti-white">
@@ -147,14 +153,14 @@ const UpdatePassword = () => {
             className="btn btn-ghost btn-md w-1/2 bg-tahiti-primary block mx-auto col-span-2"
           >
             {loading ? (
-                <img
-                  src="/assets/loading.png"
-                  className="w-6 mx-auto animate-spin"
-                  alt=""
-                />
-              ) : (
-                "Update Password"
-              )}
+              <img
+                src="/assets/loading.png"
+                className="w-6 mx-auto animate-spin"
+                alt=""
+              />
+            ) : (
+              "Update Password"
+            )}
           </button>
         </fieldset>
       </form>

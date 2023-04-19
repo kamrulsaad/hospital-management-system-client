@@ -5,7 +5,7 @@ import Spinner from '../../Shared/Spinner';
 
 const Login = () => {
     const [loading, setLoading] = useState(null);
-    const [error, setError] = useState();
+    const [error, setError] = useState('');
     // Redirect to current path
     const navigate = useNavigate();
     const location = useLocation();
@@ -22,7 +22,7 @@ const Login = () => {
             password: password,
         };
         // login send to backend 
-        fetch('https://hms-server.onrender.com/api/v1/user/login', {
+        fetch('http://localhost:5000/api/v1/user/login', {
             method: 'POST',
             headers: {
                 "content-type": "application/json",

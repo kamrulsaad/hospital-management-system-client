@@ -52,7 +52,7 @@ const AllPatients = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
+      `http://localhost:5000/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -88,8 +88,8 @@ const AllPatients = () => {
     <div className="lg:ml-20 ">
       <h1 className="text-5xl font-bold mt-20 mb-4">Patients : {dataCount}</h1>
       {/* Search Field */}
-      <div className="flex justify-between pr-10">
-        {!role?.includes("accountant") && (
+      <div className={`flex ${role?.includes("receptionist") ? "justify-between" : 'justify-end'} pr-10`}>
+        {role?.includes("receptionist") && (
           <>
             <Link to="/addapatient">
               <button className=" lg:mb-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
@@ -98,7 +98,7 @@ const AllPatients = () => {
             </Link>
           </>
         )}
-        <form onSubmit={handleSearch} action="" className=" flex gap-2">
+        <form onSubmit={handleSearch} className="flex mb-4 gap-2">
 
           <select
             type="text"
