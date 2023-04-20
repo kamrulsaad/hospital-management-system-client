@@ -48,7 +48,7 @@ const AllUser = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `http://localhost:5000/api/v1/user/all-user?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
+      `https://hms-server.onrender.com/api/v1/user/all-user?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

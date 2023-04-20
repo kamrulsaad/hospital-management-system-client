@@ -15,7 +15,7 @@ const PrivateRoute = ({ children }) => {
 
     // fetching userInfo from backend
     useEffect(() => {
-        fetch("http://localhost:5000/api/v1/user/user-info", {
+        fetch("https://hms-server.onrender.com/api/v1/user/user-info", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
             },

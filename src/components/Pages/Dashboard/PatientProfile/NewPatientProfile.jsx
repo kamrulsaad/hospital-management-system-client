@@ -24,8 +24,8 @@ const NewPatientProfile = ({ qr }) => {
     const fetchUserData = async () => {
       const response = await fetch(
         qr
-          ? `http://localhost:5000/api/v1/patient/qr/${id}`
-          : `http://localhost:5000/api/v1/patient/${id}`,
+          ? `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
+          : `https://hms-server.onrender.com/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {
