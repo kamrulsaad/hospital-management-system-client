@@ -2,9 +2,30 @@ import React from "react";
 import useUserData from "../../../Hooks/useUserData";
 import { FaFileDownload, FaFileUpload } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { saveAs } from "file-saver";
 
 const PatientReports = ({ reports, qr }) => {
   const [user, role] = useUserData();
+
+  const handleDownload = async (url) => {
+    const filename = url.substring(url.lastIndexOf("/") + 1).replace("\\", "/");
+    const fileNameWithoutExtension = filename.substring(
+      filename.lastIndexOf("/") + 1,
+      filename.lastIndexOf(".")
+    );
+    const file = fileNameWithoutExtension.split("-").slice(2).join(" ");
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/pdf",
+      },
+    });
+
+    const fileBlob = await response.blob();
+
+    saveAs(fileBlob, file + "-report.pdf");
+  };
 
   const handleFileUpload = (event) => {
     const selectedFile = event.target.files[0];
@@ -23,15 +44,14 @@ const PatientReports = ({ reports, qr }) => {
       title: `
       Are you sure you want to upload this file?
       Preview of ${selectedFile.name}`,
-      html: iframe.outerHTML, 
+      html: iframe.outerHTML,
       showCancelButton: true,
       confirmButtonText: "Sure",
     }).then((results) => {
       if (results.isConfirmed) {
-        window.URL.revokeObjectURL(fileUrl); 
+        window.URL.revokeObjectURL(fileUrl);
       }
       if (results.isDismissed) {
-
       }
     });
   };
@@ -78,9 +98,12 @@ const PatientReports = ({ reports, qr }) => {
                   {qr && (
                     <td>
                       {report?.file_url ? (
-                        <FaFileDownload className="text-2xl" />
+                        <FaFileDownload
+                          className="text-2xl text-tahiti-primary cursor-pointer"
+                          onClick={() => handleDownload(report.file_url)}
+                        />
                       ) : (
-                        <FaFileDownload className="text-2xl opacity-25 cursor-not-allowed" />
+                        <FaFileDownload className="text-2xl opacity-20 cursor-not-allowed" />
                       )}
                     </td>
                   )}
