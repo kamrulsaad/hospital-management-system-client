@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import Profile from "../../Pages/Dashboard/Users/UserProfie/Profile";
-import { ImList2 } from "react-icons/im";
+import { ImLab, ImList2 } from "react-icons/im";
 import { MdDashboard } from "react-icons/md";
 import { TbFileInvoice } from "react-icons/tb";
 import {
@@ -25,9 +25,8 @@ const DashBoardLayouts = () => {
   };
 
   return (
-    <div >
+    <div>
       <div className="flex justify-end -mb-14 mr-10 ">
-
         {/* nav bar  */}
         <div className="navbar lg:hidden">
           <div className="navbar-start">
@@ -43,7 +42,7 @@ const DashBoardLayouts = () => {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-tahiti-lightBlue rounded-box w-52"
               >
                 <li>
-                  <NavLink activeClassName="active"  to="/">
+                  <NavLink activeClassName="active" to="/">
                     <MdDashboard />
                     <span className="text-lg font-semibold text-tahiti-white  ">
                       DashBoard
@@ -107,10 +106,8 @@ const DashBoardLayouts = () => {
         </div>
         {/* nabbar */}
 
-
-
         {/* Logout Button */}
-        <button onClick={handleLogOut} >
+        <button onClick={handleLogOut}>
           <svg
             width="181"
             height="39"
@@ -142,7 +139,7 @@ const DashBoardLayouts = () => {
             className="flex justify-center lg:block  "
           >
             <div className="lg:mt-20 hidden lg:block">
-              <Link to='/'>
+              <Link to="/">
                 <h1 className=" text-4xl font-bold -mt-16 ml-5 mb-10">
                   <span className="text-tahiti-lightGreen">UNICEH </span>
                   <span className="text-tahiti-white">HMS</span>
@@ -158,7 +155,7 @@ const DashBoardLayouts = () => {
             <label htmlFor="dashboardDrawer" className="drawer-overlay"></label>
             <ul className="menu  p-4 w-80  text-base-content  ">
               <li>
-                <NavLink activeclassname="active"  to="/">
+                <NavLink activeclassname="active" to="/">
                   <MdDashboard className="text-tahiti-white text-3xl" />
 
                   <span className="text-2xl font-semibold text-tahiti-white  ">
@@ -188,7 +185,9 @@ const DashBoardLayouts = () => {
                   </li>
                 </>
               )}
-              {(userRole === "super-admin" || userRole === "admin" || userRole === "accountant") && (
+              {(userRole === "super-admin" ||
+                userRole === "admin" ||
+                userRole === "accountant") && (
                 <>
                   <li>
                     <NavLink activeclassname="active" to="/allinvoice">
@@ -245,6 +244,17 @@ const DashBoardLayouts = () => {
                     </NavLink>
                   </li>
                 </>
+              )}
+              {(userRole === "super-admin" || userRole === "labaratorist") && (
+                <li>
+                  <NavLink activeclassname="active" to="/tests">
+                    {" "}
+                    <ImLab className="text-3xl text-tahiti-white"></ImLab>
+                    <span className="text-2xl font-semibold text-tahiti-white">
+                      Tests
+                    </span>
+                  </NavLink>
+                </li>
               )}
             </ul>
           </div>

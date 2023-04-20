@@ -24,6 +24,7 @@ import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
 import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
 import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
+import AllTest from "../Pages/Dashboard/Test/AllTest";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "/categories",
         element: <AllCategories></AllCategories>,
+      },
+      {
+        path: "/tests",
+        element: <AllTest></AllTest>,
       },
 
       {

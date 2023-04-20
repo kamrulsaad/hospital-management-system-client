@@ -1,13 +1,13 @@
-import React from "react";
-import useUserData from "../../../Hooks/useUserData";
+import React, { useState } from "react";
 import { FaFileDownload, FaFileUpload } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { saveAs } from "file-saver";
 
 const PatientReports = ({ reports, qr }) => {
-  const [user, role] = useUserData();
+  const [downloading, setDownloading] = useState(null);
 
   const handleDownload = async (url) => {
+    setDownloading(true);
     const filename = url.substring(url.lastIndexOf("/") + 1).replace("\\", "/");
     const fileNameWithoutExtension = filename.substring(
       filename.lastIndexOf("/") + 1,
@@ -23,37 +23,9 @@ const PatientReports = ({ reports, qr }) => {
     });
 
     const fileBlob = await response.blob();
+    setDownloading(false);
 
     saveAs(fileBlob, file + "-report.pdf");
-  };
-
-  const handleFileUpload = (event) => {
-    const selectedFile = event.target.files[0];
-    console.log(selectedFile);
-
-    // Create URL for the selected file
-    const fileUrl = window.URL.createObjectURL(selectedFile);
-
-    // Create an iframe to display the PDF preview
-    const iframe = document.createElement("iframe");
-    iframe.src = fileUrl;
-    iframe.width = "100%";
-    iframe.height = "500px";
-
-    Swal.fire({
-      title: `
-      Are you sure you want to upload this file?
-      Preview of ${selectedFile.name}`,
-      html: iframe.outerHTML,
-      showCancelButton: true,
-      confirmButtonText: "Sure",
-    }).then((results) => {
-      if (results.isConfirmed) {
-        window.URL.revokeObjectURL(fileUrl);
-      }
-      if (results.isDismissed) {
-      }
-    });
   };
 
   return (
@@ -72,9 +44,7 @@ const PatientReports = ({ reports, qr }) => {
               <th className="bg-tahiti-grey ">Name</th>
               <th className="bg-tahiti-grey ">Date</th>
               <th className="bg-tahiti-grey text-center">Available</th>
-              {(qr || role === "labaratorist") && (
-                <th className="bg-tahiti-grey">File</th>
-              )}
+              {qr && <th className="bg-tahiti-grey">File</th>}
             </tr>
             {reports?.map((report) => {
               const date = new Date(report?.createdAt);
@@ -98,32 +68,19 @@ const PatientReports = ({ reports, qr }) => {
                   {qr && (
                     <td>
                       {report?.file_url ? (
-                        <FaFileDownload
-                          className="text-2xl text-tahiti-primary cursor-pointer"
-                          onClick={() => handleDownload(report.file_url)}
-                        />
-                      ) : (
-                        <FaFileDownload className="text-2xl opacity-20 cursor-not-allowed" />
-                      )}
-                    </td>
-                  )}
-                  {role === "labaratorist" && (
-                    <td>
-                      {report?.file_url ? (
-                        <FaFileUpload className="text-2xl opacity-25 cursor-not-allowed" />
-                      ) : (
-                        <div>
-                          <label htmlFor="file-upload">
-                            <FaFileUpload className="text-2xl cursor-pointer" />
-                          </label>
-                          <input
-                            id="file-upload"
-                            type="file"
-                            onChange={handleFileUpload}
-                            className="hidden"
-                            accept="application/pdf"
+                        downloading ? (
+                          <img className="animate-spin w-4" src="/assets/loading.png"/>
+                        ) : (
+                          <FaFileDownload
+                            className="text-2xl text-tahiti-primary cursor-pointer"
+                            onClick={() => handleDownload(report.file_url)}
                           />
-                        </div>
+                        )
+                      ) : (
+                        <FaFileDownload
+                          title="Not Available Yet"
+                          className="text-2xl opacity-20 cursor-not-allowed"
+                        />
                       )}
                     </td>
                   )}
