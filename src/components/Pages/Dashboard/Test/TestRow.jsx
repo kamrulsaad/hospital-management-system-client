@@ -2,80 +2,10 @@ import React, { useState } from "react";
 import { FaFileUpload, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
-const TestRow = ({ invoice, i, role, refetch, setRefetch }) => {
+const TestRow = ({ invoice, role, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
-  const [uploading, setUploading] = useState(null);
-
-  const handleFileUpload = (event) => {
-    const selectedFile = event.target.files[0];
-
-    // Create URL for the selected file
-    const fileUrl = window.URL.createObjectURL(selectedFile);
-
-    // Create an iframe to display the PDF preview
-    const iframe = document.createElement("iframe");
-    iframe.src = fileUrl;
-    iframe.width = "100%";
-    iframe.height = "500px";
-
-    Swal.fire({
-      title: "Are you sure you want to upload this file?",
-      text: `Preview of ${selectedFile.name}`,
-      html: iframe.outerHTML,
-      showCancelButton: true,
-      confirmButtonText: "Sure",
-    }).then((result) => {
-      if (
-        result.dismiss === Swal.DismissReason.backdrop ||
-        result.dismiss === Swal.DismissReason.esc
-      ) {
-        return;
-      }
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Uploading File",
-          html: "Please wait while we upload the file...",
-          allowOutsideClick: false,
-          onBeforeOpen: () => {
-            Swal.showLoading();
-          },
-        });
-        const formData = new FormData();
-        formData.append("pdf", selectedFile, selectedFile?.name);
-        //  send to backend
-        fetch(`https://hms-server.onrender.com/api/v1/test/upload/${invoice?._id}`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            if (result.status === "success") {
-              Swal.fire({
-                icon: "success",
-                title: "File Uploaded Successfully!",
-                text: result.message,
-                
-              });
-            } else {
-              toast.error(result.error);
-            }
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Something went wrong while uploading the file!",
-              footer: error.message,
-            });
-          });
-        window.URL.revokeObjectURL(fileUrl);
-      }
-    });
-  };
 
   // const handleDelete = (id) => {
   //   setDelLoading(true);
@@ -131,24 +61,16 @@ const TestRow = ({ invoice, i, role, refetch, setRefetch }) => {
       <td className="text-center">
         {invoice?.available ? "Available" : "Not Available"}
       </td>
+      <td className="text-center">
+        <Link to={`/testDetails/${invoice?._id}`}>
+          <button className="btn btn-xs rounded-lg">Details</button>
+        </Link>
+      </td>
       {role?.includes("labaratorist") && (
         <td>
-          {uploading ? (
-            <img className="w-6 animate-spin" src="assets/loading.png" alt="" />
-          ) : (
-            <div>
-              <label htmlFor="file-upload">
-                <FaFileUpload className="text-2xl cursor-pointer" />
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                onChange={handleFileUpload}
-                className="hidden"
-                accept="application/pdf"
-              />
-            </div>
-          )}
+          <Link to={`/test/${invoice?._id}`}>
+            <FaFileUpload className="text-2xl cursor-pointer" />
+          </Link>
         </td>
       )}
 

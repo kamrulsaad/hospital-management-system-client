@@ -25,6 +25,8 @@ import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
 import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
 import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
 import AllTest from "../Pages/Dashboard/Test/AllTest";
+import UpdateTest from "../Pages/Dashboard/Test/UpdateTest";
+import TestDetails from "../Pages/Dashboard/Test/TestDetails";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +103,14 @@ const router = createBrowserRouter([
       {
         path: "/tests",
         element: <AllTest></AllTest>,
+      },
+      {
+        path: "/test/:testId",
+        element: <UpdateTest></UpdateTest>,
+      },
+      {
+        path: "/testDetails/:testId",
+        element: <TestDetails></TestDetails>,
       },
 
       {

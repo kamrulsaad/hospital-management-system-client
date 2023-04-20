@@ -220,6 +220,7 @@ const AllTest = () => {
               <th className="text-center">Test</th>
               <th className="text-center">Date</th>
               <th className="text-center">Status</th>
+              <th className="text-center">Details</th>
               {
                 role?.includes("labaratorist") && <th>File</th>
               }
