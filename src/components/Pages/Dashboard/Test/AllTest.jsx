@@ -126,7 +126,7 @@ const AllTest = () => {
   else if (state.invoices?.length === 0)
     return (
       <>
-        <h2 className="text-tahiti-red text-center mt-60 text-3xl">
+        <h2 className="text-tahiti-red text-center mt-40 text-3xl">
           No Test Found
         </h2>
         {state.key || state.value ? (
@@ -151,19 +151,21 @@ const AllTest = () => {
     );
 
   return (
-    <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Tests : {state.count}</h1>
-
-      <div className="flex justify-end items-center pr-10">
-        <div className="flex gap-2 mb-4">
+    <div className="px-10 bg-tahiti-white">
+      <div className="flex mb-6 mt-10 justify-between  items-center">
+        <h1 className="text-3xl font-bold">Tests : {state.count}</h1>
+        <div className="flex gap-2 items-center">
           <select
             type="text"
             name="name"
             id="name"
-            className="select select-sm focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
-            onChange={(e) =>
-              dispatch({ type: "SET_KEY", payload: e.target.value })
-            }
+            className="select select-xs focus:outline-none bg-tahiti-primary w-40 font-bold text-tahiti-white max-w-xs"
+            onChange={(e) => {
+              dispatch({ type: "SET_KEY", payload: e.target.value });
+              if (e.target.value === "available")
+                dispatch({ type: "SET_DROPDOWN", payload: true });
+              else dispatch({ type: "SET_DROPDOWN", payload: false });
+            }}
           >
             <option disabled selected>
               Select
@@ -171,17 +173,40 @@ const AllTest = () => {
             <option className="cursor-pointer" value={"serialId"}>
               Serial ID{" "}
             </option>
+            <option className="cursor-pointer" value={"available"}>
+              Status{" "}
+            </option>
           </select>
 
-          <input
-            type="text"
-            name="value"
-            id="value"
-            onChange={(e) =>
-              dispatch({ type: "SET_VALUE", payload: e.target.value })
-            }
-            className="input input-info input-sm w-48 focus:outline-none"
-          />
+          {state.dropdown ? (
+            <select
+              type="text"
+              className="select select-xs focus:outline-none bg-tahiti-lightBlue w-40 font-bold max-w-xs"
+              onChange={(e) => {
+                dispatch({ type: "SET_VALUE", payload: e.target.value });
+              }}
+            >
+              <option disabled selected>
+                Select
+              </option>
+              <option className="cursor-pointer" value={"true"}>
+                Yes{" "}
+              </option>
+              <option className="cursor-pointer" value={"false"}>
+                No{" "}
+              </option>
+            </select>
+          ) : (
+            <input
+              type="text"
+              name="value"
+              id="value"
+              onChange={(e) =>
+                dispatch({ type: "SET_VALUE", payload: e.target.value })
+              }
+              className="input input-info input-xs w-40 focus:outline-none"
+            />
+          )}
           <button
             onClick={() => {
               if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
@@ -195,7 +220,7 @@ const AllTest = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto pr-10">
+      <div className="overflow-x-auto ">
         {state.search && (
           <p className="mb-2">
             Showing results for tests with <b>{state.key}</b> of{" "}
@@ -221,9 +246,7 @@ const AllTest = () => {
               <th className="text-center">Date</th>
               <th className="text-center">Status</th>
               <th className="text-center">Details</th>
-              {
-                role?.includes("labaratorist") && <th>File</th>
-              }
+              {role?.includes("labaratorist") && <th>File</th>}
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}

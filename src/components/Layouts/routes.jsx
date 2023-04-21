@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import ErrorPage from "./ErrorPage";
-import Main from "./Main/Main";
+import Main from './DashBoardLayouts/Main'
 import DashBoard from "../Pages/Dashboard/DashBoradHome/DashBoard";
 import DashBoardLayouts from "../Layouts/DashBoardLayouts/DashBoardLayouts";
 import AllPatients from "../Pages/Dashboard/Patients/AllPatients";
@@ -63,7 +63,7 @@ const router = createBrowserRouter([
         element: <AddAPatient></AddAPatient>,
       },
       {
-        path: "/userprofile",
+        path: "/user/profile",
         element: <UserProfile></UserProfile>,
       },
       {

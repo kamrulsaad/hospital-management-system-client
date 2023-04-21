@@ -13,14 +13,13 @@ const TestDetails = () => {
     fetch(`http://localhost:5000/api/v1/test/${testId}`)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         if (result.status === "success") {
           setTest(result.data);
         } else {
           toast.error(result.error);
         }
         setLoading(false);
-      })
+      });
   }, []);
 
   function formatDate(dateString) {
@@ -57,15 +56,15 @@ const TestDetails = () => {
     return formattedDate;
   }
 
-  if (loading) return <Spinner></Spinner>
+  if (loading) return <Spinner></Spinner>;
 
   return (
-    <div className="m-20 p-10 bg-tahiti-white">
-      <h1 className="text-center text-3xl font-bold underline mb-4">
-        {test?.category?.name}
-      </h1>
-      <div className="grid grid-cols-2 mx-40 mb-6">
+    <div className="p-10 bg-tahiti-white">
+      <div className="md:grid grid-cols-2 mx-20 items-center">
         <div>
+          <h1 className="text-3xl mb-4">
+            Test: <b>{test?.category?.name}</b>
+          </h1>
           <p>
             SerialId: #<b>{test?.serialId}</b>
           </p>
@@ -78,8 +77,6 @@ const TestDetails = () => {
           <p>
             Last Updated: <b>{formatDate(test?.updatedAt).replace(",", "")}</b>
           </p>
-        </div>
-        <div className="ml-10">
           <p>
             Patient: <b>{test?.patient?.name}</b>
           </p>
@@ -95,21 +92,23 @@ const TestDetails = () => {
           <p>
             Phone: <b>{test?.createdBy?.phone}</b>
           </p>
+          {test?.description && (
+            <p className="w-3/4">
+              Remarks: {test?.description}
+            </p>
+          )}
+        </div>
+        <div>
+          {test?.file_url && (
+            <iframe
+              className="mx-auto rounded-lg"
+              src={test?.file_url}
+              width="100%"
+              height="500px"
+            />
+          )}
         </div>
       </div>
-      {test?.description && (
-        <p className="mb-6 mx-40">
-          <b>Remarks:</b> {test?.description}
-        </p>
-      )}
-      {test?.file_url && (
-        <iframe
-          className="mx-auto rounded-lg"
-          src={test?.file_url}
-          width="80%"
-          height="550px"
-        />
-      )}
     </div>
   );
 };

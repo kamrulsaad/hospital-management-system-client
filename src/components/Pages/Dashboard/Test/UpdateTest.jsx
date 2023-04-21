@@ -45,7 +45,7 @@ const UpdateTest = () => {
             icon: "success",
             title: result.message,
           }).then(() => {
-            navigate('/tests')
+            navigate("/tests");
           });
         } else {
           toast.error(result.error);
@@ -63,29 +63,29 @@ const UpdateTest = () => {
   };
 
   return (
-    <div className="m-20 p-10 bg-tahiti-white">
+    <div className="mx-20 mt-10 grid grid-cols-2 items-center bg-tahiti-white">
       <form
         onSubmit={handleFileUpload}
         novalidate=""
         action=""
-        class="container flex flex-col  items-center mx-auto space-y-12 "
+        class="container flex flex-col space-y-2"
       >
-        <h1 className="text-3xl font-semibold text-tahiti-primary ">
+        <h1 className="text-3xl pl-6 font-semibold text-tahiti-darkGreen">
           Update Test
         </h1>
         <fieldset class="grid grid-cols-2 gap-6 p-6 rounded-md w-3/4 ">
-          <div className="col-span-full sm:col-span-3 flex gap-2 ">
-            <p for="password" className="text-xl w-1/4  font-medium">
+          <div className="col-span-full sm:col-span-3 flex  items-center ">
+            <p for="password" className=" w-1/3  font-medium">
               Remarks:{" "}
             </p>
-            <input
+            <textarea
               id="description"
               type="text"
               className="w-3/4 rounded-md border p-1 "
             />
           </div>
-          <div className="col-span-full sm:col-span-3 flex gap-2 ">
-            <p for="password" className="text-xl w-1/4  font-medium">
+          <div className="col-span-full sm:col-span-3 flex items-center">
+            <p for="password" className=" w-1/3  font-medium">
               Choose File:{" "}
             </p>
             <label htmlFor="file-upload">
@@ -101,14 +101,14 @@ const UpdateTest = () => {
           </div>
           <button
             type="submit"
-            className="btn btn-ghost btn-md w-1/3 bg-tahiti-primary block mx-auto col-span-2"
+            className="btn btn-ghost btn-sm w-1/3 bg-tahiti-primary col-span-2"
           >
             Update
           </button>
         </fieldset>
       </form>
       {fileUrl && (
-        <>
+        <div>
           <p className="text-center mb-2 text-lg">
             Preview of <b>{image?.name} </b>!{" "}
             <span
@@ -128,7 +128,7 @@ const UpdateTest = () => {
             width="80%"
             height={window.innerHeight - 200}
           />
-        </>
+        </div>
       )}
     </div>
   );

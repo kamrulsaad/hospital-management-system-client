@@ -1,271 +1,100 @@
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import React from "react";
+import Navbar from "../../Shared/Navbar";
 import Profile from "../../Pages/Dashboard/Users/UserProfie/Profile";
-import { ImLab, ImList2 } from "react-icons/im";
-import { MdDashboard } from "react-icons/md";
-import { TbFileInvoice } from "react-icons/tb";
-import {
-  FaFilePrescription,
-  FaAccessibleIcon,
-  FaUserMd,
-  FaUserAlt,
-} from "react-icons/fa";
 import useUserData from "../../Hooks/useUserData";
-import Spinner from "../../Shared/Spinner";
+import { MdDashboard } from "react-icons/md";
+import { NavLink, Outlet } from "react-router-dom";
+import { ImLab } from "react-icons/im";
 
 const DashBoardLayouts = () => {
-  const [user, userRole, loading] = useUserData();
-  const navigate = useNavigate();
-
-  if (loading) return <Spinner bg></Spinner>;
-
-  // LogOutButton
-  const handleLogOut = () => {
-    localStorage.removeItem("LoginToken");
-    navigate("/user/login");
-  };
+  const [user, role] = useUserData();
 
   return (
     <div>
-      <div className="flex justify-end -mb-14 mr-10 ">
-        {/* nav bar  */}
-        <div className="navbar lg:hidden">
-          <div className="navbar-start">
-            <div className="dropdown">
-              <label
-                tabIndex={0}
-                className="btn bg-tahiti-lightGreen drawer-button mt-5"
+      <Navbar></Navbar>
+      <div className="grid grid-cols-6">
+        <div className="min-h-[calc(100vh-68px)] p-3 space-y-2 w-full bg-tahiti-darkGreen text-tahiti-white">
+          <Profile userInfo={user} />
+          <ul className="pt-2 pb-4 space-y-1 text-sm">
+            <li className="bg-gray-800 text-gray-50">
+              <NavLink
+                to="/"
+                activeclassname="active"
+                className="flex items-center p-2 space-x-3 rounded-md"
               >
-                <ImList2 />
-              </label>
-              <ul
-                tabIndex={0}
-                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-tahiti-lightBlue rounded-box w-52"
-              >
-                <li>
-                  <NavLink activeClassName="active" to="/">
-                    <MdDashboard />
-                    <span className="text-lg font-semibold text-tahiti-white  ">
-                      DashBoard
-                    </span>
-                  </NavLink>
-                </li>
-
-                {userRole === "super-admin" && (
-                  <>
-                    <li>
-                      <NavLink activeClassName="active" to="/alluser">
-                        {" "}
-                        <FaUserAlt className="text-tahiti-white text-3xl" />
-                        <span className="text-lg font-semibold text-tahiti-white  ">
-                          Users
-                        </span>
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-
-                {(userRole === "super-admin" || userRole === "admin") && (
-                  <>
-                    <li>
-                      <NavLink activeClassName="active" to="/doctors">
-                        <FaUserMd className="text-tahiti-white text-3xl" />
-                        <span className="text-lg font-semibold text-tahiti-white  ">
-                          Doctor
-                        </span>
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-
-                {(userRole === "super-admin" ||
-                  userRole === "admin" ||
-                  userRole === "receptionist") && (
-                    <>
-                      <li>
-                        <NavLink activeClassName="active" to="/patients">
-                          <FaAccessibleIcon className="text-tahiti-white text-3xl"></FaAccessibleIcon>
-                          <span className="text-lg font-semibold text-tahiti-white  ">
-                            Patient
-                          </span>
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink activeClassName="active" to="/myappointment">
-                          {" "}
-                          <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
-                          <span className="text-lg font-semibold text-tahiti-white  ">
-                            Appointments
-                          </span>
-                        </NavLink>
-                      </li>
-                    </>
-                  )}
-              </ul>
-            </div>
-          </div>
-        </div>
-        {/* nabbar */}
-
-
-
-
-
-
-
-
-
-        {/* Logout Button */}
-        <button onClick={handleLogOut} >
-          <div className="flex justify-around mt-1">
-            <p className="text-tahiti-white  text-3xl -mr-8 mt-1 -mb-2 font-bold">Log Out</p>
-            <svg
-              width="140"
-              height="39"
-              viewBox="0 0 181 39"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="-ml-16"
-            >
-              <path
-                d="M169.214 6.43326L180.007 17.1234C180.64 17.7502 181 18.6121 181 19.5C181 20.3879 180.64 21.2498 180.007 21.8766L169.214 32.5667C168.651 33.1239 167.896 33.4286 167.104 33.4286C165.461 33.4286 164.125 32.1054 164.125 30.4775V25.0714H152.875C151.319 25.0714 150.062 23.8266 150.062 22.2857V16.7143C150.062 15.1734 151.319 13.9286 152.875 13.9286H164.125V8.52254C164.125 6.89464 165.461 5.57143 167.104 5.57143C167.896 5.57143 168.651 5.88482 169.214 6.43326ZM150.062 5.57143H144.438C142.882 5.57143 141.625 6.81629 141.625 8.35714V30.6429C141.625 32.1837 142.882 33.4286 144.438 33.4286H150.062C151.618 33.4286 152.875 34.6734 152.875 36.2143C152.875 37.7551 151.618 39 150.062 39H144.438C139.779 39 136 35.2567 136 30.6429V8.35714C136 3.7433 139.779 0 144.438 0H150.062C151.618 0 152.875 1.24487 152.875 2.78571C152.875 4.32656 151.618 5.57143 150.062 5.57143Z"
-                fill="#00CC99"
-              />
-
-            </svg>
-          </div>
-        </button>
-      </div>
-      <div className="drawer drawer-mobile ">
-        <input id="dashboardDrawer" type="checkbox" className="drawer-toggle" />
-
-        <div className="drawer-content mt-20 rounded-tl-xl ml-5 bg-tahiti-green ">
-          <Outlet></Outlet>
-        </div>
-        <div className="drawer-side grid grid-rows-4 mb-2 ">
-          <div
-            // onClick={changeRoute}
-            className="flex justify-center lg:block "
-          >
-            <div className="lg:mt-20 hidden lg:block">
-              <Link to="/">
-                <h1 className=" text-4xl font-bold -mt-16 ml-5 mb-10">
-                  <span className="text-tahiti-lightGreen">UNICEH </span>
-                  <span className="text-tahiti-white">HMS</span>
-                </h1>
-              </Link>
-              <Link to="/userprofile">
-                {" "}
-                <Profile userInfo={user}></Profile>
-              </Link>
-            </div>
-          </div>
-          <div className="hidden lg:block">
-            <label htmlFor="dashboardDrawer" className="drawer-overlay"></label>
-            <ul className="menu  p-4 w-80  text-base-content  ">
+                <MdDashboard className="text-tahiti-white text-xl" />
+                <span>Dashboard</span>
+              </NavLink>
+            </li>
+            {(role === "super-admin" ||
+              role === "admin" ||
+              role === "labaratorist") && (
               <li>
-                <NavLink activeclassname="active" to="/">
-                  <MdDashboard className="text-tahiti-white text-3xl" />
-
-                  <span className="text-2xl font-semibold text-tahiti-white  ">
-                    DashBoard
-                  </span>
+                <NavLink
+                  to="/tests"
+                  activeclassname="active"
+                  className="flex items-center p-2 space-x-3 rounded-md"
+                >
+                  <ImLab className="text-xl text-tahiti-white"></ImLab>
+                  <span>Tests</span>
                 </NavLink>
               </li>
-
-              {(userRole === "super-admin" || userRole === "admin") && (
-                <>
-                  <li>
-                    <NavLink activeclassname="active" to="/doctors">
-                      <FaUserMd className="text-tahiti-white text-3xl" />
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Doctors
-                      </span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink activeclassname="active" to="/alluser">
-                      {" "}
-                      <FaUserAlt className="text-tahiti-white text-3xl" />
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Users
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              )}
-              {(userRole === "super-admin" ||
-                userRole === "admin" ||
-                userRole === "accountant") && (
-                <>
-                  <li>
-                    <NavLink activeclassname="active" to="/allinvoice">
-                      <TbFileInvoice className="text-tahiti-white text-3xl"></TbFileInvoice>
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Invoice
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              )}
-
-              {(userRole === "super-admin" ||
-                userRole === "admin" ||
-                userRole === "receptionist" ||
-                userRole === "accountant") && (
-                  <>
-                    <li>
-                      <NavLink activeClassName="active" to="/patients">
-                        <FaAccessibleIcon className="text-tahiti-white text-3xl"></FaAccessibleIcon>
-                        <span className="text-2xl font-semibold text-tahiti-white">
-                          Patient
-                        </span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink activeClassName="active" to="/appointment">
-                        {" "}
-                        <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
-                        <span className="text-2xl font-semibold text-tahiti-white">
-                          Appointment
-                        </span>
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-              {userRole === "doctor" && (
-                <>
-                  <li>
-                    <NavLink activeclassname="active" to="/patients">
-                      <FaAccessibleIcon className="text-tahiti-white text-3xl"></FaAccessibleIcon>
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Patient
-                      </span>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink activeclassname="active" to="/myappointment">
-                      {" "}
-                      <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
-                      <span className="text-2xl font-semibold text-tahiti-white">
-                        Appointments
-                      </span>
-                    </NavLink>
-                  </li>
-                </>
-              )}
-              {(userRole === "super-admin" || userRole === "labaratorist") && (
-                <li>
-                  <NavLink activeclassname="active" to="/tests">
-                    {" "}
-                    <ImLab className="text-3xl text-tahiti-white"></ImLab>
-                    <span className="text-2xl font-semibold text-tahiti-white">
-                      Tests
-                    </span>
-                  </NavLink>
-                </li>
-              )}
-            </ul>
-          </div>
+            )}
+            <li>
+              <a
+                rel="noopener noreferrer"
+                href="#"
+                className="flex items-center p-2 space-x-3 rounded-md"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  className="w-5 h-5 fill-current text-gray-400"
+                >
+                  <path d="M448.205,392.507c30.519-27.2,47.8-63.455,47.8-101.078,0-39.984-18.718-77.378-52.707-105.3C410.218,158.963,366.432,144,320,144s-90.218,14.963-123.293,42.131C162.718,214.051,144,251.445,144,291.429s18.718,77.378,52.707,105.3c33.075,27.168,76.861,42.13,123.293,42.13,6.187,0,12.412-.273,18.585-.816l10.546,9.141A199.849,199.849,0,0,0,480,496h16V461.943l-4.686-4.685A199.17,199.17,0,0,1,448.205,392.507ZM370.089,423l-21.161-18.341-7.056.865A180.275,180.275,0,0,1,320,406.857c-79.4,0-144-51.781-144-115.428S240.6,176,320,176s144,51.781,144,115.429c0,31.71-15.82,61.314-44.546,83.358l-9.215,7.071,4.252,12.035a231.287,231.287,0,0,0,37.882,67.817A167.839,167.839,0,0,1,370.089,423Z"></path>
+                  <path d="M60.185,317.476a220.491,220.491,0,0,0,34.808-63.023l4.22-11.975-9.207-7.066C62.918,214.626,48,186.728,48,156.857,48,96.833,109.009,48,184,48c55.168,0,102.767,26.43,124.077,64.3,3.957-.192,7.931-.3,11.923-.3q12.027,0,23.834,1.167c-8.235-21.335-22.537-40.811-42.2-56.961C270.072,30.279,228.3,16,184,16S97.928,30.279,66.364,56.206C33.886,82.885,16,118.63,16,156.857c0,35.8,16.352,70.295,45.25,96.243a188.4,188.4,0,0,1-40.563,60.729L16,318.515V352H32a190.643,190.643,0,0,0,85.231-20.125,157.3,157.3,0,0,1-5.071-33.645A158.729,158.729,0,0,1,60.185,317.476Z"></path>
+                </svg>
+                <span>Chat</span>
+              </a>
+            </li>
+            <li>
+              <a
+                rel="noopener noreferrer"
+                href="#"
+                className="flex items-center p-2 space-x-3 rounded-md"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  className="w-5 h-5 fill-current text-gray-400"
+                >
+                  <path d="M203.247,386.414,208,381.185V355.4L130.125,191H93.875L16,355.4v27.042l4.234,4.595a124.347,124.347,0,0,0,91.224,39.982h.42A124.343,124.343,0,0,0,203.247,386.414ZM176,368.608a90.924,90.924,0,0,1-64.231,26.413h-.33A90.907,90.907,0,0,1,48,369.667V362.6l64-135.112L176,362.6Z"></path>
+                  <path d="M418.125,191h-36.25L304,355.4v27.042l4.234,4.595a124.347,124.347,0,0,0,91.224,39.982h.42a124.343,124.343,0,0,0,91.369-40.607L496,381.185V355.4ZM464,368.608a90.924,90.924,0,0,1-64.231,26.413h-.33A90.907,90.907,0,0,1,336,369.667V362.6l64-135.112L464,362.6Z"></path>
+                  <path d="M272,196.659A56.223,56.223,0,0,0,309.659,159H416V127H309.659a55.991,55.991,0,0,0-107.318,0H96v32H202.341A56.223,56.223,0,0,0,240,196.659V463H136v32H376V463H272ZM232,143a24,24,0,1,1,24,24A24,24,0,0,1,232,143Z"></path>
+                </svg>
+                <span>Orders</span>
+              </a>
+            </li>
+            <li>
+              <a
+                rel="noopener noreferrer"
+                href="#"
+                className="flex items-center p-2 space-x-3 rounded-md"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  className="w-5 h-5 fill-current text-gray-400"
+                >
+                  <path d="M453.122,79.012a128,128,0,0,0-181.087.068l-15.511,15.7L241.142,79.114l-.1-.1a128,128,0,0,0-181.02,0l-6.91,6.91a128,128,0,0,0,0,181.019L235.485,449.314l20.595,21.578.491-.492.533.533L276.4,450.574,460.032,266.94a128.147,128.147,0,0,0,0-181.019ZM437.4,244.313,256.571,425.146,75.738,244.313a96,96,0,0,1,0-135.764l6.911-6.91a96,96,0,0,1,135.713-.051l38.093,38.787,38.274-38.736a96,96,0,0,1,135.765,0l6.91,6.909A96.11,96.11,0,0,1,437.4,244.313Z"></path>
+                </svg>
+                <span>Wishlist</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="col-span-5">
+          <Outlet />
         </div>
       </div>
     </div>

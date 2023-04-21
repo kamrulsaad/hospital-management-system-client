@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { FaFileUpload, FaTrash } from "react-icons/fa";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const TestRow = ({ invoice, role, refetch, setRefetch }) => {
