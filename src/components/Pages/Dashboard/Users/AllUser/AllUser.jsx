@@ -8,8 +8,8 @@ const AllUser = () => {
   const [loading, setLoading] = useState(null);
   const [users, setUsers] = useState([]);
   console.log(users);
-  const [name, setName] = useState([]);
-  const [value, setValue] = useState([]);
+  const [name, setName] = useState("");
+  const [value, setValue] = useState("");
   const [dataCount, setDataCount] = useState(0);
   const [user, role] = useUserData();
 
