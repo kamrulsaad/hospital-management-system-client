@@ -5,11 +5,16 @@ import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
+import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
+import { MdLocalPrintshop } from "react-icons/md";
+import useUserData from "../../../Hooks/useUserData";
+
 
 const NewPatientProfile = ({ qr }) => {
   const [newPatient, setNewPatient] = useState({});
   const [loading, setLoading] = useState({});
+  const [user, role] = useUserData();
   // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
   const { id } = useParams();
 
@@ -24,8 +29,8 @@ const NewPatientProfile = ({ qr }) => {
     const fetchUserData = async () => {
       const response = await fetch(
         qr
-          ? `https://hms-server.onrender.com/api/v1/patient/qr/${id}`
-          : `https://hms-server.onrender.com/api/v1/patient/${id}`,
+          ? `http://localhost:5000/api/v1/patient/qr/${id}`
+          : `http://localhost:5000/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {
@@ -46,12 +51,12 @@ const NewPatientProfile = ({ qr }) => {
     <div className="bg-tahiti-darkGreen min-h-screen xl:p-20 sm:p-10 grid justify-items-center ">
       <div className="grid xl:grid-cols-2  sm:grid-cols-1 gap-x-4 xl:gap-y-22 bg-tahiti-green rounded-2xl ">
         <div className="grid xl:grid-cols-3 sm:grid-cols-1 gap-y-2">
-          <div></div>
-          <h1 className="text-4xl  font-semibold xl:col-span-2 mt-14">
+          <div className="hidden xl:block lg:block"></div>
+          <h1 className="text-4xl  font-semibold col-span-2 mt-14 text-center">
             <span>PATIENT</span>{" "}
             <span className="text-tahiti-lightGreen">INFORMATION</span>
           </h1>
-          <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white mx-auto rounded-full shadow-2xl  flex items-center justify-center text-indigo-500">
+          <div className="w-48 h-48 hidden lg:block bg-indigo-100 bg-tahiti-white mx-auto rounded-full shadow-2xl  xl:flex items-center justify-center text-indigo-500">
             <FaAccessibleIcon className="text-8xl"></FaAccessibleIcon>
           </div>
           <div className="col-span-2">
@@ -87,13 +92,13 @@ const NewPatientProfile = ({ qr }) => {
         </div>
         <div className="grid grid-cols-3">
           <div></div>
-          <h1 className="text-4xl font-semibold xl:col-span-2 mt-14">
+          <h1 className="text-4xl font-semibold col-span-2 mt-14">
             <span>EMERGENCY</span>{" "}
             <span className="text-tahiti-lightGreen uppercase">Contact</span>
           </h1>
           <div>
             <QRCode
-              className="ml-20"
+              className="xl:ml-20 mx-auto "
               style={{ height: "auto", maxWidth: "100%", width: "50%" }}
               value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
             />
@@ -110,19 +115,27 @@ const NewPatientProfile = ({ qr }) => {
               <span className="font-bold">Relation</span>:{" "}
               {newPatient?.data?.emergency_contact?.relation}
             </h3>
-            {!qr && (
-              <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4">
-                <Link to={`/appointment/${newPatient?.data?._id}`}>
-                  Add Apppointment
-                </Link>
-              </button>
-            )}
-            <button
-              onClick={handlePrint}
-              className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60 mb-8  font-medium mt-4"
-            >
-              Print
-            </button>
+            <div className="flex mt-4">
+
+              {!qr && (
+                <>
+                  <button className="text-tahiti-white bg-tahiti-lightGreen  rounded-md py-2 px-4 w-60  font-medium">
+                    <Link to={`/appointment/${newPatient?.data?._id}`}>
+                      Add Apppointment
+                    </Link>
+                  </button>
+                  <button
+                    onClick={handlePrint}
+                    className="text-tahiti-white bg-tahiti-lightGreen rounded-md ml-2"
+                  >
+                    <MdLocalPrintshop
+                      className="h-10 w-10"
+                    />
+                  </button>
+                </>
+              )}
+
+            </div>
           </div>
         </div>
         <div>
@@ -132,12 +145,14 @@ const NewPatientProfile = ({ qr }) => {
         </div>
       </div>
       <div>
-        {!qr && (
-          <Link to="/">
-            <button className="btn btn-ghost mt-5 bg-tahiti-primary text-tahiti-white">
-              Back to dashBoard
-            </button>
-          </Link>
+        {!qr&& (
+          <>
+            <Link to="/">
+              <button className="btn btn-ghost mt-5 bg-tahiti-primary text-tahiti-white">
+                Back to dashBoard
+              </button>
+            </Link>
+          </>
         )}
       </div>
       <div

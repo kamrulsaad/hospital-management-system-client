@@ -29,7 +29,7 @@ const TestRow = ({ invoice, role, refetch, setRefetch }) => {
   //     confirmButtonText: "Okay",
   //   }).then((results) => {
   //     if (results.isConfirmed) {
-  //       fetch(`https://hms-server.onrender.com/api/v1/invoice/${id}`, requestOptions)
+  //       fetch(`http://localhost:5000/api/v1/invoice/${id}`, requestOptions)
   //         .then((response) => response.json())
   //         .then((result) => {
   //           if (result.status === "success") toast.success(result.message);

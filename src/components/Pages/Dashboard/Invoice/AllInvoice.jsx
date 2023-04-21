@@ -88,9 +88,7 @@ const reducer = (state, action) => {
 
 const AllInvoice = () => {
   const [user, role, loading] = useUserData();
-
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const pages = Math.ceil(state?.count / state?.size);
 
   useEffect(() => {
@@ -100,7 +98,7 @@ const AllInvoice = () => {
       payload: state.key && state.value ? true : false,
     });
     fetch(
-      `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      `http://localhost:5000/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

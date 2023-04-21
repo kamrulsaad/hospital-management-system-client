@@ -29,7 +29,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`https://hms-server.onrender.com/api/v1/patient/${id}`, requestOptions)
+        fetch(`http://localhost:5000/api/v1/patient/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);

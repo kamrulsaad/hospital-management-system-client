@@ -10,7 +10,7 @@ const TestDetails = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms-server.onrender.com/api/v1/test/${testId}`)
+    fetch(`http://localhost:5000/api/v1/test/${testId}`)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);

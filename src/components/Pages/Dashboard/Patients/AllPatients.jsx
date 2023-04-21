@@ -52,7 +52,7 @@ const AllPatients = () => {
   useEffect(() => {
     setLoading(true);
     fetch(
-      `https://hms-server.onrender.com/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
+      `http://localhost:5000/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
