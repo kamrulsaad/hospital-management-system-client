@@ -38,25 +38,25 @@ const NewPatientTable = () => {
     )
 
   return (
-    <div className="py-8 pr-28">
-      <div className="flex justify-between mt-5 ">
-        <h1 className="text-3xl font-bold">New Patients</h1>
+    <div className="col-span-2">
+      <div className="flex justify-between">
+        <h1 className="text-xl font-bold">New Patients</h1>
         <Link to="/addapatient">
-          <button className="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+          <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
             Add New
           </button>
         </Link>
       </div>
-      <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-5  rounded-xl">
+      <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-2  rounded-xl">
         <table className="table w-full bg-tahiti-white ">
           <thead>
             <tr>
-              <th></th>
+              <th>Sl</th>
               <th>Patient ID</th>
               <th>Name</th>
               {/* <th>Last Name</th> */}
               <th>Phone</th>
-              <th></th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>

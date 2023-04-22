@@ -1,33 +1,59 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-import AvailableBed from '../Bed/AvailableBed';
-import AvailableDoctor from '../Doctors/AvailableDoctor';
-import Bed from '../Bed/Bed';
-import Doctor from '../Doctors/Doctor';
-import NewPatient from '../Patients/NewPatient';
-import Patients from '../Patients/Patients';
-import Calendar from '../Calendar/CalendarComponent';
-import CalendarComponent from '../Calendar/CalendarComponent';
-import NewPatientTable from '../NewPatientTable/NewPatientTable';
-
+import React from "react";
+import CalendarComponent from "../Calendar/CalendarComponent";
+import NewPatientTable from "../NewPatientTable/NewPatientTable";
+import { FaAccessibleIcon, FaBed, FaUserMd } from "react-icons/fa";
+import DashboardCard from "./DashboardCard";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const DashBoard = () => {
+  const cards = [
+    {
+      title: "Patients",
+      icon: <FaAccessibleIcon className="text-6xl text-tahiti-grey" />,
+    },
+    {
+      title: "Doctors",
+      icon: <FaUserMd className="text-6xl text-tahiti-grey" />,
+    },
+    {
+      title: "Beds",
+      icon: <FaBed className="text-6xl text-tahiti-grey" />,
+    },
+    {
+      title: "New Patient",
+      icon: <FaAccessibleIcon className="text-6xl text-tahiti-grey" />,
+    },
+    {
+      title: "Available Doctors",
+      icon: <FaUserMd className="text-6xl text-tahiti-grey" />,
+    },
+    {
+      title: "Available Beds",
+      icon: <FaBed className="text-6xl text-tahiti-grey" />,
+    },
+  ];
 
-    return (
-        <div >
-            <div className='grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1  lg:mt-10 lg:ml-20 sm:ml-20'>
-                <Patients></Patients>
-                <Doctor></Doctor>
-                <Bed></Bed>
-                <NewPatient></NewPatient>
-                <AvailableDoctor></AvailableDoctor>
-                <AvailableBed></AvailableBed>
-                <CalendarComponent></CalendarComponent>
-                <div className='col-span-2'><NewPatientTable></NewPatientTable></div>
-            </div>
+  const tileClassName = ({ date, view }) => {
+    // Add the class "today" to the tile that represents today's date
+    if (view === "month" && date.getDate() === new Date().getDate()) {
+      return "today";
+    }
+  };
 
-        </div>
-    );
+  return (
+    <div className="p-10">
+      <div className="grid gap-y-10 gap-x-20 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1">
+        {cards.map((card) => (
+          <DashboardCard data={card}></DashboardCard>
+        ))}
+      </div>
+      <div className="mt-10 grid grid-cols-3 gap-x-20">
+        <Calendar className="rounded-lg" tileClassName={tileClassName} />
+        <NewPatientTable></NewPatientTable>
+      </div>
+    </div>
+  );
 };
 
 export default DashBoard;
