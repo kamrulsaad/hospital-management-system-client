@@ -7,7 +7,7 @@ const Profile = ({ userInfo }) => {
 
   return (
     <NavLink to="/user/profile">
-      <div className="flex items-center pl-2 rounded-md space-x-4 hover:cursor-pointer hover:border-tahiti-dark hover:bg-tahiti-primary hover:text-tahiti-grey duration-200">
+      <div className="flex items-center pl-2 py-2 rounded-md space-x-4 hover:cursor-pointer hover:border-tahiti-dark hover:bg-tahiti-primary duration-300">
         {userInfo?.imageURL ? (
           <img
             src={userInfo?.imageURL}

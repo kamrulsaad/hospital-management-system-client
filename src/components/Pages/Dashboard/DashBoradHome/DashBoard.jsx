@@ -49,7 +49,7 @@ const DashBoard = () => {
       </div>
       <div className="mt-10 grid grid-cols-3 gap-x-20">
         <Calendar
-          className="rounded-lg"
+          className="rounded-lg w-full border-tahiti-mainBlue"
           tileClassName={tileClassName}
         />
         <NewPatientTable></NewPatientTable>

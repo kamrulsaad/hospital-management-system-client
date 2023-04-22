@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import ErrorPage from "./ErrorPage";
-import Main from './DashBoardLayouts/Main'
+import Main from "./DashBoardLayouts/Main";
 import DashBoard from "../Pages/Dashboard/DashBoradHome/DashBoard";
 import DashBoardLayouts from "../Layouts/DashBoardLayouts/DashBoardLayouts";
 import AllPatients from "../Pages/Dashboard/Patients/AllPatients";
@@ -12,7 +12,6 @@ import AddAPatient from "../Pages/Dashboard/Patients/AddAPatient";
 import UserProfile from "../Pages/Dashboard/Users/UserProfie/UserProfile";
 import AllUser from "../Pages/Dashboard/Users/AllUser/AllUser";
 import Appointment from "../Pages/Dashboard/Appointment/Appointment";
-import PatientProfile from "../Pages/Dashboard/PatientProfile/PatientProfile";
 import MyAppointments from "../Pages/Dashboard/Doctors/MyAppointments";
 import UpdatePassword from "../Pages/Dashboard/Users/UserProfie/UpdatePassword";
 import UpdatePresciption from "../Pages/Dashboard/Presciption/UpdatePresciption";
@@ -70,7 +69,7 @@ const router = createBrowserRouter([
         path: "/alluser",
         element: <AllUser></AllUser>,
       },
-  
+
       {
         path: "/appointment",
         element: <AllApointments></AllApointments>,
@@ -91,7 +90,7 @@ const router = createBrowserRouter([
         path: "/createinvoice/:patientId",
         element: <CreateInvoice></CreateInvoice>,
       },
-      
+
       {
         path: "/allinvoice",
         element: <AllInvoice></AllInvoice>,
@@ -117,7 +116,7 @@ const router = createBrowserRouter([
         path: "/category/new",
         element: <CreateInvoiceCategory></CreateInvoiceCategory>,
       },
-      
+
       {
         path: "/payment/invoice/:invoiceId",
         element: <InvoicePage></InvoicePage>,
@@ -154,10 +153,6 @@ const router = createBrowserRouter([
     path: "/patient",
     element: <Main></Main>,
     children: [
-      {
-        path: "/patient/patientprofile/:id",
-        element: <PatientProfile></PatientProfile>,
-      },
       {
         path: "/patient/newpatientprofile/:id",
         element: <NewPatientProfile></NewPatientProfile>,
