@@ -1,57 +1,109 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../../../Hooks/useUserData";
 // import { useQuery } from 'react-query';
 import Spinner from "../../../Shared/Spinner";
 import PatientsRow from "./PatientsRow";
 import { MdSearch } from "react-icons/md";
+import { useReducer } from "react";
+import { toast } from "react-toastify";
+
+const initialState = {
+  name: "",
+  value: "",
+  loading: false,
+  patients: [],
+  refetch: true,
+  count: 0,
+  pageNumber: 1,
+  size: 10,
+  search: null,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_NAME":
+      return {
+        ...state,
+        name: action.payload,
+      };
+    case "SET_VALUE":
+      return {
+        ...state,
+        value: action.payload,
+      };
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case "SET_PATIENTS":
+      return {
+        ...state,
+        patients: action.payload,
+      };
+    case "SET_REFETCH":
+      return {
+        ...state,
+        refetch: !state.refetch,
+      };
+    case "SET_COUNT":
+      return {
+        ...state,
+        count: action.payload,
+      };
+    case "SET_PAGENUMBER":
+      return {
+        ...state,
+        pageNumber: action.payload,
+      };
+    case "SET_SIZE":
+      return {
+        ...state,
+        size: action.payload,
+      };
+    case "SET_SEARCH":
+      return {
+        ...state,
+        search: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 const AllPatients = () => {
-  const [loading, setLoading] = useState(null);
-  const [patients, setPatients] = useState([]);
-  const [refetch, setRefetch] = useState(true);
-  const [dataCount, setDataCount] = useState(0);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const [user, role] = useUserData();
-  const [name, setName] = useState([]);
-  const [value, setValue] = useState([]);
-
-  const handleSearch = event => {
-    event.preventDefault();
-    setLoading(true);
-    const form = event.target;
-    const name = form.name.value;
-    const value = form.value.value;
-    setName(name)
-    setValue(value)
-  };
-
-
 
   // pagination
-  const [count, setCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [size, setSize] = useState(10);
-  const pages = Math.ceil(count / size);
+
+  const pages = Math.ceil(state.count / state.size);
 
   const increasePageNumber = () => {
-    if (pageNumber < pages) {
-      setPageNumber(pageNumber + 1);
+    if (state.pageNumber < pages) {
+      dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber + 1 });
     }
   };
 
   const decreasePageNumber = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
+    if (state.pageNumber > 1) {
+      dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber - 1 });
     } else {
-      setPageNumber(1);
+      dispatch({ type: "SET_PAGENUMBER", payload: 1 });
     }
   };
 
   // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
-    setLoading(true);
+    dispatch({ type: "SET_LOADING", payload: true });
+    dispatch({
+      type: "SET_SEARCH",
+      payload: state.name && state.value ? true : false,
+    });
     fetch(
-      `http://localhost:5000/api/v1/patient/all-patient?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`,
+      `http://localhost:5000/api/v1/patient/all-patient?page=${state.pageNumber}&limit=${state.size}&key=${state.name}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -60,50 +112,68 @@ const AllPatients = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        setDataCount(data?.total);
-        setLoading(false);
-        setCount(data.total);
-        setPatients(data?.data);
+        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_COUNT", payload: data?.total });
+        dispatch({ type: "SET_PATIENTS", payload: data?.data });
       });
-  }, [pageNumber, size, refetch]);
+  }, [state.pageNumber, state.size, state.refetch]);
 
   // Loading functionality
-  if (loading) return <Spinner></Spinner>;
-  else if (count === 0)
+  if (state.loading) return <Spinner></Spinner>;
+  else if (!state.count)
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
           No Patient Found
         </h2>
-        <Link to="/addapatient">
-          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white">
-            Add New
+        {state.name || state.value ? (
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_NAME", payload: "" });
+              dispatch({ type: "SET_VALUE", payload: "" });
+              dispatch({ type: "SET_REFETCH" });
+            }}
+            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
+          >
+            Go Back
           </button>
-        </Link>
+        ) : (
+          <Link to={"/"}>
+            <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+              Back to Dashboard
+            </button>
+          </Link>
+        )}
       </>
     );
 
   return (
-    <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 mb-4">Patients : {dataCount}</h1>
+    <div className="p-10">
+      <h1 className="text-3xl font-bold mb-4">Patients : {state.count}</h1>
       {/* Search Field */}
-      <div className={`flex ${role?.includes("receptionist") ? "justify-between" : 'justify-end'} pr-10`}>
+      <div
+        className={`flex ${
+          role?.includes("receptionist") ? "justify-between" : "justify-end"
+        }`}
+      >
         {role?.includes("receptionist") && (
           <>
             <Link to="/addapatient">
-              <button className=" lg:mb-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+              <button className=" lg:mb-5 font-semibold px-2 py-1 text-xs  rounded-md bg-tahiti-darkGreen text-tahiti-white">
                 Add New
               </button>
             </Link>
           </>
         )}
-        <form onSubmit={handleSearch} className="flex mb-4 gap-2">
-
+        <div className="flex mb-4 gap-2">
           <select
             type="text"
             name="name"
             id="name"
-            className="select select-sm focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
+            onChange={(e) =>
+              dispatch({ type: "SET_NAME", payload: e.target.value })
+            }
+            className="select select-xs focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
           >
             <option disabled selected>
               Select
@@ -115,22 +185,51 @@ const AllPatients = () => {
             <option value={"bloodGroup"}>Blood Group</option>
             <option value={"age"}>Age</option>
           </select>
-          <input type="text" name="value" id="value" className="input input-bordered input-info  input-sm  max-w-xs" />
-          <button type="submit" className="btn btn-sm">
-            <MdSearch
-              className="cursor-pointer mx-auto"
-            />
+          <input
+            type="text"
+            name="value"
+            id="value"
+            onChange={(e) =>
+              dispatch({ type: "SET_VALUE", payload: e.target.value })
+            }
+            className="input input-bordered focus:outline-none input-info  input-xs  max-w-xs"
+          />
+          <button
+            onClick={() => {
+              if (state.name && state.value) dispatch({ type: "SET_REFETCH" });
+              else return toast.error("Please select from options to search");
+            }}
+            className="btn btn-xs"
+          >
+            <MdSearch className="cursor-pointer mx-auto" />
           </button>
-        </form>
+        </div>
       </div>
 
-      <div className="overflow-x-auto pr-10">
-        <table className="table w-full bg-tahiti-white">
+      <div className="overflow-x-auto">
+        {state.search && (
+          <p className="mb-2">
+            Showing results for patients with <b>{state.name}</b> of{" "}
+            <b>{state.value}</b>{" "}
+            <button
+              className="btn btn-xs bg-tahiti-grey text-tahiti-red"
+              onClick={() => {
+                dispatch({ type: "SET_NAME", payload: "" });
+                dispatch({ type: "SET_VALUE", payload: "" });
+                dispatch({ type: "SET_REFETCH" });
+              }}
+            >
+              X
+            </button>{" "}
+          </p>
+        )}
+        <table className="table w-full bg-tahiti-white text-sm">
           <thead>
             <tr>
               <th className="text-center">Sl</th>
               <th className="text-center">Patient ID</th>
               <th className="text-center">Name</th>
+              <th className="text-center">Date</th>
               <th className="text-center">Age</th>
               <th className="text-center">Blood Group</th>
               <th className="text-center">Gender</th>
@@ -142,14 +241,14 @@ const AllPatients = () => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((patient, i) => (
+            {state.patients.map((patient, i) => (
               <PatientsRow
                 key={patient._id}
                 patient={patient}
                 i={i}
                 role={role}
-                refetch={refetch}
-                setRefetch={setRefetch}
+                refetch={state.refetch}
+                setRefetch={() => dispatch({ type: "SET_REFETCH" })}
               ></PatientsRow>
             ))}
           </tbody>
@@ -161,7 +260,7 @@ const AllPatients = () => {
         <span className="text-sm text-gray-700 dark:text-gray-400">
           Showing Page{" "}
           <span className="font-semibold text-gray-900 dark:text-white">
-            {pageNumber}
+            {state.pageNumber}
           </span>
           <span className="font-semibold text-gray-900 dark:text-white"></span>{" "}
           of{" "}
@@ -173,13 +272,13 @@ const AllPatients = () => {
         <div className="inline-flex mt-2 xs:mt-0">
           <button
             onClick={decreasePageNumber}
-            className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
+            className="px-2 py-1 text-xs font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Prev
           </button>
           <button
             onClick={increasePageNumber}
-            className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
+            className="px-2 py-1 text-xs font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Next
           </button>

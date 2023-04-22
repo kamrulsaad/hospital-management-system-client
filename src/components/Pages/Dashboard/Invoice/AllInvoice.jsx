@@ -127,7 +127,7 @@ const AllInvoice = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
-        {state.key || state.value ? (
+        {(state.key || state.value) && (
           <button
             onClick={() => {
               dispatch({ type: "SET_KEY", payload: "" });
@@ -138,23 +138,15 @@ const AllInvoice = () => {
           >
             Go Back to previous page
           </button>
-        ) : (
-          <Link to={'/patients'}>
-            <button
-            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
-          >
-            Add New Invoice for patients
-          </button>
-          </Link>
         )}
       </>
     );
 
   return (
-    <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Invoices : {state.count}</h1>
+    <div className="p-10">
+      <h1 className="text-3xl font-bold">Invoices : {state.count}</h1>
 
-      <div className="flex justify-between items-center pr-10">
+      <div className="flex justify-between items-center">
         {role?.includes("accountant") && (
           <Link to="/patients">
             <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
@@ -165,7 +157,7 @@ const AllInvoice = () => {
         {(role?.includes("super-admin") || role?.includes("admin")) && (
           <Link
             to={"/categories"}
-            className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white btn-sm"
+            className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
           >
             all categories
           </Link>
@@ -175,7 +167,7 @@ const AllInvoice = () => {
             type="text"
             name="name"
             id="name"
-            className="select select-sm focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
+            className="select select-xs focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
             onChange={(event) => {
               dispatch({ type: "SET_KEY", payload: event.target.value });
 
@@ -197,7 +189,7 @@ const AllInvoice = () => {
           {state.dropdown ? (
             <select
               type="text"
-              className="select select-sm select-bordered focus:outline-none bg-tahiti-white font-bold w-48"
+              className="select select-xs select-bordered focus:outline-none bg-tahiti-white font-bold w-48"
               onChange={(event) =>
                 dispatch({ type: "SET_VALUE", payload: event.target.value })
               }
@@ -220,7 +212,7 @@ const AllInvoice = () => {
               onChange={(e) =>
                 dispatch({ type: "SET_VALUE", payload: e.target.value })
               }
-              className="input input-info input-sm w-48 focus:outline-none"
+              className="input input-info input-xs w-48 focus:outline-none"
             />
           )}
           <button
@@ -229,14 +221,14 @@ const AllInvoice = () => {
               else toast.error("Please select from options to search");
             }}
             type="submit"
-            className="btn btn-sm"
+            className="btn btn-xs"
           >
             <MdSearch className="cursor-pointer mx-auto" />
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto pr-10">
+      <div className="overflow-x-auto text-sm">
         {state.search && (
           <p className="mb-2">
             Showing results for invoices with <b>{state.key}</b> of{" "}

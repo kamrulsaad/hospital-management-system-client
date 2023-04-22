@@ -237,7 +237,7 @@ const AllTest = () => {
             </button>{" "}
           </p>
         )}
-        <table className="table w-full bg-tahiti-white">
+        <table className="table w-full bg-tahiti-white text-sm">
           <thead>
             <tr>
               <th>Serial ID</th>

@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(null);
   const [errors, setErrors] = useState({
     digit: "",
     lower: "",
@@ -44,6 +45,7 @@ const Register = () => {
   // const [loginResult, setLoginResult] = useState({});
 
   const handleSubmit = (event) => {
+    setLoading(true);
     setError("");
     // Getting From Data
     event.preventDefault();
@@ -79,6 +81,7 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        setLoading(false);
         if (result?.status === "success") {
           toast.success(result?.message);
           form.reset();
@@ -87,16 +90,16 @@ const Register = () => {
         }
       })
       .catch((error) => {
-        console.error(error);
         setError(error.message);
+        setLoading(false);
       });
   };
 
   return (
-    <div className="lg:p-20 ">
-      <section className="p-6 flex flex-col items-center bg-tahiti-white shadow-xl rounded-xl">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold pb-10">
+    <div className="p-10 px-32">
+      <section className="p-4 flex flex-col items-center bg-tahiti-white shadow-xl rounded-xl">
+        <div className=" text-center">
+          <h1 className="my-3 text-4xl font-bold pb-2">
             <span className="text-tahiti-primary">UNIECH</span>
             <span className="text-tahiti-dark"> HMS</span>{" "}
           </h1>
@@ -250,12 +253,19 @@ const Register = () => {
               </div>
             </div>
           </fieldset>
-          <div className="pb-10 flex justify-center">
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="w-60 px-8 py-3 font-semibold rounded-md bg-tahiti-darkGreen text-tahiti-white "
+              className="w-60 py-2 text-sm font-semibold rounded-md bg-tahiti-darkGreen text-tahiti-white "
             >
-              Sign Up
+              {loading ? (
+                  <img
+                    className="animate-spin w-6 inline-block"
+                    src="/assets/loading.png"
+                  />
+                ) : (
+                  "Sign Up"
+                )}
             </button>
           </div>
         </form>

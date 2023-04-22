@@ -6,7 +6,13 @@ import Swal from "sweetalert2";
 
 const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
-  
+
+  const date = new Date(patient?.createdAt);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = date
+    .toLocaleDateString("en-US", options)
+    .replace(/ /g, "/");
+
   const handleDelete = (id) => {
     setDelLoading(true);
 
@@ -51,6 +57,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
       <th className="text-center">{i + 1}</th>
       <td className="text-center">{patient?.serialId}</td>
       <td className="text-center">{patient?.name}</td>
+      <td className="text-center">{formattedDate.replace(",", "")}</td>
       <td className="text-center">{patient?.age}</td>
       <td className="text-center">{patient?.bloodGroup}</td>
       <td className="text-center">{patient?.gender}</td>
@@ -62,7 +69,9 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
           </button>
         ) : (
           <button className="btn btn-xs">
-            <Link to={`/patient/newpatientprofile/${patient._id}`}>Details</Link>
+            <Link to={`/patient/newpatientprofile/${patient._id}`}>
+              Details
+            </Link>
           </button>
         )}
       </td>

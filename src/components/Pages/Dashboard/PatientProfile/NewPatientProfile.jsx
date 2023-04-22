@@ -104,7 +104,7 @@ const NewPatientProfile = ({ qr }) => {
             style={{ height: "auto", maxWidth: "100%", width: "50%" }}
             value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
           />
-          <div className="col-span-2">
+          <div className="col-span-2 mb-4">
             <h3 className="text-2xl font-semibold ">
               {newPatient?.data?.emergency_contact?.name}
             </h3>

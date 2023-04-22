@@ -2,10 +2,51 @@ import React, { useEffect, useState } from "react";
 import Spinner from "../../../Shared/Spinner";
 import useUserData from "../../../Hooks/useUserData";
 import AppointmentsRow from "./AppointmentsRow";
-import { Link } from "react-router-dom";
 import { MdSearch } from "react-icons/md";
+import { useReducer } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+
+const initialState = {
+  loading: null,
+  refetch: true,
+  appointments: [],
+  key: "",
+  value: "",
+  count: 0,
+  pageNumber: 1,
+  size: 10,
+  search: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_LOADING":
+      return { ...state, loading: action.payload };
+    case "SET_REFETCH":
+      return { ...state, refetch: !state.refetch };
+    case "SET_APPOINTMENTS":
+      return { ...state, appointments: action.payload };
+    case "SET_KEY":
+      return { ...state, key: action.payload };
+    case "SET_VALUE":
+      return { ...state, value: action.payload };
+    case "SET_COUNT":
+      return { ...state, count: action.payload };
+    case "SET_PAGE_NUMBER":
+      return { ...state, pageNumber: action.payload };
+    case "SET_SIZE":
+      return { ...state, size: action.payload };
+    case "SET_SEARCH":
+      return { ...state, search: action.payload };
+    default:
+      return state;
+  }
+};
 
 const AllApointments = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const [loading, setLoading] = useState(null);
   const [refetch, setRefetch] = useState(true);
   const [appointments, setAppointment] = useState([]);
@@ -14,143 +55,183 @@ const AllApointments = () => {
   const [value, setValue] = useState([]);
   const [dataCount, setDataCount] = useState(0);
 
-  const handleSearch = event => {
-    event.preventDefault();
-    setLoading(true);
-    const form = event.target;
-    const name = form.name.value;
-    const value = form.value.value;
-    setName(name)
-    setValue(value)
-  };
-
   // pagination
   const [count, setCount] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [size, setSize] = useState(10);
-  const pages = Math.ceil(count / size);
+  const pages = Math.ceil(state.count / state.size);
 
   const increasePageNumber = () => {
-   if(pageNumber<pages){
-    setPageNumber(pageNumber + 1)
-   }
-  }
+    if (state.pageNumber < state.pages) {
+      dispatch({ type: "SET_PAGE_NUMBER", payload: state.pageNumber + 1 });
+    }
+  };
 
   const decreasePageNumber = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1)
+    if (state.pageNumber > 1) {
+      dispatch({ type: "SET_PAGE_NUMBER", payload: state.pageNumber - 1 });
+    } else {
+      dispatch({ type: "SET_PAGE_NUMBER", payload: 1 });
     }
   };
 
   // All Appointment fetch data  ?page=1&limit=10
   useEffect(() => {
-    setLoading(true);
-    fetch(`http://localhost:5000/api/v1/appointment/all-appointments?page=${pageNumber}&limit=${size}&key=${name}&value=${value}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
+    dispatch({ type: "SET_LOADING", payload: true });
+    dispatch({
+      type: "SET_SEARCH",
+      payload: state.key && state.value ? true : false,
+    });
+    fetch(
+      `http://localhost:5000/api/v1/appointment/all-appointments?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
-        setDataCount(data?.total);
-        setLoading(false);
-        setCount(data.total);
-        setAppointment(data?.data);
+        dispatch({ type: "SET_APPOINTMENTS", payload: data?.data });
+        dispatch({ type: "SET_COUNT", payload: data?.total });
+        dispatch({ type: "SET_LOADING", payload: false });
       });
-  }, [pageNumber, size, refetch]);
+  }, [state.pageNumber, state.size, state.refetch]);
 
   // Loading functionality
-  if (loading) return <Spinner></Spinner>;
-  if (appointments?.length === 0)
-    return <h2 className="text-tahiti-red text-center mt-60 text-5xl ">No Appointment Found</h2>;
+  if (state.loading) return <Spinner></Spinner>;
+  if (!state.count)
+    return (
+      <>
+        <h2 className="text-tahiti-red text-center mt-60 text-3xl ">
+          No Appointment Found
+        </h2>
+        {state.key || state.value ? (
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_KEY", payload: "" });
+              dispatch({ type: "SET_VALUE", payload: "" });
+              dispatch({ type: "SET_REFETCH" });
+            }}
+            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
+          >
+            Go Back to previous page
+          </button>
+        ) : (
+          <Link to={"/patients"}>
+            <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+              Add New Appointment for patients
+            </button>
+          </Link>
+        )}
+      </>
+    );
 
   return (
-    <div className='lg:ml-20 '>
-      <h1 className='text-5xl font-bold mt-20 mb-4 '>Appointment : {dataCount}</h1>
-      {/* <Link to="/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link> */}
-      {/* Search Field */}
-      <div className="flex justify-between pr-10 mb-3">
-
-
-        {/* {!role?.includes("accountant") && (
-          <>
-            <Link to="/addapatient">
-              <button className=" lg:mb-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
-                Add New
-              </button>
-            </Link>
-          </>
-        )} */}
-
-
-        <div></div>
-        <form onSubmit={handleSearch} action="" className=" flex gap-2">
-
+    <div className="p-10">
+      <div className="flex justify-between mb-3">
+        <h1 className="text-3xl font-bold">Appointment : {state.count}</h1>
+        {/* <Link to="/addapatient"><button className=' lg:mb-5 lg:mt-5 font-semibold p-1 rounded-sm btn-ghost bg-tahiti-darkGreen text-tahiti-white'>Add New</button></Link> */}
+        {/* Search Field */}
+        <div className=" flex gap-2">
           <select
             type="text"
-            name="name"
-            id="name"
-            className="select select-sm focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
+            onChange={(e) =>
+              dispatch({ type: "SET_KEY", payload: e.target.value })
+            }
+            className="select select-xs focus:outline-none bg-tahiti-primary font-bold  text-tahiti-white "
           >
             <option disabled selected>
               Select
             </option>
             <option value={"serialId"}>Serial ID </option>
-            <option value={"phone"}>Phone</option>
+            <option value={"reason"}>Reason</option>
           </select>
-          <input type="text" name="value" id="value" className="input input-bordered input-info  input-sm  max-w-xs" />
-          <button type="submit" className="btn btn-sm">
-            <MdSearch
-              className="cursor-pointer mx-auto"
-            />
+          <input
+            type="text"
+            onChange={(e) =>
+              dispatch({ type: "SET_VALUE", payload: e.target.value })
+            }
+            className="input input-bordered input-info  input-xs  max-w-xs"
+          />
+          <button
+            onClick={() => {
+              if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
+              else toast.error("Please select from options to search");
+            }}
+            className="btn btn-xs"
+          >
+            <MdSearch className="cursor-pointer mx-auto" />
           </button>
-        </form>
+        </div>
       </div>
 
-      <div className="overflow-x-auto pr-10">
-        <table className="table w-full bg-tahiti-white">
+      <div className="overflow-x-auto">
+        {state.search && (
+          <p className="mb-2">
+            Showing results for Appointments with <b>{state.key}</b> of{" "}
+            <b>{state.value}</b>{" "}
+            <button
+              className="btn btn-xs bg-tahiti-grey text-tahiti-red"
+              onClick={() => {
+                dispatch({ type: "SET_KEY", payload: "" });
+                dispatch({ type: "SET_VALUE", payload: "" });
+                dispatch({ type: "SET_REFETCH" });
+              }}
+            >
+              X
+            </button>{" "}
+          </p>
+        )}
+        <table className="table w-full text-sm">
           <thead>
             <tr>
-              <th>SL</th>
-              <th>Appointment ID</th>
-              <th>Reason</th>
+              <th className="text-center">SL</th>
+              <th className="text-center">Appt ID</th>
+              <th className="text-center">Date</th>
+              <th className="text-center">Patient</th>
+              <th className="text-center">Phone</th>
+              <th className="text-center">Reason</th>
               <th className="text-center">Payment Status</th>
-              <th>Patient's Phone</th>
-              <th>Details</th>
-              {/* {(role?.includes("super-admin") || role?.includes("admin")) && (
+              <th className="text-center">Details</th>
+              {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
-              )} */}
+              )}
             </tr>
           </thead>
           <tbody>
-
-            {
-              appointments.map((appointment, i) =>
-                <tr key={appointment?._id}>
-                  <th>{i + 1}</th>
-                  <td>{appointment?.serialId}</td>
-                  <td>{appointment?.reason}</td>
-                  <td className="text-center">{appointment?.paymentCompleted ? "Paid" : "Unpaid"}</td>
-                  <td>{appointment?.patient?.phone}</td>
-                  <td><button className='btn btn-xs'><Link to={`/patient/newpatientprofile/${appointment._id}`}>Details</Link></button></td>
-               
-                </tr>)
-            }
-
+            {state.appointments.map((appointment, i) => (
+              <AppointmentsRow
+                key={appointment?._id}
+                role={role}
+                refetch={state.refetch}
+                setRefetch={setRefetch}
+                index={i}
+                appointment={appointment}
+              />
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* Pagination Button */}
-      <div class="flex flex-col items-center mt-5 mb-5 text-xl">
-        <span class="text-sm text-gray-700 dark:text-gray-400">
-          Showing Page <span class="font-semibold text-gray-900 dark:text-white">{pageNumber}</span><span class="font-semibold text-gray-900 dark:text-white"></span> of <span class="font-semibold text-gray-900 dark:text-white">{pages}</span> Pages
+      <div class="flex flex-col items-center mt-5 mb-5">
+        <span class="text-sm">
+          Showing Page <span class="font-semibold">{state.pageNumber}</span>
+          <span class="font-semibold"></span> of{" "}
+          <span class="font-semibold">{pages}</span> Pages
         </span>
-        <div class="inline-flex mt-2 xs:mt-0">
-          <button onClick={decreasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+        <div class="inline-flex mt-2">
+          <button
+            onClick={decreasePageNumber}
+            class="px-2 py-1 text-xs font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
+          >
             Prev
           </button>
-          <button onClick={increasePageNumber} class="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white">
+          <button
+            onClick={increasePageNumber}
+            class="px-2 py-1 text-xs font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
+          >
             Next
           </button>
         </div>
