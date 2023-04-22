@@ -42,15 +42,15 @@ const AllCategories = () => {
     );
 
   return (
-    <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Categories : {count}</h1>
+    <div className="p-10">
+      <h1 className="text-3xl font-bold ">Categories : {count}</h1>
       <Link to="/category/new">
-        <button className=" lg:my-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+        <button className=" lg:my-5 font-semibold px-2 py-1 text-xs rounded-md bg-tahiti-darkGreen text-tahiti-white">
           Add New
         </button>
       </Link>
-      <div className="overflow-x-auto pr-10">
-        <table className="table w-full bg-tahiti-white">
+      <div className="overflow-x-auto">
+        <table className="table w-full text-sm bg-tahiti-white">
           <thead>
             <tr>
               <th >Sl</th>
