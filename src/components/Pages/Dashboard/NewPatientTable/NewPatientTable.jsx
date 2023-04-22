@@ -1,41 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const NewPatientTable = () => {
-  const [loading, setLoading] = useState(null);
-  const [patient, setPatients] = useState([]);
-
-  // Using .reverse for new Patients
-  const patients = patient.slice(0, 5).concat().reverse();
-  // All Patient fetch data
-  useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:5000/api/v1/patient/all-patient", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setPatients(data?.data);
-      });
-  }, []);
-
-  // Loading functionality
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-full">
-        <img src="assets/preloader.gif" alt="" />
-      </div>
-    );
-
-  if (patients?.length === 0)
+const NewPatientTable = ({ newPatients }) => {
+  if (newPatients?.length === 0)
     return (
       <h2 className="text-tahiti-darkGreen text-center mt-60 text-5xl ">
         No Patient Found
       </h2>
-    )
+    );
 
   return (
     <div className="col-span-2">
@@ -48,35 +20,43 @@ const NewPatientTable = () => {
         </Link>
       </div>
       <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-2  rounded-xl">
-        <table className="table w-full bg-tahiti-white ">
+        <table className="table w-full bg-tahiti-white text-sm">
           <thead>
             <tr>
-              <th>Sl</th>
-              <th>Patient ID</th>
-              <th>Name</th>
-              {/* <th>Last Name</th> */}
-              <th>Phone</th>
-              <th>Details</th>
+              <th className="p-2 pl-4">Sl</th>
+              <th className="p-2">Patient ID</th>
+              <th className="p-2">Name</th>
+              <th className="p-2">Created</th>
+              <th className="p-2">Phone</th>
+              <th className="p-2">Details</th>
             </tr>
           </thead>
           <tbody>
-            {patients?.map((patient, i) => (
-              <tr key={patient?._id}>
-                <th>{i + 1}</th>
-                <td>{patient?.serialId}</td>
-                <td>{patient?.name}</td>
-                {/* <td>{ patient?.lastName}</td> */}
-                {/* <td>{ patient?.email}</td> */}
-                <td>{patient?.phone}</td>
-                <td>
-                  <Link to={`/patient/newpatientprofile/${patient._id}`}>
-                    <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
-                      Details
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {newPatients?.map((patient, i) => {
+
+              const date = new Date(patient?.createdAt);
+              const year = date.getFullYear();
+              const month = date.getMonth() + 1;
+              const day = date.getDate();
+              const formattedDate = `${day}/${month}/${year}`;
+
+              return (
+                <tr key={patient?._id}>
+                  <th className="p-2 pl-4">{i + 1}</th>
+                  <td className="p-2">{patient?.serialId}</td>
+                  <td className="p-2">{patient?.name}</td>
+                  <td className="p-2">{ formattedDate}</td>
+                  <td className="p-2">{patient?.phone}</td>
+                  <td className="p-2">
+                    <Link to={`/patient/newpatientprofile/${patient._id}`}>
+                      <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
+                        Details
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

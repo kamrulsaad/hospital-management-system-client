@@ -5,17 +5,14 @@ import PatientPresciption from "./PatientPresciption";
 import Spinner from "../../../Shared/Spinner";
 import QRCode from "react-qr-code";
 import { useReactToPrint } from "react-to-print";
-import { toast } from "react-toastify";
 import { FaAccessibleIcon } from "react-icons/fa";
 import { MdLocalPrintshop } from "react-icons/md";
-import useUserData from "../../../Hooks/useUserData";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 
 const NewPatientProfile = ({ qr }) => {
   const [newPatient, setNewPatient] = useState({});
   const [loading, setLoading] = useState({});
-  const [user, role] = useUserData();
-  // `${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`
+
   const { id } = useParams();
 
   const componentRef = useRef();
@@ -23,7 +20,6 @@ const NewPatientProfile = ({ qr }) => {
     content: () => componentRef.current,
   });
 
-  // patient api call by their id
   useEffect(() => {
     setLoading(true);
     const fetchUserData = async () => {

@@ -35,7 +35,7 @@ const DashBoardLayouts = () => {
             </li>
             <li>
               <NavLink
-                activeClassName="active"
+                activeclassname="active"
                 to="/patients"
                 className="flex items-center p-2 space-x-3 rounded-md"
               >
@@ -116,7 +116,7 @@ const DashBoardLayouts = () => {
               role === "accountant") && (
               <li>
                 <NavLink
-                  activeClassName="active"
+                  activeclassname="active"
                   to="/appointment"
                   className="flex items-center p-2 space-x-3 rounded-md"
                 >
