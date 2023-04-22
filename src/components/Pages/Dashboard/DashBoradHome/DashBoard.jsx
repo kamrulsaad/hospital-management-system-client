@@ -1,5 +1,4 @@
 import React from "react";
-import CalendarComponent from "../Calendar/CalendarComponent";
 import NewPatientTable from "../NewPatientTable/NewPatientTable";
 import { FaAccessibleIcon, FaBed, FaUserMd } from "react-icons/fa";
 import DashboardCard from "./DashboardCard";
