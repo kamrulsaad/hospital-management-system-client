@@ -1,117 +1,138 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import React from "react";
 import useUserData from "../../../../Hooks/useUserData";
 import Spinner from "../../../../Shared/Spinner";
 import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AiOutlineSetting } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 const UserProfile = () => {
-  const [image, setImage] = useState(null);
-  const [uploading, setUploading] = useState(null);
   const [userData, role, loading] = useUserData();
 
-  const imageInput = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
-
   // Update Profile Picture
-  const updateProfilePic = () => {
-    setUploading(true);
-    const formData = new FormData();
-    formData.append("image", image, image?.name);
-    //  send to backend
-    fetch("http://localhost:5000/api/v1/user/upload-picture", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.status === "success") {
-          toast.success(result.message);
-          window.location.reload();
-        } else {
-          toast.error(result.error);
-        }
-        setUploading(false);
-      });
+  const handleImageChange = (e) => {
+    const image = e.target.files[0];
+    const imageUrl = URL.createObjectURL(image);
+    Swal.fire({
+      title: "Preview of " + image.name,
+      imageUrl: imageUrl,
+      imageAlt: image.name,
+      showCancelButton: true,
+      confirmButtonColor: "#00CC99",
+      cancelButtonColor: "#f00",
+      confirmButtonText: "Confirm",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed, upload the image
+        Swal.fire({
+          title: "Uploading Image...",
+          html: "Please wait while we upload your image...",
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        const formData = new FormData();
+        formData.append("image", image, image?.name);
+        // send to backend
+        fetch("http://localhost:5000/api/v1/user/upload-picture", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            URL.revokeObjectURL(imageUrl);
+            if (result.status === "success") {
+              Swal.fire({
+                icon: "success",
+                title: result.message,
+              }).then(() => {
+                window.location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong while uploading the file!",
+                footer: error.message,
+              });
+            }
+          });
+      }
+    });
   };
 
   if (loading) return <Spinner></Spinner>;
 
   return (
-    <div className="grid justify-items-center  ">
-      <section className="pt-16 bg-blueGray-50 w-full p-56 ">
-        <div className="w-full  px-4 mx-auto  ">
-          <div className="relative bg-tahiti-white  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
-            <div className="px-6">
-              <div className="flex flex-wrap justify-center">
-                <div className="w-full px-4 flex justify-center">
-                  <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white   mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                    {userData?.imageURL ? (
-                      <img
-                        src={userData?.imageURL}
-                        className="rounded-full w-48 h-48 object-cover border border-tahiti-lightGreen"
-                        alt=""
-                      />
-                    ) : (
-                      <FaUserAlt className="text-tahiti-dark opacity-50 text-8xl" />
-                    )}
-                  </div>
+    <section className="pt-16 w-full px-20">
+      <div className="w-full px-4 mx-auto">
+        <div className="relative bg-tahiti-white flex w-full mb-6 shadow-xl rounded-lg">
+          <div className="px-6 w-full">
+            <div className="flex flex-wrap justify-center">
+              <div className="p-4">
+                <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white rounded-full">
+                  {userData?.imageURL ? (
+                    <img
+                      src={userData?.imageURL}
+                      className="rounded-full w-48 h-48 object-cover border border-tahiti-lightGreen"
+                      alt=""
+                    />
+                  ) : (
+                    <FaUserAlt className="text-tahiti-dark opacity-50 text-8xl" />
+                  )}
                 </div>
-                <div className="w-full px-4 text-center mt-20"></div>
               </div>
-              <div className="text-center mt-12 pb-20">
+              <div className="p-4">
                 <h3 className="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
                   {userData?.firstName} {userData?.lastName}
                 </h3>
                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
                   {role}
                 </div>
                 <div className="mb-2 text-blueGray-600 mt-10">
-                  <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
                   Email: <b>{userData?.email}</b>
                 </div>
                 <div className="mb-2 text-blueGray-600">
-                  <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                   Phone: <b>{userData?.phone}</b>
                 </div>
-                <Link to="/user/updatepassword">
-                  <button className="btn btn-ghost btn-xs bg-tahiti-primary">Update Password</button>
-                </Link><br />
-
-                <input
-                  type="file"
-                  onChange={imageInput}
-                  name="file"
-                  id="file"
-                  placeholder=""
-                  className="mt-5 px-3 py-2 rounded-md "
-                />
-                <button
-                  className="btn btn-ghost btn-xs bg-tahiti-primary"
-                  onClick={updateProfilePic}
+              </div>
+              <div className="dropdown dropdown-end ml-auto">
+                <label tabIndex={0} className="m-1 cursor-pointer">
+                  <AiOutlineSetting className="text-xl" />
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu p-2 shadow bg-tahiti-grey rounded-box w-52"
                 >
-                  {uploading ? (
-                    <img
-                      src="assets/loading.png"
-                      className="w-6 mx-8 animate-spin"
-                      alt=""
-                    />
-                  ) : (
-                    "Update Profile Picture"
-                  )}
-                </button>
+                  <li>
+                    <Link to="/user/updatepassword">Update Password</Link>
+                  </li>
+                  <li>
+                    <div>
+                      <label htmlFor="file" className="cursor-pointer">
+                        Update Picture
+                      </label>
+                      <input
+                        type="file"
+                        onChange={handleImageChange}
+                        name="file"
+                        id="file"
+                        accept="image/*"
+                        className="hidden"
+                      />
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

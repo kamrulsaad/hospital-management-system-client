@@ -18,7 +18,7 @@ const Register = () => {
     const digitRegex = /\d/;
     const lowerRegex = /[a-z]/;
     const upperRegex = /[A-Z]/;
-    const lengthRegex = /^.{8}$/;
+    const lengthRegex = /^.{8,}$/;
     const charRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     let newPasswordErrors = { ...errors };
 
@@ -44,7 +44,7 @@ const Register = () => {
   // const [loginResult, setLoginResult] = useState({});
 
   const handleSubmit = (event) => {
-    setError('')
+    setError("");
     // Getting From Data
     event.preventDefault();
     const form = event.target;

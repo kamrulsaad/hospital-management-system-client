@@ -48,7 +48,10 @@ const DashBoard = () => {
         ))}
       </div>
       <div className="mt-10 grid grid-cols-3 gap-x-20">
-        <Calendar className="rounded-lg" tileClassName={tileClassName} />
+        <Calendar
+          className="rounded-lg"
+          tileClassName={tileClassName}
+        />
         <NewPatientTable></NewPatientTable>
       </div>
     </div>

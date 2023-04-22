@@ -19,7 +19,7 @@ const UpdatePassword = () => {
     const digitRegex = /\d/;
     const lowerRegex = /[a-z]/;
     const upperRegex = /[A-Z]/;
-    const lengthRegex = /^.{8}$/;
+    const lengthRegex = /^.{8,}$/;
     const charRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     let newPasswordErrors = { ...errors };
 
@@ -95,7 +95,7 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className="m-20 p-10 bg-tahiti-white">
+    <div className="p-10 bg-tahiti-white">
       <form
         onSubmit={handleSubmit}
         novalidate=""
@@ -150,7 +150,7 @@ const UpdatePassword = () => {
           <br />
           <button
             type="submit"
-            className="btn btn-ghost btn-md w-1/2 bg-tahiti-primary block mx-auto col-span-2"
+            className="btn btn-ghost btn-sm w-1/2 bg-tahiti-primary block mx-auto col-span-2"
           >
             {loading ? (
               <img

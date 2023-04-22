@@ -19,10 +19,10 @@ const Profile = ({ userInfo }) => {
         )}
 
         <div>
-          <h1 className="text-lg font-semibold text-tahiti-white">
-            {userInfo?.firstName} {total < 16 && userInfo?.lastName}
+          <h1 className="text-xl font-semibold text-tahiti-white">
+            {userInfo?.firstName} {total < 15 && userInfo?.lastName}
           </h1>
-          <h4 className="font-light text-tahiti-white capitalize">
+          <h4 className="font-light text-xs text-tahiti-white capitalize">
             {userInfo?.role}
           </h4>
         </div>

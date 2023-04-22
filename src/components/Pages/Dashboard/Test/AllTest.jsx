@@ -213,7 +213,7 @@ const AllTest = () => {
               else toast.error("Please select from options to search");
             }}
             type="submit"
-            className="btn btn-sm"
+            className="btn btn-xs"
           >
             <MdSearch className="cursor-pointer mx-auto" />
           </button>
@@ -246,7 +246,8 @@ const AllTest = () => {
               <th className="text-center">Date</th>
               <th className="text-center">Status</th>
               <th className="text-center">Details</th>
-              {role?.includes("labaratorist") && <th>File</th>}
+              {role?.includes("labaratorist") && <th>Update</th>}
+              {role?.includes("labaratorist") && <th>Remove</th>}
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}
@@ -259,8 +260,7 @@ const AllTest = () => {
                 invoice={patient}
                 i={i}
                 role={role}
-                refetch={state.refetch}
-                setRefetch={() => dispatch({ type: "SET_REFETCH" })}
+                setRefetch={() => dispatch({ type: "SET_REFETCH",  payload: !state.refetch })}
               ></TestRow>
             ))}
           </tbody>
