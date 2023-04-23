@@ -7,7 +7,7 @@ import { MdSearch } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const initialState = {
-  loading: null,
+  loading: true,
   invoices: [],
   key: "",
   value: "",
@@ -34,7 +34,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: action.payload,
+        loading: false,
       };
     case "SET_INVOICES":
       return {
@@ -87,12 +87,11 @@ const reducer = (state, action) => {
 };
 
 const AllInvoice = () => {
-  const [user, role, loading] = useUserData();
+  const {role, loading} = useUserData();
   const [state, dispatch] = useReducer(reducer, initialState);
   const pages = Math.ceil(state?.count / state?.size);
 
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -107,7 +106,7 @@ const AllInvoice = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         dispatch({
           type: "SET_COUNT",
           payload: data?.total,

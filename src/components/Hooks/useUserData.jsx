@@ -1,28 +1,59 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from "react";
+
+const initialState = {
+  user: null,
+  role: "",
+  loading: null,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_USER":
+      return {
+        ...state,
+        user: action.payload.user,
+        role: action.payload.role,
+      };
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 const useUserData = () => {
-  const [userData, setUserData] = useState(null);
-  const [userRole, setUserRole] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      setLoading(true);
-      const response = await fetch('http://localhost:5000/api/v1/user/user-info', {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      dispatch({ type: "SET_LOADING", payload: true });
+      const response = await fetch(
+        "http://localhost:5000/api/v1/user/user-info",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
         }
-      })
+      );
       const data = await response.json();
-      setUserData(data?.data);
-      setUserRole(data?.data?.role);
-      setLoading(false);
+      dispatch({
+        type: "SET_USER",
+        payload: { user: data?.data, role: data?.data?.role },
+      });
+      dispatch({ type: "SET_LOADING", payload: false });
     };
     fetchUserData();
-  }, []);
+  }, [localStorage.getItem("LoginToken")]);
 
-  return [userData, userRole, loading];
+  return {
+    user: state.user,
+    role: state.role,
+    loading: state.loading,
+  };
 };
 
 export default useUserData;

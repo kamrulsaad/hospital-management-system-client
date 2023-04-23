@@ -7,7 +7,7 @@ import Spinner from "../../../../Shared/Spinner";
 const initialState = {
   key: "",
   value: "",
-  loading: null,
+  loading: true,
   doctors: [],
   refetch: true,
   count: 0,
@@ -31,7 +31,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: action.payload,
+        loading: false,
       };
     case "SET_DOCTORS":
       return {
@@ -88,7 +88,6 @@ const AllUser = () => {
 
   // ALL AllUser Fetch Api
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -103,7 +102,7 @@ const AllUser = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         dispatch({ type: "SET_DOCTORS", payload: data?.data });
         dispatch({ type: "SET_COUNT", payload: data?.total });
       });
@@ -115,7 +114,7 @@ const AllUser = () => {
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-5xl ">
-          No Doctor Found
+          No Users Found
         </h2>
         {state.key || state.value ? (
           <button

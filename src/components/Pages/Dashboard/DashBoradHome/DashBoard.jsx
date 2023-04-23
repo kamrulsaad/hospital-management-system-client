@@ -16,7 +16,7 @@ const initialStates = {
   newPatients: [],
   availableBeds: 0,
   availableDoctors: 0,
-  loading: null,
+  loading: true,
 };
 
 const reducer = (state, action) => {
@@ -36,7 +36,7 @@ const reducer = (state, action) => {
     case "SET_AVAILABLE_DOCTORS":
       return { ...state, availableDoctors: action.payload };
     case "SET_LOADING":
-      return { ...state, loading: action.payload };
+      return { ...state, loading: false };
     default:
       return state;
   }
@@ -48,7 +48,6 @@ const DashBoard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -80,10 +79,10 @@ const DashBoard = () => {
           type: "SET_NEW_PATIENTS",
           payload: result?.data?.newPatients,
         });
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
       })
       .catch((error) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         toast.error(error.message);
         navigate("/user/login");
       });

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import Spinner from "../Shared/Spinner";
 
 const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState({});

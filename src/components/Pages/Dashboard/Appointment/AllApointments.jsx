@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Spinner from "../../../Shared/Spinner";
 import useUserData from "../../../Hooks/useUserData";
 import AppointmentsRow from "./AppointmentsRow";
@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const initialState = {
-  loading: null,
+  loading: true,
   refetch: true,
   appointments: [],
   key: "",
@@ -22,7 +22,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_LOADING":
-      return { ...state, loading: action.payload };
+      return { ...state, loading: false };
     case "SET_REFETCH":
       return { ...state, refetch: !state.refetch };
     case "SET_APPOINTMENTS":
@@ -46,19 +46,7 @@ const reducer = (state, action) => {
 
 const AllApointments = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const [loading, setLoading] = useState(null);
-  const [refetch, setRefetch] = useState(true);
-  const [appointments, setAppointment] = useState([]);
-  const [user, role] = useUserData();
-  const [name, setName] = useState([]);
-  const [value, setValue] = useState([]);
-  const [dataCount, setDataCount] = useState(0);
-
-  // pagination
-  const [count, setCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [size, setSize] = useState(10);
+  const {role} = useUserData();
   const pages = Math.ceil(state.count / state.size);
 
   const increasePageNumber = () => {
@@ -77,7 +65,6 @@ const AllApointments = () => {
 
   // All Appointment fetch data  ?page=1&limit=10
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -94,7 +81,7 @@ const AllApointments = () => {
       .then((data) => {
         dispatch({ type: "SET_APPOINTMENTS", payload: data?.data });
         dispatch({ type: "SET_COUNT", payload: data?.total });
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING"});
       });
   }, [state.pageNumber, state.size, state.refetch]);
 
@@ -205,7 +192,7 @@ const AllApointments = () => {
                 key={appointment?._id}
                 role={role}
                 refetch={state.refetch}
-                setRefetch={setRefetch}
+                setRefetch={() => dispatch({ type: "SET_REFETCH" })}
                 index={i}
                 appointment={appointment}
               />

@@ -7,7 +7,7 @@ import { useReducer } from "react";
 const initialState = {
   key: "",
   value: "",
-  loading: null,
+  loading: true,
   doctors: [],
   refetch: true,
   count: 0,
@@ -31,7 +31,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: action.payload,
+        loading: false,
       };
     case "SET_DOCTORS":
       return {
@@ -88,7 +88,6 @@ const Doctors = () => {
 
   // ALL Doctors Fetch Api
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -103,7 +102,7 @@ const Doctors = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         dispatch({ type: "SET_DOCTORS", payload: data?.data });
         dispatch({ type: "SET_COUNT", payload: data?.total });
       });

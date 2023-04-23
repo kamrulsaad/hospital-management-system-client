@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useUserData from "../../../Hooks/useUserData";
-// import { useQuery } from 'react-query';
 import Spinner from "../../../Shared/Spinner";
 import PatientsRow from "./PatientsRow";
 import { MdSearch } from "react-icons/md";
@@ -11,7 +10,7 @@ import { toast } from "react-toastify";
 const initialState = {
   name: "",
   value: "",
-  loading: false,
+  loading: true,
   patients: [],
   refetch: true,
   count: 0,
@@ -35,7 +34,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: action.payload,
+        loading: false,
       };
     case "SET_PATIENTS":
       return {
@@ -75,7 +74,7 @@ const reducer = (state, action) => {
 const AllPatients = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [user, role] = useUserData();
+  const {role} = useUserData();
 
   // pagination
 
@@ -97,7 +96,6 @@ const AllPatients = () => {
 
   // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.name && state.value ? true : false,
@@ -112,7 +110,7 @@ const AllPatients = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         dispatch({ type: "SET_COUNT", payload: data?.total });
         dispatch({ type: "SET_PATIENTS", payload: data?.data });
       });

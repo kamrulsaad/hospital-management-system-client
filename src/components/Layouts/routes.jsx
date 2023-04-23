@@ -22,7 +22,6 @@ import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfi
 import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
 import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
-import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
 import AllTest from "../Pages/Dashboard/Test/AllTest";
 import UpdateTest from "../Pages/Dashboard/Test/UpdateTest";
 import TestDetails from "../Pages/Dashboard/Test/TestDetails";
@@ -128,10 +127,6 @@ const router = createBrowserRouter([
       {
         path: "/user/updatepassword",
         element: <UpdatePassword></UpdatePassword>,
-      },
-      {
-        path: "/user/userdetails",
-        element: <UserProfileDetails></UserProfileDetails>,
       },
       {
         path: "/*",

@@ -7,7 +7,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import Swal from "sweetalert2";
 
 const UserProfile = () => {
-  const [userData, role, loading] = useUserData();
+  const {user, role, loading} = useUserData();
 
   // Update Profile Picture
   const handleImageChange = (e) => {
@@ -75,9 +75,9 @@ const UserProfile = () => {
             <div className="flex flex-wrap justify-center">
               <div className="p-4">
                 <div className="w-48 h-48 bg-indigo-100 bg-tahiti-white rounded-full">
-                  {userData?.imageURL ? (
+                  {user?.imageURL ? (
                     <img
-                      src={userData?.imageURL}
+                      src={user?.imageURL}
                       className="rounded-full w-48 h-48 object-cover border border-tahiti-lightGreen"
                       alt=""
                     />
@@ -88,16 +88,16 @@ const UserProfile = () => {
               </div>
               <div className="p-4">
                 <h3 className="text-xl font-semibold leading-normal text-blueGray-700 mb-2">
-                  {userData?.firstName} {userData?.lastName}
+                  {user?.firstName} {user?.lastName}
                 </h3>
                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                   {role}
                 </div>
                 <div className="mb-2 text-blueGray-600 mt-10">
-                  Email: <b>{userData?.email}</b>
+                  Email: <b>{user?.email}</b>
                 </div>
                 <div className="mb-2 text-blueGray-600">
-                  Phone: <b>{userData?.phone}</b>
+                  Phone: <b>{user?.phone}</b>
                 </div>
               </div>
               <div className="dropdown dropdown-end ml-auto">
