@@ -93,7 +93,7 @@ const Doctors = () => {
       payload: state.key && state.value ? true : false,
     });
     fetch(
-      `http://localhost:5000/api/v1/user/all-doctors?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      `https://hms-server.onrender.com/api/v1/user/all-doctors?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

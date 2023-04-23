@@ -119,7 +119,7 @@ const CreateInvoice = () => {
     const fetchUserData = async () => {
       dispatch({ type: "SET_LOADING", payload: true });
       const response = await fetch(
-        "http://localhost:5000/api/v1/category/all",
+        "https://hms-server.onrender.com/api/v1/category/all",
         {
           method: "GET",
           headers: {
@@ -150,7 +150,7 @@ const CreateInvoice = () => {
     }
 
     fetch(
-      `http://localhost:5000/api/v1/invoice/create/${patientId}`,
+      `https://hms-server.onrender.com/api/v1/invoice/create/${patientId}`,
       {
         method: "POST",
         headers: {
