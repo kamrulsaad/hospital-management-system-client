@@ -65,20 +65,29 @@ const ExpenseRow = ({ expense, role, setRefetch }) => {
         </button>
       </td>
       {(role?.includes("super-admin") || role?.includes("admin")) && (
-        <td>
-          {delLoading ? (
-            <img
-              className="w-6 animate-spin mx-auto"
-              src="/assets/loading.png"
-              alt=""
-            />
-          ) : (
-            <FaTrash
-              onClick={() => handleDelete(expense?._id)}
-              className="text-tahiti-red cursor-pointer mx-auto"
-            ></FaTrash>
-          )}
-        </td>
+        <>
+          <td className="text-center">
+            <Link to={`/expense/update/${expense?._id}`}>
+              <button className="btn btn-xs bg-tahiti-primary border-none">
+                Update
+              </button>
+            </Link>
+          </td>
+          <td>
+            {delLoading ? (
+              <img
+                className="w-6 animate-spin mx-auto"
+                src="/assets/loading.png"
+                alt=""
+              />
+            ) : (
+              <FaTrash
+                onClick={() => handleDelete(expense?._id)}
+                className="text-tahiti-red cursor-pointer mx-auto"
+              ></FaTrash>
+            )}
+          </td>
+        </>
       )}
     </tr>
   );

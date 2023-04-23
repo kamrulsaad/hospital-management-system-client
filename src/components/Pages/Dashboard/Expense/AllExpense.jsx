@@ -220,7 +220,10 @@ const AllExpense = () => {
               <th className="text-center">Amount</th>
               <th className="text-center">Details</th>
               {(role?.includes("super-admin") || role?.includes("admin")) && (
-                <th className="text-center">Delete</th>
+                <>
+                  <th className="text-center">Update</th>
+                  <th className="text-center">Delete</th>
+                </>
               )}
             </tr>
           </thead>
