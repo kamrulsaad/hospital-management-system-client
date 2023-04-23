@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaFileDownload } from "react-icons/fa";
 import { saveAs } from "file-saver";
 
-const PatientReports = ({ reports, qr }) => {
+const PatientReports = ({ reports, qr, normal }) => {
   const [downloading, setDownloading] = useState(null);
 
   const handleDownload = async (url) => {
@@ -28,14 +28,14 @@ const PatientReports = ({ reports, qr }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className={`overflow-x-auto ${normal && "hidden lg:block"}`}>
       <h1 className="text-center text-2xl mt-4 font-semibold">
         <span>PATIENT</span>{" "}
         <span className="text-tahiti-lightGreen">REPORTS</span>
       </h1>
       {reports?.length ? (
         <div className="mx-10 my-4">
-          <table className="table xl:w-full text-xs">
+          <table className="table w-full text-xs">
             <tbody>
               <tr>
                 <th className="bg-tahiti-grey p-2">SI</th>
