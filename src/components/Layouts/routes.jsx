@@ -29,6 +29,10 @@ import AllExpense from "../Pages/Dashboard/Expense/AllExpense";
 import CreateExpense from "../Pages/Dashboard/Expense/CreateExpense";
 import ExpenseDetails from "../Pages/Dashboard/Expense/ExpenseDetails";
 import UpdateExpense from "../Pages/Dashboard/Expense/UpdateExpense";
+import AllExpenseCategories from "../Pages/Dashboard/Expense/Categories/AllExpenseCategories";
+import CreateExpCat from "../Pages/Dashboard/Expense/Categories/CreateExpCat";
+import ExpCatDetails from "../Pages/Dashboard/Expense/Categories/ExpCatDetails";
+import UpdateExpCat from "../Pages/Dashboard/Expense/Categories/UpdateExpCat";
 
 const router = createBrowserRouter([
   {
@@ -138,6 +142,26 @@ const router = createBrowserRouter([
       {
         path: "/expense/update/:expenseId",
         element: <UpdateExpense></UpdateExpense>,
+      },
+
+      {
+        path: "/expense/category/all",
+        element: <AllExpenseCategories></AllExpenseCategories>,
+      },
+
+      {
+        path: "/expense/category/new",
+        element: <CreateExpCat></CreateExpCat>,
+      },
+
+      {
+        path: "/expense/category/:categoryId",
+        element: <ExpCatDetails></ExpCatDetails>,
+      },
+
+      {
+        path: "/expense/category/update/:categoryId",
+        element: <UpdateExpCat></UpdateExpCat>,
       },
 
       {

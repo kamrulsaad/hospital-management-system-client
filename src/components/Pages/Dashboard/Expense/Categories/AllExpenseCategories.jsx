@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
-import useUserData from "../../../Hooks/useUserData";
-import Spinner from "../../../Shared/Spinner";
 import { MdSearch } from "react-icons/md";
 import { toast } from "react-toastify";
-import ExpenseRow from "./ExpenseRow";
+import ExpCatRox from "./ExpCatRow";
+import useUserData from "../../../../Hooks/useUserData";
+import Spinner from "../../../../Shared/Spinner";
 
 const initialState = {
   loading: true,
@@ -80,7 +80,7 @@ const reducer = (state, action) => {
   }
 };
 
-const AllExpense = () => {
+const AllExpenseCategories = () => {
   const { role, loading } = useUserData();
   const [state, dispatch] = useReducer(reducer, initialState);
   const pages = Math.ceil(state?.count / state?.size);
@@ -91,7 +91,7 @@ const AllExpense = () => {
       payload: state.key && state.value ? true : false,
     });
     fetch(
-      `http://localhost:5000/api/v1/expense/all?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      `http://localhost:5000/api/v1/expense/category/all?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -118,7 +118,7 @@ const AllExpense = () => {
     return (
       <>
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
-          No Expense Found
+          No Expense Category Found
         </h2>
         {(state.key || state.value) && (
           <button
@@ -137,23 +137,21 @@ const AllExpense = () => {
 
   return (
     <div className="p-10">
-      <h1 className="text-3xl font-bold">Expenses : {state.count}</h1>
+      <h1 className="text-3xl font-bold">Expense Categories : {state.count}</h1>
 
       <div className="flex justify-between items-center">
         <div>
-          <Link to="/expense/new">
+          <Link to="/expense/category/new">
             <button className=" lg:my-5 btn btn-xs lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
               Add New
             </button>
           </Link>
-          {(role?.includes("super-admin") || role?.includes("admin")) && (
-            <Link
-              to={"/expense/category/all"}
-              className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
-            >
-              Expense categories
-            </Link>
-          )}
+          <Link
+            to={"/expense/all"}
+            className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
+          >
+            All Expenses
+          </Link>
         </div>
         <div className="flex gap-2">
           <select
@@ -168,8 +166,8 @@ const AllExpense = () => {
             <option disabled selected>
               Select
             </option>
-            <option className="cursor-pointer" value={"serialId"}>
-              Serial ID{" "}
+            <option className="cursor-pointer" value={"name"}>
+              Name{" "}
             </option>
           </select>
           <input
@@ -197,7 +195,7 @@ const AllExpense = () => {
       <div className="overflow-x-auto text-sm">
         {state.search && (
           <p className="mb-2">
-            Showing results for expenses with <b>{state.key}</b> of{" "}
+            Showing results for expense categories with <b>{state.key}</b> of{" "}
             <b>{state.value}</b>{" "}
             <button
               className="btn btn-xs bg-tahiti-grey text-tahiti-red"
@@ -214,10 +212,8 @@ const AllExpense = () => {
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
-              <th>Expense ID</th>
-              <th className="text-center">Category</th>
-              <th className="text-center">Date</th>
-              <th className="text-center">Amount</th>
+              <th>Sl</th>
+              <th className="text-center">Name</th>
               <th className="text-center">Details</th>
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <>
@@ -228,13 +224,14 @@ const AllExpense = () => {
             </tr>
           </thead>
           <tbody>
-            {state.invoices?.map((invoice) => (
-              <ExpenseRow
+            {state.invoices?.map((invoice, i) => (
+              <ExpCatRox
                 key={invoice._id}
+                i={i}
                 expense={invoice}
                 role={role}
                 setRefetch={() => dispatch({ type: "SET_REFETCH" })}
-              ></ExpenseRow>
+              ></ExpCatRox>
             ))}
           </tbody>
         </table>
@@ -266,4 +263,4 @@ const AllExpense = () => {
   );
 };
 
-export default AllExpense;
+export default AllExpenseCategories;

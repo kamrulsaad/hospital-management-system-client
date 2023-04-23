@@ -2,50 +2,25 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-import { useEffect } from "react";
-import Spinner from "../../../Shared/Spinner";
 
-const CreateExpense = () => {
-  const [loading, setLoading] = useState(true);
+const CreateExpCat = () => {
   const [creating, setCreating] = useState(null);
-  const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `http://localhost:5000/api/v1/expense/category/all`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setCategories(data?.data);
-      setLoading(false);
-    };
-    fetchCategories();
-  }, []);
 
   const handleSubmit = (event) => {
     setCreating(true);
     event.preventDefault();
     const form = event.target;
-    const category = form.category.value;
-    const amount = form.amount.value;
+    const name = form.name.value;
     const description = form.description.value;
 
     const createInvoiceCategoryData = {
-      category,
-      amount,
+      name,
       description,
     };
 
-    fetch(`http://localhost:5000/api/v1/expense/create`, {
+    fetch(`http://localhost:5000/api/v1/expense/category/create`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -58,7 +33,7 @@ const CreateExpense = () => {
         setCreating(false);
         if (result.status === "success") {
           toast.success(result.message);
-          navigate("/expense/all")
+          navigate("/expense/category/all")
         } else {
           toast.error(result.error);
         }
@@ -70,11 +45,9 @@ const CreateExpense = () => {
       });
   };
 
-  if (loading) return <Spinner></Spinner>;
-
   return (
     <div className="p-10">
-      <Link to="/expense/all">
+      <Link to="/expense/category/all">
         <p className="mb-2 flex gap-2 items-center hover:text-tahiti-primary transition-colors">
           <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
           Go Back
@@ -87,36 +60,14 @@ const CreateExpense = () => {
           class="container flex flex-col mx-auto space-y-12"
         >
           <h1 className="text-3xl font-semibold text-tahiti-primary text-center">
-            Create Expense
+            Create Expense Category
           </h1>
           <fieldset class="grid grid-cols-2 gap-6 rounded-md justify-items-center">
             <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Category: </p>
-              <select
-                type="appointed_to"
-                name="category"
-                id="category"
-                className="select select-sm focus:outline-none w-3/4 bg-tahiti-darkGreen font-bold  text-tahiti-white"
-              >
-                <option disabled selected>
-                  Select
-                </option>
-                {categories.map((doctor) => (
-                  <option
-                    className="font-bold text-tahiti-white"
-                    key={doctor?._id}
-                    value={doctor?._id}
-                  >
-                    {doctor?.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Amount: </p>
+              <p className="text-xl font-medium w-1/4">Name: </p>
               <input
-                name="amount"
-                type="number"
+                name="name"
+                type="text"
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>
@@ -151,4 +102,4 @@ const CreateExpense = () => {
   );
 };
 
-export default CreateExpense;
+export default CreateExpCat;
