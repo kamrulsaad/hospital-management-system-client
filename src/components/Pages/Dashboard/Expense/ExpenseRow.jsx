@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
-const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
-  // `${window.location.host}/qr/patient/${invoice?.serialId}`
-  
+const ExpenseRow = ({ expense, role, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
+
+  const date = new Date(expense?.createdAt);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = date
+    .toLocaleDateString("en-US", options)
+    .replace(/ /g, "/");
+
   const handleDelete = (id) => {
     setDelLoading(true);
 
@@ -30,12 +36,12 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/invoice/${id}`, requestOptions)
+        fetch(`http://localhost:5000/api/v1/expense/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
             else toast.error(result.error);
-            setRefetch(!refetch);
+            setRefetch();
             setDelLoading(false);
           })
           .catch((error) => {
@@ -47,29 +53,17 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
     });
   };
 
-  const date = new Date(invoice?.createdAt);
-  const options = { year: "numeric", month: "short", day: "numeric" };
-  const formattedDate = date
-    .toLocaleDateString("en-US", options)
-    .replace(/ /g, "/");
-
   return (
-    <tr key={invoice?._id}>
-      <th className="text-center">{i + 1}</th>
-      <td>{invoice?.serialId}</td>
-      <td className="text-center">{invoice?.patient?.name}</td>
-      <td className="text-center">{formattedDate.replace(",", "")}</td>
-      <td className="text-center">{invoice?.sub_total}৳</td>
-      <td className="text-center">{invoice?.grand_total}৳</td>
-      <td className="text-center">
-        {invoice?.paymentCompleted ? "Paid" : "Unpaid"}
-      </td>
+    <tr>
+      <td>{expense?.serialId}</td>
+      <td className="text-center">{expense?.category?.name}</td>
+      <td className="text-center">{formattedDate?.replace(",", "")}</td>
+      <td className="text-center">{expense?.amount}৳</td>
       <td className="text-center">
         <button className="btn btn-xs">
-          <Link to={`/payment/invoice/${invoice._id}`}>Details</Link>
+          <Link to={`/expense/${expense._id}`}>Details</Link>
         </button>
       </td>
-
       {(role?.includes("super-admin") || role?.includes("admin")) && (
         <td>
           {delLoading ? (
@@ -80,7 +74,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
             />
           ) : (
             <FaTrash
-              onClick={() => handleDelete(invoice?._id)}
+              onClick={() => handleDelete(expense?._id)}
               className="text-tahiti-red cursor-pointer mx-auto"
             ></FaTrash>
           )}
@@ -90,4 +84,4 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
   );
 };
 
-export default InvoiceRow;
+export default ExpenseRow;

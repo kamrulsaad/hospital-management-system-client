@@ -25,6 +25,10 @@ import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCa
 import AllTest from "../Pages/Dashboard/Test/AllTest";
 import UpdateTest from "../Pages/Dashboard/Test/UpdateTest";
 import TestDetails from "../Pages/Dashboard/Test/TestDetails";
+import AllExpense from "../Pages/Dashboard/Expense/AllExpense";
+import CreateExpense from "../Pages/Dashboard/Expense/CreateExpense";
+import ExpenseDetails from "../Pages/Dashboard/Expense/ExpenseDetails";
+import UpdateExpense from "../Pages/Dashboard/Expense/UpdateExpense";
 
 const router = createBrowserRouter([
   {
@@ -114,6 +118,21 @@ const router = createBrowserRouter([
       {
         path: "/category/new",
         element: <CreateInvoiceCategory></CreateInvoiceCategory>,
+      },
+
+      {
+        path: "/expense/all",
+        element: <AllExpense></AllExpense>,
+      },
+
+      {
+        path: "/expense/new",
+        element: <CreateExpense></CreateExpense>,
+      },
+
+      {
+        path: "/expense/:expenseId",
+        element: <ExpenseDetails></ExpenseDetails>,
       },
 
       {

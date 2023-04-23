@@ -12,6 +12,7 @@ import {
   FaUserMd,
 } from "react-icons/fa";
 import { TbFileInvoice } from "react-icons/tb";
+import { BiMoneyWithdraw } from "react-icons/bi";
 
 const DashBoardLayouts = () => {
   const { user, role } = useUserData();
@@ -98,16 +99,28 @@ const DashBoardLayouts = () => {
                       <span>Invoice</span>
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      activeclassname="active"
+                      to="/expense/all"
+                      className="flex items-center p-2 space-x-3 rounded-md"
+                    >
+                      <BiMoneyWithdraw className="text-tahiti-white text-xl"></BiMoneyWithdraw>
+                      <span>Expenses</span>
+                    </NavLink>
+                  </li>
                 </>
               )}
               {role === "doctor" && (
                 <li>
-                  <NavLink activeclassname="active" to="/myappointment">
+                  <NavLink
+                    className="flex items-center p-2 space-x-3 rounded-md"
+                    activeclassname="active"
+                    to="/myappointment"
+                  >
                     {" "}
-                    <FaFilePrescription className="text-tahiti-white text-3xl"></FaFilePrescription>
-                    <span className="text-2xl font-semibold text-tahiti-white">
-                      Appointments
-                    </span>
+                    <FaFilePrescription className="text-tahiti-white text-xl"></FaFilePrescription>
+                    <span>Appointments</span>
                   </NavLink>
                 </li>
               )}
@@ -129,7 +142,10 @@ const DashBoardLayouts = () => {
               )}
             </ul>
           </div>
-          <p className="text-xs text-center">@Powered by UNIECH <img className="w-4 inline" src="/favicon.ico" alt="" /> </p>
+          <p className="text-xs">
+            Powered by UNIECH{" "}
+            <img className="w-4 inline" src="/favicon.ico" alt="" />{" "}
+          </p>
         </div>
         <div className="col-span-5">
           <Outlet />
