@@ -31,7 +31,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: false,
+        loading: action.payload,
       };
     case "SET_DOCTORS":
       return {
@@ -73,7 +73,7 @@ const Doctors = () => {
   const pages = Math.ceil(state.count / state.size);
 
   const increasePageNumber = () => {
-    if (state.pageNumber < state.pages) {
+    if (state.pageNumber < pages) {
       dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber + 1 });
     }
   };
@@ -88,6 +88,7 @@ const Doctors = () => {
 
   // ALL Doctors Fetch Api
   useEffect(() => {
+    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -102,7 +103,7 @@ const Doctors = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING" });
+        dispatch({ type: "SET_LOADING", payload: false });
         dispatch({ type: "SET_DOCTORS", payload: data?.data });
         dispatch({ type: "SET_COUNT", payload: data?.total });
       });
@@ -140,7 +141,7 @@ const Doctors = () => {
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold ">Doctor : {state.count}</h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between my-2">
         <Link to="/signup">
           <button className=" lg:mb-5 lg:mt-5 text-xs font-semibold p-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
             Add New

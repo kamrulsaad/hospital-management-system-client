@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
+const PatientsRow = ({ patient, i, role, setRefetch, pageNumber }) => {
   const [delLoading, setDelLoading] = useState(null);
 
   const date = new Date(patient?.createdAt);
@@ -40,7 +40,7 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
             else toast.error(result.error);
-            setRefetch(!refetch);
+            setRefetch();
             setDelLoading(false);
           })
           .catch((error) => {
@@ -53,8 +53,8 @@ const PatientsRow = ({ patient, i, role, refetch, setRefetch }) => {
   };
 
   return (
-    <tr key={patient?._id}>
-      <th className="text-center">{i + 1}</th>
+    <tr>
+      <th className="text-center">{((pageNumber-1) * 10) + (i + 1)}</th>
       <td className="text-center">{patient?.serialId}</td>
       <td className="text-center">{patient?.name}</td>
       <td className="text-center">{formattedDate.replace(",", "")}</td>

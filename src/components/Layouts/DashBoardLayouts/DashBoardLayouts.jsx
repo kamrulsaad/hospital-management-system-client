@@ -21,7 +21,7 @@ const DashBoardLayouts = () => {
     <>
       <Navbar></Navbar>
       <div className="grid grid-cols-6">
-        <div className="min-h-[calc(100vh-68px)] p-3 pt-0 flex flex-col justify-between space-y-2 w-full bg-tahiti-darkGreen text-tahiti-white">
+        <div className="h-[calc(100vh-68px)] sticky top-[68px] p-3 pt-0 flex flex-col justify-between space-y-2 w-full bg-tahiti-darkGreen text-tahiti-white">
           <div>
             <Profile userInfo={user} />
             <ul className="pt-2 pb-4 space-y-1 text-sm">

@@ -31,7 +31,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: false,
+        loading: action.payload,
       };
     case "SET_DOCTORS":
       return {
@@ -73,7 +73,7 @@ const AllUser = () => {
   const pages = Math.ceil(state.count / state.size);
 
   const increasePageNumber = () => {
-    if (state.pageNumber < state.pages) {
+    if (state.pageNumber < pages) {
       dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber + 1 });
     }
   };
@@ -88,6 +88,7 @@ const AllUser = () => {
 
   // ALL AllUser Fetch Api
   useEffect(() => {
+    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.key && state.value ? true : false,
@@ -102,7 +103,7 @@ const AllUser = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING" });
+        dispatch({ type: "SET_LOADING", payload: false });
         dispatch({ type: "SET_DOCTORS", payload: data?.data });
         dispatch({ type: "SET_COUNT", payload: data?.total });
       });

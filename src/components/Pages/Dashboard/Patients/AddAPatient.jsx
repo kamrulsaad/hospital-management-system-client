@@ -73,12 +73,12 @@ const AddAPatient = () => {
       });
   };
   return (
-    <div className="lg:p-20">
-      <section className="p-6  bg-tahiti-white shadow-xl rounded-xl ">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold">
+    <div className="lg:p-10 lg:pb-0">
+      <section className="p-6 bg-tahiti-white shadow-xl rounded-xl">
+        <div className="mb-4 text-center">
+          <h1 className="my-2 text-2xl font-bold">
             <span className="text-tahiti-primary">PATIENT</span>
-            <span className="text-tahiti-dark"> IMFORNATION</span>
+            <span className="text-tahiti-dark"> INFORMATION</span>
           </h1>
         </div>
         <form
@@ -92,7 +92,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="name"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   FULL NAME
                 </label>
@@ -107,7 +107,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="phone"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   Phone
                 </label>
@@ -122,7 +122,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="address"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   ADDRESS
                 </label>
@@ -138,7 +138,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="number"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   Age
                 </label>
@@ -155,7 +155,7 @@ const AddAPatient = () => {
                 type="bloodGroup"
                 name="bloodGroup"
                 id="bloodGroup"
-                className="select bg-tahiti-primary col-span-full text-lg sm:col-span-3 focus:outline-none font-bold w-full text-tahiti-white"
+                className="select select-sm bg-tahiti-primary col-span-full sm:col-span-3 focus:outline-none font-bold w-full text-tahiti-white"
               >
                 <option disabled selected>
                   Blood Group
@@ -174,7 +174,7 @@ const AddAPatient = () => {
                 type="gender"
                 name="gender"
                 id="gender"
-                className="select bg-tahiti-primary col-span-full sm:col-span-3 text-lg focus:outline-none font-bold w-full text-tahiti-white"
+                className="select select-sm bg-tahiti-primary col-span-full sm:col-span-3 focus:outline-none font-bold w-full text-tahiti-white"
               >
                 <option disabled selected>
                   Gender
@@ -184,8 +184,8 @@ const AddAPatient = () => {
                 <option className="font-bold ">Other</option>
               </select>
 
-              <div className="mb-8 col-span-full flex justify-center sm:col-span-6 ">
-                <p className="text-3xl font-bold mt-6 ">
+              <div className="mb-4 col-span-full flex justify-center sm:col-span-6 ">
+                <p className="text-xl font-bold mt-4 uppercase">
                   {" "}
                   <span className="text-tahiti-dark">Emergency </span>{" "}
                   <span className="text-tahiti-primary">Contact</span>{" "}
@@ -195,7 +195,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="emergencyContactName"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   Name
                 </label>
@@ -210,7 +210,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="emergencyContactPhone"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   Phone
                 </label>
@@ -225,7 +225,7 @@ const AddAPatient = () => {
               <div className="col-span-full sm:col-span-3">
                 <label
                   for="relation"
-                  className="text-tahiti-lightGreen font-bold uppercase text-lg"
+                  className="text-tahiti-lightGreen font-bold uppercase"
                 >
                   Relation
                 </label>

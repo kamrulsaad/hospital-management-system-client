@@ -36,7 +36,6 @@ const InvoicePage = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (data?.status === "success") {
         toast.success(data?.message);
         setRefetch(!refetch);

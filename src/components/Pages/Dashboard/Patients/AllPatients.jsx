@@ -34,7 +34,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: false,
+        loading: action.payload,
       };
     case "SET_PATIENTS":
       return {
@@ -74,7 +74,7 @@ const reducer = (state, action) => {
 const AllPatients = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const {role} = useUserData();
+  const { role } = useUserData();
 
   // pagination
 
@@ -96,6 +96,7 @@ const AllPatients = () => {
 
   // All Patient fetch data  ?page=1&limit=10
   useEffect(() => {
+    dispatch({ type: "SET_LOADING", payload: true });
     dispatch({
       type: "SET_SEARCH",
       payload: state.name && state.value ? true : false,
@@ -110,7 +111,7 @@ const AllPatients = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING" });
+        dispatch({ type: "SET_LOADING", payload: false });
         dispatch({ type: "SET_COUNT", payload: data?.total });
         dispatch({ type: "SET_PATIENTS", payload: data?.data });
       });
@@ -151,10 +152,16 @@ const AllPatients = () => {
       {/* Search Field */}
       <div
         className={`flex ${
-          role?.includes("receptionist") ? "justify-between" : "justify-end"
+          role?.includes("receptionist") ||
+          role === "super-admin" ||
+          role === "admin"
+            ? "justify-between"
+            : "justify-end"
         }`}
       >
-        {role?.includes("receptionist") && (
+        {(role?.includes("receptionist") ||
+          role === "super-admin" ||
+          role === "admin") && (
           <>
             <Link to="/addapatient">
               <button className=" lg:mb-5 font-semibold px-2 py-1 text-xs  rounded-md bg-tahiti-darkGreen text-tahiti-white">
@@ -246,6 +253,7 @@ const AllPatients = () => {
                 i={i}
                 role={role}
                 refetch={state.refetch}
+                pageNumber={state.pageNumber}
                 setRefetch={() => dispatch({ type: "SET_REFETCH" })}
               ></PatientsRow>
             ))}

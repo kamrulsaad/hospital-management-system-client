@@ -1,23 +1,41 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useUserData from "../../../Hooks/useUserData";
 
 const NewPatientTable = ({ newPatients }) => {
+  const { role } = useUserData();
+
   if (newPatients?.length === 0)
     return (
-      <h2 className="text-tahiti-darkGreen text-center mt-60 text-5xl ">
-        No Patient Found
-      </h2>
+      <div className="col-span-2">
+        <h2 className="text-tahiti-darkGreen  mt-10 text-center text-2xl ">
+          No New Patients in last 7 days
+        </h2>
+        {(role === "admin" ||
+          role === "receptionist" ||
+          role === "super-admin") && (
+          <Link to="/addapatient">
+            <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue block mx-auto mt-2 text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
+      </div>
     );
 
   return (
     <div className="col-span-2">
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">New Patients</h1>
-        <Link to="/addapatient">
-          <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
-            Add New
-          </button>
-        </Link>
+        {(role === "admin" ||
+          role === "receptionist" ||
+          role === "super-admin") && (
+          <Link to="/addapatient">
+            <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
       </div>
       <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-2  rounded-xl">
         <table className="table w-full bg-tahiti-white text-sm">
@@ -33,7 +51,6 @@ const NewPatientTable = ({ newPatients }) => {
           </thead>
           <tbody>
             {newPatients?.map((patient, i) => {
-
               const date = new Date(patient?.createdAt);
               const year = date.getFullYear();
               const month = date.getMonth() + 1;
@@ -45,7 +62,7 @@ const NewPatientTable = ({ newPatients }) => {
                   <th className="p-2 pl-4">{i + 1}</th>
                   <td className="p-2">{patient?.serialId}</td>
                   <td className="p-2">{patient?.name}</td>
-                  <td className="p-2">{ formattedDate}</td>
+                  <td className="p-2">{formattedDate}</td>
                   <td className="p-2">{patient?.phone}</td>
                   <td className="p-2">
                     <Link to={`/patient/newpatientprofile/${patient._id}`}>

@@ -120,7 +120,7 @@ const AllExpense = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Expense Found
         </h2>
-        {(state.key || state.value) && (
+        {state.key || state.value ? (
           <button
             onClick={() => {
               dispatch({ type: "SET_KEY", payload: "" });
@@ -129,8 +129,14 @@ const AllExpense = () => {
             }}
             className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
           >
-            Go Back to previous page
+            Go Back
           </button>
+        ) : (
+          <Link to={"/expense/new"}>
+            <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+              Create
+            </button>
+          </Link>
         )}
       </>
     );
