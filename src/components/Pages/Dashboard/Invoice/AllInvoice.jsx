@@ -87,9 +87,38 @@ const reducer = (state, action) => {
 };
 
 const AllInvoice = () => {
-  const {role, loading} = useUserData();
+  const { role, loading } = useUserData();
   const [state, dispatch] = useReducer(reducer, initialState);
   const pages = Math.ceil(state?.count / state?.size);
+
+  const handleExport = async () => {
+    try {
+      const response = await fetch(
+        "https://hms-server.onrender.com/api/v1/invoice/monthly-invoices",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const blob = await response.blob();
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat("en", {
+        month: "long",
+        year: "numeric",
+      });
+      const filename = `monthly_report_invoices_${formatter.format(now)}.xlsx`;
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     dispatch({
@@ -154,12 +183,15 @@ const AllInvoice = () => {
           </Link>
         )}
         {(role?.includes("super-admin") || role?.includes("admin")) && (
-          <Link
-            to={"/categories"}
-            className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
-          >
-            all categories
-          </Link>
+          <>
+            <Link
+              to={"/categories"}
+              className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
+            >
+              all categories
+            </Link>
+            <button onClick={handleExport}>Export</button>
+          </>
         )}
         <div className="flex gap-2">
           <select
