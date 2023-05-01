@@ -7,6 +7,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { ImLab } from "react-icons/im";
 import {
   FaAccessibleIcon,
+  FaBed,
   FaFilePrescription,
   FaUserAlt,
   FaUserMd,
@@ -87,6 +88,20 @@ const DashBoardLayouts = () => {
               )}
               {(role === "super-admin" ||
                 role === "admin" ||
+                role === "receptionist") && (
+                <li>
+                  <NavLink
+                    to="/beds"
+                    activeclassname="active"
+                    className="flex items-center p-2 space-x-3 rounded-md"
+                  >
+                    <FaBed  className="text-xl text-tahiti-white"></FaBed>
+                    <span>Beds</span>
+                  </NavLink>
+                </li>
+              )}
+              {(role === "super-admin" ||
+                role === "admin" ||
                 role === "accountant") && (
                 <>
                   <li>
@@ -143,8 +158,8 @@ const DashBoardLayouts = () => {
             </ul>
           </div>
           <p className="text-xs">
-            Powered by UNIECH{" "}
-            <img className="w-4 inline" src="/favicon.ico" alt="" />{" "}
+            Powered by <img className="w-4 inline" src="/favicon.ico" alt="" />{" "} UNIECH{" "}
+            
           </p>
         </div>
         <div className="col-span-5">

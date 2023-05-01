@@ -13,10 +13,17 @@
 }
 
 .today {
-  background-color: #00cc99; /* Set the background color to your desired color */
-  color: #213d33; /* Set the text color to your desired color */
+  background-color: #00cc99; 
+  color: #213d33;
   font-weight: bold;
   border-radius: 8px;
+  color: white;
+}
+
+.today:hover{
+  background-color: white;
+  color: #213d33;
+  border: #213d33;
 }
 
 ::-webkit-scrollbar {

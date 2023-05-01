@@ -14,7 +14,7 @@ const Navbar = () => {
     <div className="flex sticky top-0 justify-between items-center bg-tahiti-darkGreen px-6 py-4 z-50">
       <Link to="/">
         <h1 className="text-3xl font-bold">
-          <span className="text-tahiti-lightGreen">UNICEH </span>
+          <span className="text-tahiti-lightGreen">UNIECH </span>
           <span className="text-tahiti-white">HMS</span>
         </h1>
       </Link>

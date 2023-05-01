@@ -122,7 +122,7 @@ const DashBoard = () => {
   ];
 
   const tileClassName = ({ date, view }) => {
-    if (view === "month" && date.getDate() === new Date().getDate()) {
+    if (view === "month" && (date.getDate() === new Date().getDate() && new Date().getMonth() === date.getMonth())) {
       return "today";
     }
   };
@@ -138,7 +138,7 @@ const DashBoard = () => {
       </div>
       <div className="mt-10 grid grid-cols-3 gap-x-20">
         <Calendar
-          className="rounded-lg w-full border-tahiti-mainBlue"
+          className="rounded-lg w-full border-none"
           tileClassName={tileClassName}
         />
         <NewPatientTable newPatients={state.newPatients}></NewPatientTable>

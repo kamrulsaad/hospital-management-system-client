@@ -8,6 +8,7 @@ import { useReactToPrint } from "react-to-print";
 import { FaAccessibleIcon } from "react-icons/fa";
 import { MdLocalPrintshop } from "react-icons/md";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 const NewPatientProfile = ({ qr }) => {
   const [newPatient, setNewPatient] = useState({});
@@ -20,6 +21,37 @@ const NewPatientProfile = ({ qr }) => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const handleDisCharge = (bedId) => {
+    var raw = JSON.stringify({
+      patient: id,
+    });
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+      body: raw,
+      redirect: "follow",
+    };
+
+    console.log(requestOptions);
+
+    fetch(`https://hms-server.onrender.com/api/v1/bed/unassign/${bedId}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === "success") {
+          toast.success(result?.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 450);
+        } else {
+          toast.error(result?.error);
+        }
+      });
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -103,7 +135,7 @@ const NewPatientProfile = ({ qr }) => {
           <QRCode
             className="w-1/4 lg:w-1/2 lg:mx-auto hidden lg:block"
             style={{ height: "auto" }}
-            value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
+            value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}/`}
           />
           <div className="col-span-2 mb-4 mx-10 lg:mx-0">
             <h3 className="text-2xl font-semibold ">
@@ -130,6 +162,21 @@ const NewPatientProfile = ({ qr }) => {
                 >
                   <MdLocalPrintshop className="text-xl" />
                 </button>
+                {newPatient?.data?.admitted ? (
+                  <button
+                    onClick={() => handleDisCharge(newPatient?.data?.bed)}
+                    className="btn btn-sm bg-tahiti-darkGreen rounded-md ml-2"
+                  >
+                    Discharge
+                  </button>
+                ) : (
+                  <Link
+                    to={`/admit/${newPatient?.data?._id}`}
+                    className="btn btn-sm bg-tahiti-darkGreen rounded-md ml-2"
+                  >
+                    Admit
+                  </Link>
+                )}
               </div>
             )}
           </div>
