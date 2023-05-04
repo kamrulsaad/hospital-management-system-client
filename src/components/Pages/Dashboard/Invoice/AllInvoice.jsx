@@ -182,17 +182,7 @@ const AllInvoice = () => {
             </button>
           </Link>
         )}
-        {(role?.includes("super-admin") || role?.includes("admin")) && (
-          <>
-            <Link
-              to={"/categories"}
-              className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
-            >
-              all categories
-            </Link>
-            <button onClick={handleExport}>Export</button>
-          </>
-        )}
+        <button onClick={handleExport}>Export</button>
         <div className="flex gap-2">
           <select
             type="text"

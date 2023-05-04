@@ -35,6 +35,7 @@ const CreateInvoiceCategory = () => {
         form.reset();
       })
       .catch((error) => {
+        setLoading(false);
         toast.error(error);
       });
   };
@@ -52,7 +53,7 @@ const CreateInvoiceCategory = () => {
           class="container flex flex-col mx-auto space-y-12"
         >
           <h1 className="text-3xl font-semibold text-tahiti-primary text-center">
-            Create Invoice Category
+            Create Test Category
           </h1>
           <fieldset class="grid grid-cols-2 gap-6 rounded-md justify-items-center">
             <div className="col-span-full flex w-1/2 sm:col-span-3">

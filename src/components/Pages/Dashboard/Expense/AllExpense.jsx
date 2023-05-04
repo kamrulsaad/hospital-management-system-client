@@ -88,7 +88,7 @@ const AllExpense = () => {
   const handleExport = async () => {
     try {
       const response = await fetch(
-        "https://hms-server.onrender.com/api/v1/expense/monthly-expense",
+        "https://hms-server.onrender.com/api/v1/expense/income-statement",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -101,7 +101,7 @@ const AllExpense = () => {
         month: "long",
         year: "numeric",
       });
-      const filename = `monthly_expense_report_${formatter.format(now)}.xlsx`;
+      const filename = `Monthly_Income_Statement_${formatter.format(now)}.xlsx`;
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
@@ -181,17 +181,30 @@ const AllExpense = () => {
               Add New
             </button>
           </Link>
-          {(role?.includes("super-admin") || role?.includes("admin")) && (
+          {role?.includes("admin") && (
             <>
-            <Link
-              to={"/expense/category/all"}
-              className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
-            >
-              Expense categories
-            </Link>
-            <button onClick={handleExport}>
-              Export
-            </button>
+              <Link
+                to={"/expense/category/all"}
+                className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
+              >
+                Expense categories
+              </Link>
+              <div className="dropdown">
+                <label tabIndex={0} className="btn btn-xs bg-tahiti-darkGreen ml-4">
+                  Export
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu p-2 ml-4 mt-1 shadow bg-tahiti-primary text-tahiti-white rounded-lg w-52"
+                >
+                  <li>
+                    <button onClick={handleExport} className="btn-xs">Monthly Report</button>
+                  </li>
+                  <li>
+                    <button className="btn-xs">Income Statement</button>
+                  </li>
+                </ul>
+              </div>
             </>
           )}
         </div>

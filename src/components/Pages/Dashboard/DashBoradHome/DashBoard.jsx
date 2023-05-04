@@ -63,6 +63,7 @@ const DashBoard = () => {
     fetch("https://hms-server.onrender.com/api/v1/dashboard", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
         dispatch({
           type: "SET_PATIENTS",
           payload: result?.data?.totalPatientsCount,
@@ -78,6 +79,14 @@ const DashBoard = () => {
         dispatch({
           type: "SET_NEW_PATIENTS",
           payload: result?.data?.newPatients,
+        });
+        dispatch({
+          type: "SET_AVAILABLE_BEDS",
+          payload: result?.data?.availableBeds,
+        });
+        dispatch({
+          type: "SET_BEDS",
+          payload: result?.data?.totalBeds,
         });
         dispatch({ type: "SET_LOADING" });
       })
@@ -122,12 +131,16 @@ const DashBoard = () => {
   ];
 
   const tileClassName = ({ date, view }) => {
-    if (view === "month" && (date.getDate() === new Date().getDate() && new Date().getMonth() === date.getMonth())) {
+    if (
+      view === "month" &&
+      date.getDate() === new Date().getDate() &&
+      new Date().getMonth() === date.getMonth()
+    ) {
       return "today";
     }
   };
 
-  if(state.loading) return <Spinner></Spinner>
+  if (state.loading) return <Spinner></Spinner>;
 
   return (
     <div className="p-10">

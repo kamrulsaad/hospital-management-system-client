@@ -151,71 +151,81 @@ const AllTest = () => {
 
   return (
     <div className="px-10 bg-tahiti-white">
-      <div className="flex mb-6 mt-10 justify-between  items-center">
-        <h1 className="text-3xl font-bold">Tests : {state.count}</h1>
-        <div className="flex gap-2 items-center">
-          <select
-            type="text"
-            name="name"
-            id="name"
-            className="select select-xs focus:outline-none bg-tahiti-primary w-40 font-bold text-tahiti-white max-w-xs"
-            onChange={(e) => {
-              dispatch({ type: "SET_KEY", payload: e.target.value });
-              if (e.target.value === "available")
-                dispatch({ type: "SET_DROPDOWN", payload: true });
-              else dispatch({ type: "SET_DROPDOWN", payload: false });
-            }}
-          >
-            <option disabled selected>
-              Select
-            </option>
-            <option className="cursor-pointer" value={"serialId"}>
-              Serial ID{" "}
-            </option>
-            <option className="cursor-pointer" value={"available"}>
-              Status{" "}
-            </option>
-          </select>
-
-          {state.dropdown ? (
+      <div className="mb-6 mt-10">
+        <h1 className="text-3xl font-bold mb-2">Tests : {state.count}</h1>
+        <div className="flex items-center justify-between">
+          {role?.includes("admin") && (
+            <Link
+              to={"/categories"}
+              className=" btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
+            >
+              all categories
+            </Link>
+          )}
+          <div className="flex gap-2 items-center">
             <select
               type="text"
-              className="select select-xs focus:outline-none bg-tahiti-lightBlue w-40 font-bold max-w-xs"
+              name="name"
+              id="name"
+              className="select select-xs focus:outline-none bg-tahiti-primary w-40 font-bold text-tahiti-white max-w-xs"
               onChange={(e) => {
-                dispatch({ type: "SET_VALUE", payload: e.target.value });
+                dispatch({ type: "SET_KEY", payload: e.target.value });
+                if (e.target.value === "available")
+                  dispatch({ type: "SET_DROPDOWN", payload: true });
+                else dispatch({ type: "SET_DROPDOWN", payload: false });
               }}
             >
               <option disabled selected>
                 Select
               </option>
-              <option className="cursor-pointer" value={"true"}>
-                Yes{" "}
+              <option className="cursor-pointer" value={"serialId"}>
+                Serial ID{" "}
               </option>
-              <option className="cursor-pointer" value={"false"}>
-                No{" "}
+              <option className="cursor-pointer" value={"available"}>
+                Status{" "}
               </option>
             </select>
-          ) : (
-            <input
-              type="text"
-              name="value"
-              id="value"
-              onChange={(e) =>
-                dispatch({ type: "SET_VALUE", payload: e.target.value })
-              }
-              className="input input-info input-xs w-40 focus:outline-none"
-            />
-          )}
-          <button
-            onClick={() => {
-              if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
-              else toast.error("Please select from options to search");
-            }}
-            type="submit"
-            className="btn btn-xs"
-          >
-            <MdSearch className="cursor-pointer mx-auto" />
-          </button>
+
+            {state.dropdown ? (
+              <select
+                type="text"
+                className="select select-xs focus:outline-none bg-tahiti-lightBlue w-40 font-bold max-w-xs"
+                onChange={(e) => {
+                  dispatch({ type: "SET_VALUE", payload: e.target.value });
+                }}
+              >
+                <option disabled selected>
+                  Select
+                </option>
+                <option className="cursor-pointer" value={"true"}>
+                  Yes{" "}
+                </option>
+                <option className="cursor-pointer" value={"false"}>
+                  No{" "}
+                </option>
+              </select>
+            ) : (
+              <input
+                type="text"
+                name="value"
+                id="value"
+                onChange={(e) =>
+                  dispatch({ type: "SET_VALUE", payload: e.target.value })
+                }
+                className="input input-info input-xs w-40 focus:outline-none"
+              />
+            )}
+            <button
+              onClick={() => {
+                if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
+                else toast.error("Please select from options to search");
+              }}
+              type="submit"
+              className="btn btn-xs"
+            >
+              <MdSearch className="cursor-pointer mx-auto" />
+            </button>
+          </div>
         </div>
       </div>
 

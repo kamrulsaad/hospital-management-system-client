@@ -43,7 +43,7 @@ const AllCategories = () => {
 
   return (
     <div className="p-10">
-      <h1 className="text-3xl font-bold ">Categories : {count}</h1>
+      <h1 className="text-3xl font-bold ">Test Categories: {count}</h1>
       <Link to="/category/new">
         <button className=" lg:my-5 font-semibold px-2 py-1 text-xs rounded-md bg-tahiti-darkGreen text-tahiti-white">
           Add New
