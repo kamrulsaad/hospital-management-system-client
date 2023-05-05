@@ -1,82 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import useUserData from "../../../Hooks/useUserData";
 
-const NewPatientTable = () => {
-  const [loading, setLoading] = useState(null);
-  const [patient, setPatients] = useState([]);
+const NewPatientTable = ({ newPatients }) => {
+  const { role } = useUserData();
 
-  // Using .reverse for new Patients
-  const patients = patient.slice(0, 5).concat().reverse();
-  // All Patient fetch data
-  useEffect(() => {
-    setLoading(true);
-    fetch("https://hms-server.onrender.com/api/v1/patient/all-patient", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setPatients(data?.data);
-      });
-  }, []);
-
-  // Loading functionality
-  if (loading)
+  if (newPatients?.length === 0)
     return (
-      <div className="flex justify-center items-center h-full">
-        <img src="assets/preloader.gif" alt="" />
+      <div className="col-span-2">
+        <h2 className="text-tahiti-darkGreen  mt-10 text-center text-2xl ">
+          No New Patients in last 7 days
+        </h2>
+        {(role === "admin" ||
+          role === "receptionist" ||
+          role === "super-admin") && (
+          <Link to="/addapatient">
+            <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue block mx-auto mt-2 text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
       </div>
     );
 
-  if (patients?.length === 0)
-    return (
-      <h2 className="text-tahiti-darkGreen text-center mt-60 text-5xl ">
-        No Patient Found
-      </h2>
-    )
-
   return (
-    <div className="py-8 pr-28">
-      <div className="flex justify-between mt-5 ">
-        <h1 className="text-3xl font-bold">New Patients</h1>
-        <Link to="/addapatient">
-          <button className="btn btn-sm btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
-            Add New
-          </button>
-        </Link>
+    <div className="col-span-2">
+      <div className="flex justify-between">
+        <h1 className="text-xl font-bold">New Patients</h1>
+        {(role === "admin" ||
+          role === "receptionist" ||
+          role === "super-admin") && (
+          <Link to="/addapatient">
+            <button className="btn btn-xs btn-ghost bg-tahiti-mainBlue  text-tahiti-white">
+              Add New
+            </button>
+          </Link>
+        )}
       </div>
-      <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-5  rounded-xl">
-        <table className="table w-full bg-tahiti-white ">
+      <div className="overflow-x-auto shadow-2xl shadow-tahiti-blue mt-2  rounded-xl">
+        <table className="table w-full bg-tahiti-white text-sm">
           <thead>
             <tr>
-              <th></th>
-              <th>Patient ID</th>
-              <th>Name</th>
-              {/* <th>Last Name</th> */}
-              <th>Phone</th>
-              <th></th>
+              <th className="p-2 pl-4">Sl</th>
+              <th className="p-2">Patient ID</th>
+              <th className="p-2">Name</th>
+              <th className="p-2">Created</th>
+              <th className="p-2">Phone</th>
+              <th className="p-2">Details</th>
             </tr>
           </thead>
           <tbody>
-            {patients?.map((patient, i) => (
-              <tr key={patient?._id}>
-                <th>{i + 1}</th>
-                <td>{patient?.serialId}</td>
-                <td>{patient?.name}</td>
-                {/* <td>{ patient?.lastName}</td> */}
-                {/* <td>{ patient?.email}</td> */}
-                <td>{patient?.phone}</td>
-                <td>
-                  <Link to={`/patient/newpatientprofile/${patient._id}`}>
-                    <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
-                      Details
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {newPatients?.map((patient, i) => {
+              const date = new Date(patient?.createdAt);
+              const year = date.getFullYear();
+              const month = date.getMonth() + 1;
+              const day = date.getDate();
+              const formattedDate = `${day}/${month}/${year}`;
+
+              return (
+                <tr key={patient?._id}>
+                  <th className="p-2 pl-4">{i + 1}</th>
+                  <td className="p-2">{patient?.serialId}</td>
+                  <td className="p-2">{patient?.name}</td>
+                  <td className="p-2">{formattedDate}</td>
+                  <td className="p-2">{patient?.phone}</td>
+                  <td className="p-2">
+                    <Link to={`/patient/newpatientprofile/${patient._id}`}>
+                      <button className="btn btn-xs btn-ghost bg-tahiti-lightBlue text-tahiti-cyan">
+                        Details
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

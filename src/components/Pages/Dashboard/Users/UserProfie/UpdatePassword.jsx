@@ -19,7 +19,7 @@ const UpdatePassword = () => {
     const digitRegex = /\d/;
     const lowerRegex = /[a-z]/;
     const upperRegex = /[A-Z]/;
-    const lengthRegex = /^.{8}$/;
+    const lengthRegex = /^.{8,}$/;
     const charRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     let newPasswordErrors = { ...errors };
 
@@ -44,7 +44,7 @@ const UpdatePassword = () => {
 
   const handleSubmit = (event) => {
     // Getting From Data
-    setLoading(true)
+    setLoading(true);
     setError("");
     event.preventDefault();
     const form = event.target;
@@ -56,13 +56,20 @@ const UpdatePassword = () => {
       return;
     }
 
-    if(errors.digit || errors.char || errors.length || errors.lower || errors.upper) return;
+    if (
+      errors.digit ||
+      errors.char ||
+      errors.length ||
+      errors.lower ||
+      errors.upper
+    )
+      return;
 
     const UpdatePasswordData = {
       password: password,
       newPassword: newPassword,
     };
-    
+
     fetch(`https://hms-server.onrender.com/api/v1/user/update-password`, {
       method: "POST",
       headers: {
@@ -74,7 +81,6 @@ const UpdatePassword = () => {
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
-        console.log(result);
         if (result.status === "success") {
           toast.success(result.message);
         } else {
@@ -87,9 +93,8 @@ const UpdatePassword = () => {
       });
   };
 
-
   return (
-    <div className="m-20 p-10 bg-tahiti-white">
+    <div className="p-10 bg-tahiti-white">
       <form
         onSubmit={handleSubmit}
         novalidate=""
@@ -144,17 +149,17 @@ const UpdatePassword = () => {
           <br />
           <button
             type="submit"
-            className="btn btn-ghost btn-md w-1/2 bg-tahiti-primary block mx-auto col-span-2"
+            className="btn btn-ghost btn-sm w-1/2 bg-tahiti-primary block mx-auto col-span-2"
           >
             {loading ? (
-                <img
-                  src="/assets/loading.png"
-                  className="w-6 mx-auto animate-spin"
-                  alt=""
-                />
-              ) : (
-                "Update Password"
-              )}
+              <img
+                src="/assets/loading.png"
+                className="w-6 mx-auto animate-spin"
+                alt=""
+              />
+            ) : (
+              "Update Password"
+            )}
           </button>
         </fieldset>
       </form>

@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import ErrorPage from "./ErrorPage";
-import Main from "./Main/Main";
+import Main from "./DashBoardLayouts/Main";
 import DashBoard from "../Pages/Dashboard/DashBoradHome/DashBoard";
 import DashBoardLayouts from "../Layouts/DashBoardLayouts/DashBoardLayouts";
 import AllPatients from "../Pages/Dashboard/Patients/AllPatients";
@@ -12,7 +12,6 @@ import AddAPatient from "../Pages/Dashboard/Patients/AddAPatient";
 import UserProfile from "../Pages/Dashboard/Users/UserProfie/UserProfile";
 import AllUser from "../Pages/Dashboard/Users/AllUser/AllUser";
 import Appointment from "../Pages/Dashboard/Appointment/Appointment";
-import PatientProfile from "../Pages/Dashboard/PatientProfile/PatientProfile";
 import MyAppointments from "../Pages/Dashboard/Doctors/MyAppointments";
 import UpdatePassword from "../Pages/Dashboard/Users/UserProfie/UpdatePassword";
 import UpdatePresciption from "../Pages/Dashboard/Presciption/UpdatePresciption";
@@ -23,7 +22,25 @@ import NewPatientProfile from "../Pages/Dashboard/PatientProfile/NewPatientProfi
 import AllCategories from "../Pages/Dashboard/Categories/AllCategories";
 import InvoicePage from "../Pages/Dashboard/Invoice/InvoicePage";
 import CreateInvoiceCategory from "../Pages/Dashboard/Categories/CreateInvoiceCatagory";
-import UserProfileDetails from "../Pages/Dashboard/Users/UserProfie/UserProfileDetails";
+import AllTest from "../Pages/Dashboard/Test/AllTest";
+import UpdateTest from "../Pages/Dashboard/Test/UpdateTest";
+import TestDetails from "../Pages/Dashboard/Test/TestDetails";
+import AllExpense from "../Pages/Dashboard/Expense/AllExpense";
+import CreateExpense from "../Pages/Dashboard/Expense/CreateExpense";
+import ExpenseDetails from "../Pages/Dashboard/Expense/ExpenseDetails";
+import UpdateExpense from "../Pages/Dashboard/Expense/UpdateExpense";
+import AllExpenseCategories from "../Pages/Dashboard/Expense/Categories/AllExpenseCategories";
+import CreateExpCat from "../Pages/Dashboard/Expense/Categories/CreateExpCat";
+import ExpCatDetails from "../Pages/Dashboard/Expense/Categories/ExpCatDetails";
+import UpdateExpCat from "../Pages/Dashboard/Expense/Categories/UpdateExpCat";
+import AllBed from "../Pages/Dashboard/Bed/AllBed";
+import CreateBed from "../Pages/Dashboard/Bed/CreateBed";
+import AdmitPatient from "../Pages/Dashboard/Bed/AdmitPatient";
+import AllBedCategories from "../Pages/Dashboard/Bed/Category/AllBedCategories";
+import CreateBedCategory from "../Pages/Dashboard/Bed/Category/CreateBedCategory";
+import UpdateBedCategory from "../Pages/Dashboard/Bed/Category/UpdateBedCategory";
+import BedDetails from "../Pages/Dashboard/Bed/BedDetails";
+import UpdateBed from "../Pages/Dashboard/Bed/UpdateBed";
 
 const router = createBrowserRouter([
   {
@@ -60,14 +77,14 @@ const router = createBrowserRouter([
         element: <AddAPatient></AddAPatient>,
       },
       {
-        path: "/userprofile",
+        path: "/user/profile",
         element: <UserProfile></UserProfile>,
       },
       {
         path: "/alluser",
         element: <AllUser></AllUser>,
       },
-  
+
       {
         path: "/appointment",
         element: <AllApointments></AllApointments>,
@@ -88,7 +105,7 @@ const router = createBrowserRouter([
         path: "/createinvoice/:patientId",
         element: <CreateInvoice></CreateInvoice>,
       },
-      
+
       {
         path: "/allinvoice",
         element: <AllInvoice></AllInvoice>,
@@ -97,12 +114,81 @@ const router = createBrowserRouter([
         path: "/categories",
         element: <AllCategories></AllCategories>,
       },
+      {
+        path: "/tests",
+        element: <AllTest></AllTest>,
+      },
+      {
+        path: "/test/:testId",
+        element: <UpdateTest></UpdateTest>,
+      },
+      {
+        path: "/testDetails/:testId",
+        element: <TestDetails></TestDetails>,
+      },
 
       {
         path: "/category/new",
         element: <CreateInvoiceCategory></CreateInvoiceCategory>,
       },
-      
+
+      {
+        path: "/expense/all",
+        element: <AllExpense></AllExpense>,
+      },
+
+      {
+        path: "/expense/new",
+        element: <CreateExpense></CreateExpense>,
+      },
+
+      {
+        path: "/expense/:expenseId",
+        element: <ExpenseDetails></ExpenseDetails>,
+      },
+
+      {
+        path: "/expense/update/:expenseId",
+        element: <UpdateExpense></UpdateExpense>,
+      },
+
+      {
+        path: "/expense/category/all",
+        element: <AllExpenseCategories></AllExpenseCategories>,
+      },
+
+      {
+        path: "/expense/category/new",
+        element: <CreateExpCat></CreateExpCat>,
+      },
+
+      {
+        path: "/expense/category/:categoryId",
+        element: <ExpCatDetails></ExpCatDetails>,
+      },
+
+      {
+        path: "/expense/category/update/:categoryId",
+        element: <UpdateExpCat></UpdateExpCat>,
+      },
+      {
+        path: "/bed/new",
+        element: <CreateBed></CreateBed>,
+      },
+      {
+        path: `/admit/:patientId`,
+        element: <AdmitPatient></AdmitPatient>,
+      },
+      {
+        path: "/beds",
+        element: <AllBed></AllBed>,
+      },
+
+      {
+        path: '/beds/category',
+        element: <AllBedCategories></AllBedCategories>,
+      },
+
       {
         path: "/payment/invoice/:invoiceId",
         element: <InvoicePage></InvoicePage>,
@@ -116,8 +202,20 @@ const router = createBrowserRouter([
         element: <UpdatePassword></UpdatePassword>,
       },
       {
-        path: "/user/userdetails",
-        element: <UserProfileDetails></UserProfileDetails>,
+        path: "/bed/createbedcategory",
+        element: <CreateBedCategory></CreateBedCategory>,
+      },
+      {
+        path: "/bed/updatecategory/:id",
+        element: <UpdateBedCategory></UpdateBedCategory>,
+      },
+      {
+        path: "/bed/details/:id",
+        element: <BedDetails></BedDetails>,
+      },
+      {
+        path: "/bed/update/:id",
+        element: <UpdateBed></UpdateBed>,
       },
       {
         path: "/*",
@@ -140,10 +238,6 @@ const router = createBrowserRouter([
     element: <Main></Main>,
     children: [
       {
-        path: "/patient/patientprofile/:id",
-        element: <PatientProfile></PatientProfile>,
-      },
-      {
         path: "/patient/newpatientprofile/:id",
         element: <NewPatientProfile></NewPatientProfile>,
       },
@@ -165,3 +259,41 @@ const router = createBrowserRouter([
   },
 ]);
 export default router;
+
+// import { lazy } from 'react';
+
+// const Login = lazy(() => import('../Pages/Login/Login'));
+// const Register = lazy(() => import('../Pages/Register/Register'));
+// const ErrorPage = lazy(() => import('./ErrorPage'));
+// const Main = lazy(() => import('./DashBoardLayouts/Main'));
+// const DashBoard = lazy(() => import('../Pages/Dashboard/DashBoradHome/DashBoard'));
+// const DashBoardLayouts = lazy(() => import('../Layouts/DashBoardLayouts/DashBoardLayouts'));
+// const AllPatients = lazy(() => import('../Pages/Dashboard/Patients/AllPatients'));
+// const Doctors = lazy(() => import('../Pages/Dashboard/Doctors/Doctors'));
+// const PrivateRoute = lazy(() => import('../PrivateRoutes/PrivateRoutes'));
+// const AddAPatient = lazy(() => import('../Pages/Dashboard/Patients/AddAPatient'));
+// const UserProfile = lazy(() => import('../Pages/Dashboard/Users/UserProfie/UserProfile'));
+// const AllUser = lazy(() => import('../Pages/Dashboard/Users/AllUser/AllUser'));
+// const Appointment = lazy(() => import('../Pages/Dashboard/Appointment/Appointment'));
+// const MyAppointments = lazy(() => import('../Pages/Dashboard/Doctors/MyAppointments'));
+// const UpdatePassword = lazy(() => import('../Pages/Dashboard/Users/UserProfie/UpdatePassword'));
+// const UpdatePresciption = lazy(() => import('../Pages/Dashboard/Presciption/UpdatePresciption'));
+// const AllApointments = lazy(() => import('../Pages/Dashboard/Appointment/AllApointments'));
+// const CreateInvoice = lazy(() => import('../Pages/Dashboard/Invoice/CreateInvoice'));
+// const AllInvoice = lazy(() => import('../Pages/Dashboard/Invoice/AllInvoice'));
+// const NewPatientProfile = lazy(() => import('../Pages/Dashboard/PatientProfile/NewPatientProfile'));
+// const AllCategories = lazy(() => import('../Pages/Dashboard/Categories/AllCategories'));
+// const InvoicePage = lazy(() => import('../Pages/Dashboard/Invoice/InvoicePage'));
+// const CreateInvoiceCategory = lazy(() => import('../Pages/Dashboard/Categories/CreateInvoiceCatagory'));
+// const AllTest = lazy(() => import('../Pages/Dashboard/Test/AllTest'));
+// const UpdateTest = lazy(() => import('../Pages/Dashboard/Test/UpdateTest'));
+// const TestDetails = lazy(() => import('../Pages/Dashboard/Test/TestDetails'));
+// const AllExpense = lazy(() => import('../Pages/Dashboard/Expense/AllExpense'));
+// const CreateExpense = lazy(() => import('../Pages/Dashboard/Expense/CreateExpense'));
+// const ExpenseDetails = lazy(() => import('../Pages/Dashboard/Expense/ExpenseDetails'));
+// const UpdateExpense = lazy(() => import('../Pages/Dashboard/Expense/UpdateExpense'));
+// const AllExpenseCategories = lazy(() => import('../Pages/Dashboard/Expense/Categories/AllExpenseCategories'));
+// const CreateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/CreateExpCat'));
+// const ExpCatDetails = lazy(() => import('../Pages/Dashboard/Expense/Categories/ExpCatDetails'));
+// const UpdateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/UpdateExpCat'));
+

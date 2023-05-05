@@ -1,18 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Spinner from "../../../Shared/Spinner";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useReactToPrint } from "react-to-print";
 
 const InvoicePage = () => {
   const { invoiceId } = useParams();
-  const [loading, setLoading] = useState(true);
-
-  const [invoice, setInvoice] = useState();
+  const [loading, setLoading] = useState(null);
+  const [refetch, setRefetch] = useState(true);
+  const [status, setStatus] = useState(null);
+  const [invoice, setInvoice] = useState({});
 
   const date = new Date(invoice?.createdAt);
   const options = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = date
     .toLocaleDateString("en-US", options)
     .replace(/ /g, "/");
+
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const handleStatusUpdate = () => {
+    const updateStatus = async () => {
+      setLoading(true);
+      const response = await fetch(
+        `https://hms-server.onrender.com/api/v1/invoice/status/${invoiceId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data?.status === "success") {
+        toast.success(data?.message);
+        setRefetch(!refetch);
+      }
+      setLoading(false);
+    };
+    updateStatus();
+  };
 
   useEffect(() => {
     const fetchInvoiceData = async () => {
@@ -28,23 +59,24 @@ const InvoicePage = () => {
       );
       const data = await response.json();
       setInvoice(data?.data);
+      setStatus(data?.data?.paymentCompleted);
       setLoading(false);
     };
     fetchInvoiceData();
-  }, []);
+  }, [refetch]);
 
-  if (loading) return <Spinner bg></Spinner>;
+  if (loading) return <Spinner></Spinner>;
 
   return (
-    <div >
-      <div className="p-20">
-        <div>
-          <p className="text-4xl text-tahiti-lightGreen m-5 font-semibold">
-            UNICEH HMS
-          </p>
-        </div>
+    <div className="p-10 pb-0">
+      <div>
+        <p className="text-xl text-tahiti-lightGreen my-2-5 mx-10 font-semibold">
+          UNICEH HMS
+        </p>
+      </div>
+      <div ref={componentRef}>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
-          <div >
+          <div>
             <p>From</p>
             <p className="font-medium">
               {invoice?.createdBy?.firstName} {invoice?.createdBy?.lastName}
@@ -79,58 +111,78 @@ const InvoicePage = () => {
             <p>Date: {formattedDate.replace(",", "")}</p>
           </div>
         </div>
-        <div className="p-10 bg-tahiti-white">
-          <div className="overflow-x-auto bg-tahiti-white border rounded-lg">
+        <div className="px-10 bg-tahiti-white">
+          <div className="overflow-x-auto bg-tahiti-white border text-sm rounded-lg">
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th>Sl</th>
-                  <th>Item</th>
-                  <th className="text-right">Amount</th>
+                  <th className="p-2 pl-4">Sl</th>
+                  <th className="p-2">Item</th>
+                  <th className="text-right p-2">Amount</th>
                 </tr>
               </thead>
-              {invoice?.payments.map((payment, i) => (
+              {invoice?.payments?.map((payment, i) => (
                 <tr key={payment?._id}>
-                  <td>{i + 1}</td>
-                  <td>{payment.name}</td>
-                  <td className="text-right">{payment.amount}৳</td>
+                  <td className="pl-4 p-2">{i + 1}</td>
+                  <td className="p-2">{payment.name}</td>
+                  <td className="text-right p-2">{payment.amount}৳</td>
                 </tr>
               ))}
               <tr>
-                <td className="bg-tahiti-babyPink font-bold">#</td>
-                <td className="bg-tahiti-babyPink font-bold">Sub Total</td>
-                <td className="text-right font-bold bg-tahiti-babyPink">{invoice?.sub_total}৳</td>
+                <td className="bg-tahiti-babyPink font-bold pl-4 p-2">#</td>
+                <td className="bg-tahiti-babyPink font-bold p-2">Sub Total</td>
+                <td className="text-right font-bold bg-tahiti-babyPink p-2">
+                  {invoice?.sub_total}৳
+                </td>
               </tr>
             </table>
           </div>
         </div>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
-          <div>
-            <button className="btn btn-ghost btn-xs bg-tahiti-primary">
+          <div className="col-span-2 mt-auto space-x-4">
+            {!status && (
+              <button
+                onClick={handleStatusUpdate}
+                className="btn btn-xs btn-success print:hidden "
+              >
+                Submit Payment
+              </button>
+            )}
+            <button
+              onClick={handlePrint}
+              className="btn btn-ghost btn-xs bg-tahiti-primary print:hidden"
+            >
               Print
             </button>
           </div>
-          <div></div>
           <div>
-            <div className="overflow-x-auto mb-5">
+            <div className="overflow-x-auto">
               <table className="table w-full">
                 <tbody>
                   {/* row 1 */}
                   <tr>
-                    <td>Sub Total: </td>
-                    <td className="font-bold text-right">{invoice?.sub_total}৳</td>
+                    <td className="p-2">Sub Total: </td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.sub_total}৳
+                    </td>
                   </tr>
                   <tr>
-                    <td>Tax:</td>
-                    <td className="font-bold text-right">+{invoice?.tax}%</td>
+                    <td className="p-2">Tax:</td>
+                    <td className="font-bold text-right p-2">
+                      +{invoice?.tax}%
+                    </td>
                   </tr>
                   <tr>
-                    <td>Discount:</td>
-                    <td className="font-bold text-right">-{invoice?.discount}%</td>
+                    <td className="p-2">Discount:</td>
+                    <td className="font-bold text-right p-2">
+                      -{invoice?.discount}%
+                    </td>
                   </tr>
                   <tr>
-                    <td>Grand Total: </td>
-                    <td className="font-bold text-right">{invoice?.grand_total}৳</td>
+                    <td className="p-2">Grand Total: </td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.grand_total}৳
+                    </td>
                   </tr>
                 </tbody>
               </table>

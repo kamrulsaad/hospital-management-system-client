@@ -6,9 +6,7 @@ import { toast } from "react-toastify";
 
 const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
   // `${window.location.host}/qr/patient/${invoice?.serialId}`
-
-
-
+  
   const [delLoading, setDelLoading] = useState(null);
   const handleDelete = (id) => {
     setDelLoading(true);
@@ -49,9 +47,6 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
     });
   };
 
-
-
-
   const date = new Date(invoice?.createdAt);
   const options = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = date
@@ -80,7 +75,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
           {delLoading ? (
             <img
               className="w-6 animate-spin mx-auto"
-              src="assets/loading.png"
+              src="/assets/loading.png"
               alt=""
             />
           ) : (

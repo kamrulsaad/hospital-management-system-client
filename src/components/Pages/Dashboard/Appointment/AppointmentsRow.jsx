@@ -6,6 +6,13 @@ import Swal from "sweetalert2";
 
 const AppointmentsRow = ({ appointment, index, role, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
+
+  const date = new Date(appointment?.createdAt);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = date
+    .toLocaleDateString("en-US", options)
+    .replace(/ /g, "/");
+
   const handleDelete = (id) => {
     setDelLoading(true);
 
@@ -49,15 +56,17 @@ const AppointmentsRow = ({ appointment, index, role, refetch, setRefetch }) => {
     <tr key={appointment?._id}>
       <th className="text-center">{index + 1}</th>
       <td className="text-center">{appointment?.serialId}</td>
+      <td className="text-center">{formattedDate.replace(",", '')}</td>
+      <td className="text-center">{appointment?.patient?.name}</td>
+        <td className="text-center">{appointment?.patient?.phone}</td>
       <td className="text-center">{appointment?.reason}</td>
       <td className="text-center">
         {appointment?.paymentCompleted ? (
-          <span className="text-tahiti-darkGreen">YES</span>
+          <span className="text-tahiti-darkGreen">Paid</span>
         ) : (
-          <span className="text-tahiti-red">NO</span>
+          <span className="text-tahiti-red">Unpaid</span>
         )}
       </td>
-      <td className="text-center">{appointment?.patient?.phone}</td>
       <td className="text-center">
         <button className="btn btn-xs">
           <Link to={`/appointment`}>Details</Link>

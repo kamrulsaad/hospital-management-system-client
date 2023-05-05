@@ -7,7 +7,7 @@ import { MdSearch } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const initialState = {
-  loading: null,
+  loading: true,
   invoices: [],
   key: "",
   value: "",
@@ -16,6 +16,7 @@ const initialState = {
   pageNumber: 1,
   size: 10,
   dropdown: false,
+  search: null,
 };
 
 const reducer = (state, action) => {
@@ -33,7 +34,7 @@ const reducer = (state, action) => {
     case "SET_LOADING":
       return {
         ...state,
-        loading: action.payload,
+        loading: false,
       };
     case "SET_INVOICES":
       return {
@@ -68,12 +69,17 @@ const reducer = (state, action) => {
     case "SET_REFETCH":
       return {
         ...state,
-        refetch: action.payload,
+        refetch: !state.refetch,
       };
     case "SET_DROPDOWN":
       return {
         ...state,
         dropdown: action.payload,
+      };
+    case "SET_SEARCH":
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;
@@ -81,12 +87,44 @@ const reducer = (state, action) => {
 };
 
 const AllInvoice = () => {
-  const [user, role, loading] = useUserData();
+  const { role, loading } = useUserData();
   const [state, dispatch] = useReducer(reducer, initialState);
   const pages = Math.ceil(state?.count / state?.size);
 
+  const handleExport = async () => {
+    try {
+      const response = await fetch(
+        "https://hms-server.onrender.com/api/v1/invoice/monthly-invoices",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const blob = await response.blob();
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat("en", {
+        month: "long",
+        year: "numeric",
+      });
+      const filename = `monthly_report_invoices_${formatter.format(now)}.xlsx`;
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    dispatch({ type: "SET_LOADING", payload: true });
+    dispatch({
+      type: "SET_SEARCH",
+      payload: state.key && state.value ? true : false,
+    });
     fetch(
       `https://hms-server.onrender.com/api/v1/invoice/all-invoices?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
@@ -97,7 +135,7 @@ const AllInvoice = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "SET_LOADING" });
         dispatch({
           type: "SET_COUNT",
           payload: data?.total,
@@ -117,21 +155,26 @@ const AllInvoice = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Invoice Found
         </h2>
-        <button onClick={() => {
-          dispatch({type: "SET_KEY", payload: ""});
-          dispatch({type: "SET_VALUE", payload: ""});
-          dispatch({type: "SET_REFETCH", payload: !state.refetch});
-        }} className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
-          Go Back to previous page
-        </button>
+        {(state.key || state.value) && (
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_KEY", payload: "" });
+              dispatch({ type: "SET_VALUE", payload: "" });
+              dispatch({ type: "SET_REFETCH" });
+            }}
+            className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4"
+          >
+            Go Back to previous page
+          </button>
+        )}
       </>
     );
 
   return (
-    <div className="lg:ml-20 ">
-      <h1 className="text-5xl font-bold mt-20 ">Invoices : {state.count}</h1>
+    <div className="p-10">
+      <h1 className="text-3xl font-bold">Invoices : {state.count}</h1>
 
-      <div className="flex justify-between items-center pr-10">
+      <div className="flex justify-between items-center">
         {role?.includes("accountant") && (
           <Link to="/patients">
             <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
@@ -139,20 +182,13 @@ const AllInvoice = () => {
             </button>
           </Link>
         )}
-        {(role?.includes("super-admin") || role?.includes("admin")) && (
-          <Link
-            to={"/categories"}
-            className="my-5 btn font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white btn-sm"
-          >
-            all categories
-          </Link>
-        )}
-        <div className="flex gap-2">
+        <button className="btn btn-xs mb-1 bg-tahiti-darkGreen " onClick={handleExport}>Export</button>
+        <div className="flex gap-2 ">
           <select
             type="text"
             name="name"
             id="name"
-            className="select select-sm focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
+            className="select select-xs focus:outline-none bg-tahiti-primary w-48 font-bold text-tahiti-white max-w-xs"
             onChange={(event) => {
               dispatch({ type: "SET_KEY", payload: event.target.value });
 
@@ -174,7 +210,7 @@ const AllInvoice = () => {
           {state.dropdown ? (
             <select
               type="text"
-              className="select select-sm select-bordered focus:outline-none bg-tahiti-white font-bold w-48"
+              className="select select-xs select-bordered focus:outline-none bg-tahiti-white font-bold w-48"
               onChange={(event) =>
                 dispatch({ type: "SET_VALUE", payload: event.target.value })
               }
@@ -197,23 +233,39 @@ const AllInvoice = () => {
               onChange={(e) =>
                 dispatch({ type: "SET_VALUE", payload: e.target.value })
               }
-              className="input input-info input-sm w-48 focus:outline-none"
+              className="input input-info input-xs w-48 focus:outline-none"
             />
           )}
           <button
             onClick={() => {
-              if (state.key && state.value) dispatch({ type: "SET_REFETCH", payload: !state.refetch });
+              if (state.key && state.value) dispatch({ type: "SET_REFETCH" });
               else toast.error("Please select from options to search");
             }}
             type="submit"
-            className="btn btn-sm"
+            className="btn btn-xs"
           >
             <MdSearch className="cursor-pointer mx-auto" />
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto pr-10">
+      <div className="overflow-x-auto text-sm">
+        {state.search && (
+          <p className="mb-2">
+            Showing results for invoices with <b>{state.key}</b> of{" "}
+            <b>{state.value}</b>{" "}
+            <button
+              className="btn btn-xs bg-tahiti-grey text-tahiti-red"
+              onClick={() => {
+                dispatch({ type: "SET_KEY", payload: "" });
+                dispatch({ type: "SET_VALUE", payload: "" });
+                dispatch({ type: "SET_REFETCH" });
+              }}
+            >
+              X
+            </button>{" "}
+          </p>
+        )}
         <table className="table w-full bg-tahiti-white">
           <thead>
             <tr>
@@ -238,9 +290,7 @@ const AllInvoice = () => {
                 i={i}
                 role={role}
                 refetch={state.refetch}
-                setRefetch={() =>
-                  dispatch({ type: "SET_REFETCH", payload: !state.refetch })
-                }
+                setRefetch={() => dispatch({ type: "SET_REFETCH" })}
               ></InvoiceRow>
             ))}
           </tbody>

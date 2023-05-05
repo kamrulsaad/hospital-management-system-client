@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import Spinner from "../Shared/Spinner";
 
 const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState({});
@@ -10,7 +9,7 @@ const PrivateRoute = ({ children }) => {
         navigate('/user/login')
     }
     // const { user } = useContext(UserContext);
-    // const [loading, useLoading] = useState();
+    // const [loading, useLoading] = useState(null);
     const location = useLocation();
 
     // fetching userInfo from backend
