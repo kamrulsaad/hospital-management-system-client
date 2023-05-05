@@ -2,11 +2,13 @@ import React from "react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { GrDocumentUpdate } from "react-icons/gr";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const BedCategoryRow = ({ category, i, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
+  console.log(category);
   const handleDelete = (id) => {
     setDelLoading(true);
 
@@ -30,7 +32,7 @@ const BedCategoryRow = ({ category, i, refetch, setRefetch }) => {
     }).then((results) => {
       if (results.isConfirmed) {
         fetch(
-          `https://hms-server.onrender.com/api/v1/category/${id}`,
+          `https://hms-server.onrender.com/api/v1/bed/category/${id}`,
           requestOptions
         )
           .then((response) => response.json())
@@ -53,8 +55,12 @@ const BedCategoryRow = ({ category, i, refetch, setRefetch }) => {
     <tr>
       <th>{i + 1}</th>
       <td className="text-center">{category?.name}</td>
-      <td className="text-center">{category?.amount}৳</td>
-      <td><GrDocumentUpdate className="text-xl mx-auto cursor-pointer"></GrDocumentUpdate></td>  
+      <td className="text-center">{category?.charge}৳</td>
+      <td>
+        <Link to ={`/bed/updatecategory/${category._id}`}>
+          <GrDocumentUpdate className="text-xl mx-auto cursor-pointer"></GrDocumentUpdate>
+        </Link>
+      </td>
       <td>
         {delLoading ? (
           <img

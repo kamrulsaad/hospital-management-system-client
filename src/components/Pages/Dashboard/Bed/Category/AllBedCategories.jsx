@@ -33,7 +33,7 @@ const AllBedCategories = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Categories Found for Bed
         </h2>
-        <Link to="/category/new">
+        <Link to="/bed/createbedcategory">
           <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
             Add New Category
           </button>
@@ -43,8 +43,8 @@ const AllBedCategories = () => {
 
   return (
     <div className="p-10">
-      <h1 className="text-3xl font-bold ">Test Categories: {count}</h1>
-      <Link to="/category/new">
+      <h1 className="text-3xl font-bold ">Bed Categories: {count}</h1>
+      <Link to="/bed/createbedcategory">
         <button className=" lg:my-5 font-semibold px-2 py-1 text-xs rounded-md bg-tahiti-darkGreen text-tahiti-white">
           Add New
         </button>
