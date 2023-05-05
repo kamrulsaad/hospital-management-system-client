@@ -36,6 +36,7 @@ import UpdateExpCat from "../Pages/Dashboard/Expense/Categories/UpdateExpCat";
 import AllBed from "../Pages/Dashboard/Bed/AllBed";
 import CreateBed from "../Pages/Dashboard/Bed/CreateBed";
 import AdmitPatient from "../Pages/Dashboard/Bed/AdmitPatient";
+import AllBedCategories from "../Pages/Dashboard/Bed/Category/AllBedCategories";
 
 const router = createBrowserRouter([
   {
@@ -177,6 +178,11 @@ const router = createBrowserRouter([
       {
         path: "/beds",
         element: <AllBed></AllBed>,
+      },
+
+      {
+        path: 'beds/category',
+        element: <AllBedCategories></AllBedCategories>,
       },
 
       {

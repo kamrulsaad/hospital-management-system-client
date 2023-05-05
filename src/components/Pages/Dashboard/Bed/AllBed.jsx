@@ -154,7 +154,7 @@ const AllBed = () => {
               </button>
             </Link>
             <Link
-              to={"/categories"}
+              to={"/beds/category"}
               className="my-5 btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
             >
               Bed Categories
