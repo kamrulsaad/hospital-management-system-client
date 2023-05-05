@@ -58,7 +58,7 @@ const BedsRow = ({ invoice, i, role, refetch, setRefetch }) => {
       </td>
       <td className="text-center">
         <button className="btn btn-xs">
-          <Link to={`/bed/${invoice._id}`}>Details</Link>
+          <Link to={`/bed/details/${invoice._id}`}>Details</Link>
         </button>
       </td>
 

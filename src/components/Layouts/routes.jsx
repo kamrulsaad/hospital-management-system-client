@@ -39,6 +39,8 @@ import AdmitPatient from "../Pages/Dashboard/Bed/AdmitPatient";
 import AllBedCategories from "../Pages/Dashboard/Bed/Category/AllBedCategories";
 import CreateBedCategory from "../Pages/Dashboard/Bed/Category/CreateBedCategory";
 import UpdateBedCategory from "../Pages/Dashboard/Bed/Category/UpdateBedCategory";
+import BedDetails from "../Pages/Dashboard/Bed/BedDetails";
+import UpdateBed from "../Pages/Dashboard/Bed/UpdateBed";
 
 const router = createBrowserRouter([
   {
@@ -206,6 +208,14 @@ const router = createBrowserRouter([
       {
         path: "/bed/updatecategory/:id",
         element: <UpdateBedCategory></UpdateBedCategory>,
+      },
+      {
+        path: "/bed/details/:id",
+        element: <BedDetails></BedDetails>,
+      },
+      {
+        path: "/bed/update/:id",
+        element: <UpdateBed></UpdateBed>,
       },
       {
         path: "/*",

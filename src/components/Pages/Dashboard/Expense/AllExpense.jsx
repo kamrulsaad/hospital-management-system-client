@@ -85,10 +85,10 @@ const AllExpense = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const pages = Math.ceil(state?.count / state?.size);
 
-  const handleExport = async () => {
+  const handleExport = async (statement) => {
     try {
       const response = await fetch(
-        "https://hms-server.onrender.com/api/v1/expense/income-statement",
+        `https://hms-server.onrender.com/api/v1/expense/${statement}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -101,7 +101,7 @@ const AllExpense = () => {
         month: "long",
         year: "numeric",
       });
-      const filename = `Monthly_Income_Statement_${formatter.format(now)}.xlsx`;
+      const filename = `${statement}_${formatter.format(now)}.xlsx`;
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
@@ -198,10 +198,10 @@ const AllExpense = () => {
                   className="dropdown-content menu p-2 ml-4 mt-1 shadow bg-tahiti-primary text-tahiti-white rounded-lg w-52"
                 >
                   <li>
-                    <button onClick={handleExport} className="btn-xs">Monthly Report</button>
+                    <button onClick={()=>handleExport("monthly-expense")} className="btn-xs">Monthly Report</button>
                   </li>
                   <li>
-                    <button className="btn-xs">Income Statement</button>
+                    <button onClick={()=>handleExport("income-statement")} className="btn-xs">Income Statement</button>
                   </li>
                 </ul>
               </div>

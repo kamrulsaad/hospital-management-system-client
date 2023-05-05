@@ -182,8 +182,8 @@ const AllInvoice = () => {
             </button>
           </Link>
         )}
-        <button onClick={handleExport}>Export</button>
-        <div className="flex gap-2">
+        <button className="btn btn-xs mb-1 bg-tahiti-darkGreen " onClick={handleExport}>Export</button>
+        <div className="flex gap-2 ">
           <select
             type="text"
             name="name"
