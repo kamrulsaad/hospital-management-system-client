@@ -93,11 +93,11 @@ const UpdateBed = () => {
             </div>
          
             <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Category: </p>
+              <p className="text-xl font-medium w-1/4">Name: </p>
               <input
                 name="name"
                 type="text"
-                placeholder={expense?.category?.name}
+                placeholder={expense?.name}
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>

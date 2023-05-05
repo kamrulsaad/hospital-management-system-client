@@ -126,7 +126,7 @@ const AllBed = () => {
         <h2 className="text-tahiti-red text-center mt-60 text-3xl">
           No Beds Found
         </h2>
-        {(state.key || state.value) && (
+        {state.key || state.value ? (
           <button
             onClick={() => {
               dispatch({ type: "SET_KEY", payload: "" });
@@ -137,6 +137,12 @@ const AllBed = () => {
           >
             Go Back to previous page
           </button>
+        ) : (
+          <Link to="/bed/new">
+            <button className="btn btn-xs block mx-auto bg-tahiti-darkGreen my-2">
+              Add New
+            </button>
+          </Link>
         )}
       </>
     );

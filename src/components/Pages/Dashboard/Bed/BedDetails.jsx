@@ -54,6 +54,12 @@ const BedDetails = () => {
             {expense?.serialId}
           </p>
         </div>
+        <div className=" flex w-1/2 mb-2">
+          <p className="text-xl font-medium w-2/5">Name: </p>
+          <p className="text-xl font-bold text-tahiti-mainBlue">
+            {expense?.name}
+          </p>
+        </div>
         <div className="flex w-1/2 mb-2 items-center">
           <p className="text-xl font-medium w-2/5">Created: </p>
           <p className="text-xl font-bold">{formatDate(expense?.createdAt)}</p>

@@ -58,7 +58,6 @@ const UpdateBedCategory = () => {
         if (result.status === "success") {
           toast.success(result.message);
           navigate(`/beds/category`);
-        //   navigate(`/bed/category/${categoryId}`);
         } else {
           toast.error(result.error);
         }
@@ -74,7 +73,7 @@ const UpdateBedCategory = () => {
 
   return (
     <div className="p-10">
-      <Link to="/expense/category/all">
+      <Link to="/beds/category">
         <p className="mb-2 flex gap-2 items-center hover:text-tahiti-primary transition-colors">
           <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
           Go Back

@@ -104,7 +104,7 @@ const TestDetails = () => {
               className="mx-auto rounded-lg"
               src={test?.file_url}
               width="100%"
-              height="500px"
+              height="650px"
             />
           )}
         </div>

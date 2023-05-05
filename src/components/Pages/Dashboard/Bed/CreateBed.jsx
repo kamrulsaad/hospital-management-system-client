@@ -10,7 +10,7 @@ const CreateBed = () => {
   const [creating, setCreating] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -58,7 +58,7 @@ const CreateBed = () => {
         setCreating(false);
         if (result.status === "success") {
           toast.success(result.message);
-          navigate("/beds")
+          navigate("/beds");
         } else {
           toast.error(result.error);
         }
@@ -71,6 +71,20 @@ const CreateBed = () => {
   };
 
   if (loading) return <Spinner></Spinner>;
+
+  if (!categories.length)
+    return (
+      <>
+        <h2 className="text-tahiti-red text-center mt-60 text-3xl">
+          No Categories Found for Bed
+        </h2>
+        <Link to="/bed/createbedcategory">
+          <button className=" lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+            Add New Category
+          </button>
+        </Link>
+      </>
+    );
 
   return (
     <div className="p-10">

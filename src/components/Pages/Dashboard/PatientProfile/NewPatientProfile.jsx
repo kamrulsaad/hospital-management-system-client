@@ -39,7 +39,10 @@ const NewPatientProfile = ({ qr }) => {
 
     console.log(requestOptions);
 
-    fetch(`https://hms-server.onrender.com/api/v1/bed/unassign/${bedId}`, requestOptions)
+    fetch(
+      `https://hms-server.onrender.com/api/v1/bed/unassign/${bedId}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((result) => {
         if (result.status === "success") {
@@ -190,18 +193,20 @@ const NewPatientProfile = ({ qr }) => {
           <div className="bg-tahiti-white rounded-3xl mb-4 relative">
             <button
               onClick={() => setIsPrescription(false)}
-              className={`py-2 px-4  ${!isPrescription &&
+              className={`py-2 px-4  ${
+                !isPrescription &&
                 "transition-colors duration-300 text-tahiti-white"
-                }`}
+              }`}
               style={{ zIndex: 10, position: "relative" }}
             >
               Reports
             </button>
             <button
               onClick={() => setIsPrescription(true)}
-              className={`py-2 px-4 ${isPrescription &&
+              className={`py-2 px-4 ${
+                isPrescription &&
                 "transition-colors duration-300 text-tahiti-white"
-                }`}
+              }`}
               style={{ zIndex: 10, position: "relative" }}
             >
               Invoices
@@ -230,36 +235,41 @@ const NewPatientProfile = ({ qr }) => {
 
       {/* print section */}
       <div
-        className="p-4 bg-tahiti-white mt-10 hidden print:block w-96 "
+        className="bg-tahiti-white hidden print:block w-96 border m-2 mx-auto"
         ref={componentRef}
       >
-        <h1 className="font-bold text-lg text-center">The Labaid Hospital</h1>
-        <h3 className="text-center">MollaTowar, Soy Tala Bus stand, Jamghora, Ashulia, Dhaka</h3>
-        <h3 className="text-center">01739-088461</h3>
-        <hr className="border-dashed border-2 bg-tahiti-black" />
-        <h1 className="font-bold text-lg text-center mt-2">Patient Information</h1>
-        <h1 className="text-xl font-medium text-gray-700 capitalize text-center mt-3">
-          {" "}
-          {newPatient?.data?.name}
-        </h1>
-        <p className=" text-lg text-center">
-          <span className="font-bold">Patient ID</span>:{" "}
-          {newPatient?.data?.serialId}
-        </p>
-        <p className=" text-lg text-center">
-          <span className="font-bold">Patient ID</span>:{" "}
-          {newPatient?.data?.phone}
-        </p>
-        <div className="flex justify-center">
-          <QRCode
-            className="mt-4 "
-            style={{ height: "auto", maxWidth: "50%", width: "20%" }}
-            value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
-          />
-
+        <div className="py-2">
+          <h1 className="font-bold text-lg text-center">The Labaid Hospital</h1>
+          <h3 className="text-center text-sm">
+            MollaTowar, Soy Tala Bus stand, <br /> Jamghora, Ashulia, Dhaka
+          </h3>
+          <h3 className="text-center text-sm">01739-088461</h3>
+          <hr className="border-dashed bg-tahiti-black" />
+          <h1 className="font-bold text-lg text-center mt-2">
+            Patient Information
+          </h1>
+          <h1 className="text-xl font-medium text-gray-700 capitalize text-center mt-3">
+            {" "}
+            {newPatient?.data?.name}
+          </h1>
+          <p className=" text-lg text-center">
+            Patient ID: {newPatient?.data?.serialId}
+          </p>
+          <p className=" text-lg text-center">
+            Phone: {newPatient?.data?.phone}
+          </p>
+          <div className="flex justify-center">
+            <QRCode
+              className="m-2 border p-2"
+              style={{ height: "auto", maxWidth: "50%", width: "40%" }}
+              value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
+            />
+          </div>
+          <hr className="border-dashed bg-tahiti-black mt-10" />
+          <h1 className="font-bold text-xl text-center mt-10">
+            Thank You For Choosing Us
+          </h1>
         </div>
-        <hr className="border-dashed border-2 bg-tahiti-black mt-10" />
-        <h1 className="font-bold text-xl text-center mt-10">Thank You For Choosing Us</h1>
       </div>
     </div>
   );
