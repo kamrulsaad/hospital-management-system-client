@@ -16,7 +16,7 @@ const ExpCatDetails = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/expense/category/${categoryId}`,
+        `http://localhost:5000/api/v1/expense/category/${categoryId}`,
         {
           method: "GET",
           headers: {

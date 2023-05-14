@@ -22,7 +22,7 @@ const Login = () => {
       password: password,
     };
     // login send to backend
-    fetch("https://hms-server.onrender.com/api/v1/user/login", {
+    fetch("http://localhost:5000/api/v1/user/login", {
       method: "POST",
       headers: {
         "content-type": "application/json",

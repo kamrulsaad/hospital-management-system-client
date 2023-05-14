@@ -41,6 +41,8 @@ import CreateBedCategory from "../Pages/Dashboard/Bed/Category/CreateBedCategory
 import UpdateBedCategory from "../Pages/Dashboard/Bed/Category/UpdateBedCategory";
 import BedDetails from "../Pages/Dashboard/Bed/BedDetails";
 import UpdateBed from "../Pages/Dashboard/Bed/UpdateBed";
+import CategoryDetails from "../Pages/Dashboard/Categories/CategoryDetails";
+import UpdateCategory from "../Pages/Dashboard/Categories/UpdateCategory";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +115,14 @@ const router = createBrowserRouter([
       {
         path: "/categories",
         element: <AllCategories></AllCategories>,
+      },
+      {
+        path: "/category/:categoryId",
+        element: <CategoryDetails></CategoryDetails>,
+      },
+      {
+        path: "/category/update/:categoryId",
+        element: <UpdateCategory></UpdateCategory>,
       },
       {
         path: "/tests",

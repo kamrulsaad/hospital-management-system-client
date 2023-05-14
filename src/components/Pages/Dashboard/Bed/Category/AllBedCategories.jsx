@@ -13,7 +13,7 @@ const AllBedCategories = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms-server.onrender.com/api/v1/bed/category`, {
+    fetch(`http://localhost:5000/api/v1/bed/category`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },

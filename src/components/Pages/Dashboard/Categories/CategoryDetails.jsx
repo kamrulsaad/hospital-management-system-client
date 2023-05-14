@@ -6,26 +6,17 @@ import Spinner from "../../../Shared/Spinner";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import useUserData from "../../../Hooks/useUserData";
 
-const BedDetails = () => {
+const CategoryDetails = () => {
   const [expense, setExpense] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const { id } = useParams();
+  const { categoryId } = useParams();
   const { role } = useUserData();
-
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    const formattedDate = date
-      .toLocaleDateString("en-US", options)
-      .replace(/ /g, "/");
-    return formattedDate.replace(",", "");
-  };
 
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/bed/${id}`,
+        `http://localhost:5000/api/v1/category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -46,31 +37,13 @@ const BedDetails = () => {
     <div className="p-10">
       <div class="container flex flex-col mx-auto ">
         <h1 className="text-3xl font-semibold text-tahiti-primary mb-8">
-          Bed Details
+          Main Category Details
         </h1>
-        <div className=" flex w-1/2 mb-2">
-          <p className="text-xl font-medium w-2/5">Id: </p>
-          <p className="text-xl font-bold text-tahiti-mainBlue">
-            {expense?.serialId}
-          </p>
-        </div>
         <div className=" flex w-1/2 mb-2">
           <p className="text-xl font-medium w-2/5">Name: </p>
           <p className="text-xl font-bold text-tahiti-mainBlue">
             {expense?.name}
           </p>
-        </div>
-        <div className="flex w-1/2 mb-2 items-center">
-          <p className="text-xl font-medium w-2/5">Created: </p>
-          <p className="text-xl font-bold">{formatDate(expense?.createdAt)}</p>
-        </div>
-        <div className="flex w-1/2 mb-2 items-center">
-          <p className="text-xl font-medium w-2/5">Last Updated: </p>
-          <p className="text-xl font-bold">{formatDate(expense?.updatedAt)}</p>
-        </div>
-        <div className=" flex w-1/2 mb-2">
-          <p className="text-xl font-medium w-2/5">Category: </p>
-          <p className="text-xl font-bold">{expense?.category?.name}</p>
         </div>
       
         <div className=" flex w-1/2 mb-2">
@@ -80,13 +53,13 @@ const BedDetails = () => {
       </div>
       <div className="flex items-center gap-x-4 mt-10">
         {(role === "admin" || role === "super-admin") && (
-          <Link to={`/bed/update/${id}`}>
+          <Link to={`/category/update/${categoryId}`}>
             <button className="btn btn-sm bg-tahiti-primary border-none">
               Update
             </button>
           </Link>
         )}
-        <Link to="/beds">
+        <Link to="/categories">
           <p className="flex gap-2  items-center hover:text-tahiti-primary transition-colors">
             <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
             Go Back
@@ -97,4 +70,4 @@ const BedDetails = () => {
   );
 };
 
-export default BedDetails;
+export default CategoryDetails;

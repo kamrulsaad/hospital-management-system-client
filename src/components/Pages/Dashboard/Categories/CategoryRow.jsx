@@ -1,9 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { GrDocumentUpdate } from "react-icons/gr";
+import { BiEdit } from "react-icons/bi";
+import { FcViewDetails } from "react-icons/fc";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const CategoryRow = ({ category, i, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
@@ -29,10 +31,7 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(
-          `https://hms-server.onrender.com/api/v1/category/${id}`,
-          requestOptions
-        )
+        fetch(`http://localhost:5000/api/v1/category/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             setDelLoading(false);
@@ -52,9 +51,17 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
   return (
     <tr>
       <th>{i + 1}</th>
-      <td className="text-center">{category?.name}</td>
-      <td className="text-center">{category?.amount}৳</td>
-      <td><GrDocumentUpdate className="text-xl mx-auto cursor-pointer"></GrDocumentUpdate></td>  
+      <td>{category?.name}</td>
+      <td className="text-center">
+        <Link to={`/category/${category?._id}`}>
+          <FcViewDetails className="text-xl mx-auto"></FcViewDetails>
+        </Link>
+      </td>
+      <td>
+        <Link to={`/category/update/${category?._id}`}>
+          <BiEdit className="text-xl mx-auto cursor-pointer"></BiEdit>
+        </Link>
+      </td>
       <td>
         {delLoading ? (
           <img

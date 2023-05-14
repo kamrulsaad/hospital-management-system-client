@@ -13,7 +13,7 @@ const AllCategories = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://hms-server.onrender.com/api/v1/category/all`, {
+    fetch(`http://localhost:5000/api/v1/category/all`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
@@ -54,8 +54,8 @@ const AllCategories = () => {
           <thead>
             <tr>
               <th >Sl</th>
-              <th className="text-center">Name</th>
-              <th className="text-center">Amount</th>
+              <th>Name</th>
+              <th className="text-center">Details</th>
               <th className="text-center">Update</th>
               <th className="text-center">Delete</th>
             </tr>
