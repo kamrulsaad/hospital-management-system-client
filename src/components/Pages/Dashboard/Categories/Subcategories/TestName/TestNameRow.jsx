@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { FcViewDetails } from "react-icons/fc";
+import { FcEditImage } from "react-icons/fc";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 
-const SubCatRow = ({ category, i, refetch, setRefetch }) => {
+const TestNameRow = ({ category, i, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
   const handleDelete = (id) => {
     setDelLoading(true);
@@ -51,13 +51,10 @@ const SubCatRow = ({ category, i, refetch, setRefetch }) => {
     <tr>
       <th className=" py-2">{i + 1}</th>
       <td className=" py-2">{category?.name}</td>
-      <td className=" py-2">{category?.charge}৳</td>
-      <td className=" py-2">{category?.pcRate}%</td>
-      <td className="capitalize py-2">{category?.type}</td>
-      <td className="capitalize py-2">{category?.nature}</td>
-      <td className="text-center py-2">
-        <Link to={`/subCategory/${category?._id}`}>
-          <FcViewDetails className="text-lg mx-auto"></FcViewDetails>
+      <td className=" py-2">{category?.normalValue}</td>
+      <td className="py-2 text-center">
+        <Link to={`/testName/update/${category?._id}`}>
+            <FcEditImage className="text-lg mx-auto"></FcEditImage>
         </Link>
       </td>
       <td className=" py-2">
@@ -78,4 +75,4 @@ const SubCatRow = ({ category, i, refetch, setRefetch }) => {
   );
 };
 
-export default SubCatRow;
+export default TestNameRow;

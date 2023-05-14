@@ -60,13 +60,11 @@ const CategoryDetails = () => {
         </div>
       </div>
       <div className="mt-10">
-        {(role === "admin" || role === "super-admin") && (
-          <Link to={`/category/update/${categoryId}`}>
-            <button className="btn btn-xs bg-tahiti-primary border-none">
-              Update
-            </button>
-          </Link>
-        )}
+        <Link to={`/category/update/${categoryId}`}>
+          <button className="btn btn-xs bg-tahiti-primary border-none">
+            Update
+          </button>
+        </Link>
       </div>
       <SubCategories
         expense={expense}
