@@ -262,7 +262,7 @@ const NewPatientProfile = ({ qr }) => {
             <QRCode
               className="m-2 border p-2"
               style={{ height: "auto", maxWidth: "50%", width: "40%" }}
-              value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}`}
+              value={`${window.location.host}/qr/newpatientprofile/${newPatient?.data?._id}/`}
             />
           </div>
           <hr className="border-dashed bg-tahiti-black mt-10" />
