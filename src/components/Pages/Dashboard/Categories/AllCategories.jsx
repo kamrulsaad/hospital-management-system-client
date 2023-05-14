@@ -53,11 +53,10 @@ const AllCategories = () => {
         <table className="table w-full text-sm bg-tahiti-white">
           <thead>
             <tr>
-              <th >Sl</th>
-              <th>Name</th>
-              <th className="text-center">Details</th>
-              <th className="text-center">Update</th>
-              <th className="text-center">Delete</th>
+              <th className=" py-2" >Sl</th>
+              <th className=" py-2">Name</th>
+              <th className="text-center py-2">Details</th>
+              <th className="text-center py-2">Delete</th>
             </tr>
           </thead>
           <tbody>

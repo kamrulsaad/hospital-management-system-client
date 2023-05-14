@@ -71,7 +71,7 @@ const UpdateCategory = () => {
 
   return (
     <div className="p-10">
-      <Link to="/categories">
+      <Link to={`/category/${categoryId}`}>
         <p className="mb-2 flex gap-2 items-center hover:text-tahiti-primary transition-colors">
           <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
           Go Back

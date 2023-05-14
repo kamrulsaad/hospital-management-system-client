@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 
-const CategoryRow = ({ category, i, refetch, setRefetch }) => {
+const SubCatRow = ({ category, i, refetch, setRefetch }) => {
   const [delLoading, setDelLoading] = useState(null);
   const handleDelete = (id) => {
     setDelLoading(true);
@@ -50,24 +50,29 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
 
   return (
     <tr>
-      <th className="py-2">{i + 1}</th>
-      <td className="py-2">{category?.name}</td>
-      <td className="text-center py-2">
+      <th>{i + 1}</th>
+      <td>{category?.name}</td>
+      <td className="text-center">
         <Link to={`/category/${category?._id}`}>
-          <FcViewDetails className="text-lg mx-auto"></FcViewDetails>
+          <FcViewDetails className="text-xl mx-auto"></FcViewDetails>
         </Link>
       </td>
-      <td className="py-2">
+      <td>
+        <Link to={`/category/update/${category?._id}`}>
+          <BiEdit className="text-xl mx-auto cursor-pointer"></BiEdit>
+        </Link>
+      </td>
+      <td>
         {delLoading ? (
           <img
-            className="w-4 animate-spin mx-auto"
+            className="w-6 animate-spin mx-auto"
             src="assets/loading.png"
             alt=""
           />
         ) : (
           <FaTrash
             onClick={() => handleDelete(category?._id)}
-            className="text-tahiti-red cursor-pointer mx-auto"
+            className="text-tahiti-red cursor-pointer mx-auto text-xl"
           ></FaTrash>
         )}
       </td>
@@ -75,4 +80,4 @@ const CategoryRow = ({ category, i, refetch, setRefetch }) => {
   );
 };
 
-export default CategoryRow;
+export default SubCatRow;

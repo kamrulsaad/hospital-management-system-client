@@ -43,6 +43,7 @@ import BedDetails from "../Pages/Dashboard/Bed/BedDetails";
 import UpdateBed from "../Pages/Dashboard/Bed/UpdateBed";
 import CategoryDetails from "../Pages/Dashboard/Categories/CategoryDetails";
 import UpdateCategory from "../Pages/Dashboard/Categories/UpdateCategory";
+import CreateSubCategory from "../Pages/Dashboard/Categories/Subcategories/CreateSubCategory";
 
 const router = createBrowserRouter([
   {
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
         element: <UpdateCategory></UpdateCategory>,
       },
       {
+        path: "/subCategory/new/:categoryId",
+        element: <CreateSubCategory></CreateSubCategory>,
+      },
+      {
         path: "/tests",
         element: <AllTest></AllTest>,
       },
@@ -195,7 +200,7 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/beds/category',
+        path: "/beds/category",
         element: <AllBedCategories></AllBedCategories>,
       },
 
@@ -306,4 +311,3 @@ export default router;
 // const CreateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/CreateExpCat'));
 // const ExpCatDetails = lazy(() => import('../Pages/Dashboard/Expense/Categories/ExpCatDetails'));
 // const UpdateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/UpdateExpCat'));
-
