@@ -22,7 +22,7 @@ const CreateBedCategory = () => {
             description,
         };
         console.log(createInvoiceCategoryData);
-        fetch(`http://localhost:5000/api/v1/bed/category/create`, {
+        fetch(`https://hms-server.onrender.com/api/v1/bed/category/create`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",

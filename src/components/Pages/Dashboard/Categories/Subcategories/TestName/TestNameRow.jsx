@@ -30,7 +30,7 @@ const TestNameRow = ({ category, i, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/category/${id}`, requestOptions)
+        fetch(`https://hms-server.onrender.com/api/v1/category/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             setDelLoading(false);

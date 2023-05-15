@@ -31,7 +31,7 @@ const UpdateTest = () => {
     formData.append("description", event.target.description.value);
 
     //  send to backend
-    fetch(`http://localhost:5000/api/v1/test/upload/${testId}`, {
+    fetch(`https://hms-server.onrender.com/api/v1/test/upload/${testId}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

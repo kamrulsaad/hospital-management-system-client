@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-import { useEffect } from "react";
-import Spinner from "../../../Shared/Spinner";
+// import Spinner from "../../../Shared/Spinner";
 
-const CreateExpense = () => {
+const UpdateSubCat = () => {
   const [loading, setLoading] = useState(true);
+  const [expense, setExpense] = useState({})
   const [creating, setCreating] = useState(null);
-  const [categories, setCategories] = useState([]);
 
-  const navigate = useNavigate()
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
+    const fetchExpense = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/expense/category/all`,
+        `https://hms-server.onrender.com/api/v1/category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -25,40 +24,38 @@ const CreateExpense = () => {
         }
       );
       const data = await response.json();
-      setCategories(data?.data);
+      setExpense(data?.data);
       setLoading(false);
     };
-    fetchCategories();
+    fetchExpense();
   }, []);
 
   const handleSubmit = (event) => {
     setCreating(true);
     event.preventDefault();
     const form = event.target;
-    const category = form.category.value;
-    const amount = form.amount.value;
-    const description = form.description.value;
+    const name = form.name.value || expense?.name;
+    const description = form.description.value || expense?.description;
 
-    const createInvoiceCategoryData = {
-      category,
-      amount,
+    const createBedCategoryData = {
+      name,
       description,
     };
 
-    fetch(`https://hms-server.onrender.com/api/v1/expense/create`, {
-      method: "POST",
+    fetch(`https://hms-server.onrender.com/api/v1/category/${categoryId}`, {
+      method: "PATCH",
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
       },
-      body: JSON.stringify(createInvoiceCategoryData),
+      body: JSON.stringify(createBedCategoryData),
     })
       .then((res) => res.json())
       .then((result) => {
         setCreating(false);
         if (result.status === "success") {
           toast.success(result.message);
-          navigate("/expense/all")
+          navigate(`/category/${categoryId}`);
         } else {
           toast.error(result.error);
         }
@@ -70,11 +67,11 @@ const CreateExpense = () => {
       });
   };
 
-  if (loading) return <Spinner></Spinner>;
+//   if (loading) return <Spinner></Spinner>;
 
   return (
     <div className="p-10">
-      <Link to="/expense/all">
+      <Link to={`/category/${categoryId}`}>
         <p className="mb-2 flex gap-2 items-center hover:text-tahiti-primary transition-colors">
           <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
           Go Back
@@ -87,46 +84,27 @@ const CreateExpense = () => {
           class="container flex flex-col mx-auto space-y-12"
         >
           <h1 className="text-3xl font-semibold text-tahiti-primary text-center">
-            Create Expense
+            Update Test Main Category
           </h1>
           <fieldset class="grid grid-cols-2 gap-6 rounded-md justify-items-center">
+           
             <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Category: </p>
-              <select
-                type="appointed_to"
-                name="category"
-                id="category"
-                className="select select-sm focus:outline-none w-3/4 bg-tahiti-darkGreen font-bold  text-tahiti-white"
-              >
-                <option disabled selected>
-                  Select
-                </option>
-                {categories.map((doctor) => (
-                  <option
-                    className="font-bold text-tahiti-white"
-                    key={doctor?._id}
-                    value={doctor?._id}
-                  >
-                    {doctor?.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Amount: </p>
+              <p className="text-xl font-medium w-1/4">Name: </p>
               <input
-                name="amount"
-                type="number"
+                name="name"
+                type="text"
+                placeholder={expense?.name}
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>
             <div className="col-span-full flex w-1/2 sm:col-span-3">
               <p className="text-xl font-medium w-1/4">
-                Description: <br /> <span className="text-xs">(Optional)</span>{" "}
+                Description: 
               </p>
               <textarea
                 name="description"
-                type="text"
+                type="number"
+                placeholder={expense?.description}
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>
@@ -141,7 +119,7 @@ const CreateExpense = () => {
                   alt=""
                 />
               ) : (
-                "Submit"
+                "Update"
               )}
             </button>
           </fieldset>
@@ -151,4 +129,4 @@ const CreateExpense = () => {
   );
 };
 
-export default CreateExpense;
+export default UpdateSubCat;

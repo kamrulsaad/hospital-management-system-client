@@ -25,7 +25,7 @@ const ExpenseDetails = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/expense/${expenseId}`,
+        `https://hms-server.onrender.com/api/v1/expense/${expenseId}`,
         {
           method: "GET",
           headers: {
