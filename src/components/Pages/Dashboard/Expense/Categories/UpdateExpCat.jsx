@@ -15,7 +15,7 @@ const UpdateExpCat = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/expense/category/${categoryId}`,
+        `http://localhost:5000/api/v1/expense/category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateExpCat = () => {
       description,
     };
 
-    fetch(`https://hms-server.onrender.com/api/v1/expense/category/${categoryId}`, {
+    fetch(`http://localhost:5000/api/v1/expense/category/${categoryId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

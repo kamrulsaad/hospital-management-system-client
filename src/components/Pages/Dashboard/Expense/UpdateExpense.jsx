@@ -15,7 +15,7 @@ const UpdateExpense = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/expense/${expenseId}`,
+        `http://localhost:5000/api/v1/expense/${expenseId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateExpense = () => {
       description,
     };
 
-    fetch(`https://hms-server.onrender.com/api/v1/expense/${expenseId}`, {
+    fetch(`http://localhost:5000/api/v1/expense/${expenseId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

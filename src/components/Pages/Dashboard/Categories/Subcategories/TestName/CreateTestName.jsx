@@ -22,7 +22,7 @@ const CreateTestName = () => {
     };
 
     // return console.log(createInvoiceCategoryData);
-    fetch(`https://hms-server.onrender.com/api/v1/test_name/create`, {
+    fetch(`http://localhost:5000/api/v1/test_name/create`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -15,7 +15,7 @@ const UpdateSubCat = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://hms-server.onrender.com/api/v1/category/${categoryId}`,
+        `http://localhost:5000/api/v1/category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateSubCat = () => {
       description,
     };
 
-    fetch(`https://hms-server.onrender.com/api/v1/category/${categoryId}`, {
+    fetch(`http://localhost:5000/api/v1/category/${categoryId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
