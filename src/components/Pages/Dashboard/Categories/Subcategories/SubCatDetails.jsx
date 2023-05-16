@@ -69,7 +69,7 @@ const SubCatDetails = () => {
         </div>
         <div className=" flex w-1/2 mb-2">
           <p className="text-xl font-medium w-2/5">Main Category: </p>
-          <p className="text-xl font-bold">{expense?.mainCategory.name}</p>
+          <p className="text-xl font-bold">{expense?.mainCategory?.name}</p>
         </div>
 
         <div className=" flex w-1/2 mb-2">

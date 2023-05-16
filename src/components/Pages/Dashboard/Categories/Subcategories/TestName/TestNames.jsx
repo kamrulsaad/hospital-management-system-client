@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import TestNameRow from "./TestNameRow";
 
 const TestNames = ({ expense, setRefetch, refetch }) => {
+  if (expense.type !== 'main') return
 
-  if (expense.tests.length === 0)
+  if (expense?.tests?.length === 0)
     return (
       <div className="py-10">
         <h1 className="text-3xl font-medium text-tahiti-red ">
@@ -20,7 +21,7 @@ const TestNames = ({ expense, setRefetch, refetch }) => {
   return (
     <div className="py-10">
       <h1 className="text-3xl font-bold ">
-        Sub Categories: {expense?.tests?.length}
+        Test Names: {expense?.tests?.length}
       </h1>
       <Link to={`/subCategory/new/${expense._id}`}>
         <button className=" lg:my-5 font-semibold px-2 py-1 text-xs rounded-md bg-tahiti-darkGreen text-tahiti-white">

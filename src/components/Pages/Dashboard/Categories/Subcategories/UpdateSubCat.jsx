@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-// import Spinner from "../../../Shared/Spinner";
+import Spinner from "../../../../Shared/Spinner";
 
 const UpdateSubCat = () => {
   const [loading, setLoading] = useState(true);
-  const [expense, setExpense] = useState({})
+  const [expense, setExpense] = useState({});
   const [creating, setCreating] = useState(null);
 
   const { categoryId } = useParams();
@@ -15,7 +15,7 @@ const UpdateSubCat = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/category/${categoryId}`,
+        `http://localhost:5000/api/v1/sub_category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -35,14 +35,20 @@ const UpdateSubCat = () => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value || expense?.name;
+    const charge = form.charge.value || expense?.charge;
+    const nature = form.nature.value || expense?.nature;
+    const pcRate = form.pcRate.value || expense?.pcRate;
     const description = form.description.value || expense?.description;
 
     const createBedCategoryData = {
       name,
       description,
+      charge,
+      pcRate,
+      nature,
     };
 
-    fetch(`http://localhost:5000/api/v1/category/${categoryId}`, {
+    fetch(`http://localhost:5000/api/v1/sub_category/${categoryId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -55,11 +61,11 @@ const UpdateSubCat = () => {
         setCreating(false);
         if (result.status === "success") {
           toast.success(result.message);
-          navigate(`/category/${categoryId}`);
+          navigate(`/subCategory/${categoryId}`);
+          form.reset();
         } else {
           toast.error(result.error);
         }
-        form.reset();
       })
       .catch((error) => {
         setCreating(false);
@@ -67,11 +73,11 @@ const UpdateSubCat = () => {
       });
   };
 
-//   if (loading) return <Spinner></Spinner>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="p-10">
-      <Link to={`/category/${categoryId}`}>
+      <Link to={`/category/${expense?.mainCategory?._id}`}>
         <p className="mb-2 flex gap-2 items-center hover:text-tahiti-primary transition-colors">
           <BsFillArrowLeftCircleFill className="scale-125"></BsFillArrowLeftCircleFill>
           Go Back
@@ -84,10 +90,9 @@ const UpdateSubCat = () => {
           class="container flex flex-col mx-auto space-y-12"
         >
           <h1 className="text-3xl font-semibold text-tahiti-primary text-center">
-            Update Test Main Category
+            Update Test Sub Category
           </h1>
           <fieldset class="grid grid-cols-2 gap-6 rounded-md justify-items-center">
-           
             <div className="col-span-full flex w-1/2 sm:col-span-3">
               <p className="text-xl font-medium w-1/4">Name: </p>
               <input
@@ -98,9 +103,34 @@ const UpdateSubCat = () => {
               />
             </div>
             <div className="col-span-full flex w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">
-                Description: 
-              </p>
+              <p className="text-xl font-medium w-1/4">Charge: </p>
+              <input
+                name="charge"
+                type="number"
+                placeholder={expense?.charge}
+                className="w-3/4 rounded-md border p-1 "
+              />
+            </div>
+            <div className="col-span-full flex w-1/2 sm:col-span-3">
+              <p className="text-xl font-medium w-1/4">PC Rate: </p>
+              <input
+                name="pcRate"
+                type="number"
+                placeholder={expense?.pcRate}
+                className="w-3/4 rounded-md border p-1 "
+              />
+            </div>
+            <div className="col-span-full flex w-1/2 sm:col-span-3">
+              <p className="text-xl font-medium w-1/4">Nature: </p>
+              <input
+                name="nature"
+                type="text"
+                placeholder={expense?.nature}
+                className="w-3/4 rounded-md border p-1 "
+              />
+            </div>
+            <div className="col-span-full flex w-1/2 sm:col-span-3">
+              <p className="text-xl font-medium w-1/4">Description:</p>
               <textarea
                 name="description"
                 type="number"

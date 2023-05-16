@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import SubCatRow from "./SubCatRow";
 
 const SubCategories = ({ expense, setRefetch, refetch }) => {
-  if (expense.subCategories.length === 0)
+  if (expense?.subCategories.length === 0)
     return (
       <div className="py-10">
         <h1 className="text-3xl font-medium text-tahiti-red ">
           No Sub Categories Found
         </h1>
-        <Link to={`/subCategory/new/${expense._id}`}>
+        <Link to={`/subCategory/new/${expense?._id}`}>
           <button className=" lg:my-5 font-semibold px-2 py-1 text-xs rounded-md bg-tahiti-darkGreen text-tahiti-white">
             Add New
           </button>
