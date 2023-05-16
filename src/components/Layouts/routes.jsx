@@ -47,6 +47,7 @@ import CreateSubCategory from "../Pages/Dashboard/Categories/Subcategories/Creat
 import SubCatDetails from "../Pages/Dashboard/Categories/Subcategories/SubCatDetails";
 import CreateTestName from "../Pages/Dashboard/Categories/Subcategories/TestName/CreateTestName";
 import UpdateSubCat from "../Pages/Dashboard/Categories/Subcategories/UpdateSubCat";
+import UpdateTestName from "../Pages/Dashboard/Categories/Subcategories/TestName/UpdateTestName";
 
 const router = createBrowserRouter([
   {
@@ -142,8 +143,12 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "testName/new/:categoryId",
+        path: "/testName/new/:categoryId",
         element: <CreateTestName></CreateTestName>,
+      },
+      {
+        path: "/testName/update/:categoryId",
+        element: <UpdateTestName></UpdateTestName>,
       },
       {
         path: "/tests",

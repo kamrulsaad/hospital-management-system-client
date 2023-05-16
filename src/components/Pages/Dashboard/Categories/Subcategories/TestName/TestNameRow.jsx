@@ -30,7 +30,7 @@ const TestNameRow = ({ category, i, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/category/${id}`, requestOptions)
+        fetch(`http://localhost:5000/api/v1/test_name/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             setDelLoading(false);

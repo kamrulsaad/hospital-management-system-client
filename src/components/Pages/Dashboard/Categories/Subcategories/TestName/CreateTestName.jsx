@@ -33,7 +33,7 @@ const CreateTestName = () => {
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
-        
+        console.log(result);
         if (result.status === "success") {
           toast.success(result.message);
           navigate(`/subCategory/${categoryId}`);

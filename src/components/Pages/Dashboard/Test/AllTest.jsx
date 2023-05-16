@@ -140,11 +140,18 @@ const AllTest = () => {
             Go Back
           </button>
         ) : (
-          <Link to={"/"}>
-            <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
-              Back to Dashboard
-            </button>
-          </Link>
+          <div className="flex justify-center gap-4">
+            <Link to={"/"}>
+              <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+                Back to Dashboard
+              </button>
+            </Link>
+            <Link to={"/categories"}>
+              <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+                Test Categories
+              </button>
+            </Link>
+          </div>
         )}
       </>
     );

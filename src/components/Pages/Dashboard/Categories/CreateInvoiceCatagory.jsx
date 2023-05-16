@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 
 const CreateInvoiceCategory = () => {
   const [loading, setLoading] = useState(null);
+  const naivgate = useNavigate();
 
   const handleSubmit = (event) => {
 
@@ -32,6 +33,7 @@ const CreateInvoiceCategory = () => {
         setLoading(false);
         if (result.status === "success") {
           toast.success(result.message);
+          naivgate("/categories");
         } else {
           toast.error(result.error);
         }
