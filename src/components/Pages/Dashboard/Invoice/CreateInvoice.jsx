@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
+import { BiCheck } from "react-icons/bi";
 import { useReducer } from "react";
 import Spinner from "../../../Shared/Spinner";
 
 const initialState = {
-  payments: [],
-  selectedOptions: [],
+  // payments: [],
+  tests: [],
   total: 0,
-  grandTotal: 0,
-  discount: 0,
-  tax: 0,
+  // grandTotal: 0,
+  // discount: 0,
+  // tax: 0,
   loading: null,
-  creating: null,
-  categoriesData: [],
+  // creating: null,
+  mainCategories: [],
+  subCategories: [],
+  subCatLoading: null,
 };
 
 function reducer(state, action) {
@@ -24,86 +27,97 @@ function reducer(state, action) {
         ...state,
         loading: action.payload,
       };
-    case "SET_CATEGORIES_DATA":
+    case "SET_SUB_CAT_LOADING":
       return {
         ...state,
-        categoriesData: action.payload,
+        subCatLoading: action.payload,
       };
-    case "ADD_OPTION": {
-      const option = state.categoriesData.find((c) => c._id === action.payload);
+    case "SET_MAIN_CATEGORIES":
       return {
         ...state,
-        selectedOptions: [...state.selectedOptions, option],
-        payments: [...state.payments, action.payload],
-        total: state.total + option.amount,
-        categoriesData: state.categoriesData.filter(
+        mainCategories: action.payload,
+      };
+    case "SET_SUB_CATEGORIES":
+      return {
+        ...state,
+        subCategories: action.payload,
+      };
+    case "ADD_TEST": {
+      const test = state.subCategories.find((c) => c._id === action.payload);
+      return {
+        ...state,
+        tests: [...state.tests, test],
+        total: state.total + test.charge,
+        subCategories: state.subCategories.filter(
           (c) => c._id !== action.payload
         ),
       };
     }
-    case "DELETE_OPTION": {
-      const option = state.selectedOptions.find(
-        (c) => c._id === action.payload
-      );
-      return {
-        ...state,
-        total: state.total - option.amount,
-        selectedOptions: state.selectedOptions.filter(
-          (option) => option._id !== action.payload
-        ),
-        payments: state.payments.filter((p) => p !== action.payload),
-        categoriesData: [...state.categoriesData, option],
-        grandTotal: state.payments.length === 1 ? 0 : state.grandTotal,
-      };
-    }
-    case "SET_TAX": {
-      const newTax = Number(action.payload.value);
-      if (newTax > 100) {
-        toast.error("Tax can't be more than 100%");
-        action.payload.value = 0;
-        return state;
-      }
-      if (newTax < 0) {
-        toast.error("Tax can't be less than 0%");
-        action.payload.value = 0;
-        return state;
-      }
-      return {
-        ...state,
-        tax: newTax,
-      };
-    }
-    case "SET_DISCOUNT": {
-      const newDiscount = Number(action.payload.value);
-      if (newDiscount > 100) {
-        toast.error("Discount can't be more than 100%");
-        action.payload.value = 0;
-        return state;
-      }
-      if (newDiscount < 0) {
-        toast.error("Discount can't be less than 0%");
-        action.payload.value = 0;
-        return state;
-      }
-      return {
-        ...state,
-        discount: newDiscount,
-      };
-    }
-    case "updateGrandTotal": {
-      const tempTotal = state.total + state.total * (state.tax / 100);
-      const grandTotal = Math.round(tempTotal - tempTotal * (state.discount / 100));
-      return {
-        ...state,
-        grandTotal,
-      };
-    }
-    case "CREATING_INVOICE": {
-      return {
-        ...state,
-        creating: action.payload,
-      };
-    }
+    // case "DELETE_OPTION": {
+    //   const test = state.selectedOptions.find(
+    //     (c) => c._id === action.payload
+    //   );
+    //   return {
+    //     ...state,
+    //     total: state.total - test.amount,
+    //     selectedOptions: state.selectedOptions.filter(
+    //       (test) => test._id !== action.payload
+    //     ),
+    //     payments: state.payments.filter((p) => p !== action.payload),
+    //     subCategories: [...state.subCategories, test],
+    //     grandTotal: state.payments.length === 1 ? 0 : state.grandTotal,
+    //   };
+    // }
+    // case "SET_TAX": {
+    //   const newTax = Number(action.payload.value);
+    //   if (newTax > 100) {
+    //     toast.error("Tax can't be more than 100%");
+    //     action.payload.value = 0;
+    //     return state;
+    //   }
+    //   if (newTax < 0) {
+    //     toast.error("Tax can't be less than 0%");
+    //     action.payload.value = 0;
+    //     return state;
+    //   }
+    //   return {
+    //     ...state,
+    //     tax: newTax,
+    //   };
+    // }
+    // case "SET_DISCOUNT": {
+    //   const newDiscount = Number(action.payload.value);
+    //   if (newDiscount > 100) {
+    //     toast.error("Discount can't be more than 100%");
+    //     action.payload.value = 0;
+    //     return state;
+    //   }
+    //   if (newDiscount < 0) {
+    //     toast.error("Discount can't be less than 0%");
+    //     action.payload.value = 0;
+    //     return state;
+    //   }
+    //   return {
+    //     ...state,
+    //     discount: newDiscount,
+    //   };
+    // }
+    // case "updateGrandTotal": {
+    //   const tempTotal = state.total + state.total * (state.tax / 100);
+    //   const grandTotal = Math.round(
+    //     tempTotal - tempTotal * (state.discount / 100)
+    //   );
+    //   return {
+    //     ...state,
+    //     grandTotal,
+    //   };
+    // }
+    // case "CREATING_INVOICE": {
+    //   return {
+    //     ...state,
+    //     creating: action.payload,
+    //   };
+    // }
     default:
       return state;
   }
@@ -128,16 +142,13 @@ const CreateInvoice = () => {
         }
       );
       const data = await response.json();
-      dispatch({ type: "SET_CATEGORIES_DATA", payload: data?.data });
+      dispatch({ type: "SET_MAIN_CATEGORIES", payload: data?.data });
       dispatch({ type: "SET_LOADING", payload: false });
     };
     fetchUserData();
   }, []);
 
-
-
   const handleSubmit = (event) => {
-
     event.preventDefault();
     dispatch({ type: "CREATING_INVOICE", payload: true });
 
@@ -147,19 +158,16 @@ const CreateInvoice = () => {
       discount: state.discount,
       tax: state.tax,
       grand_total: state.grandTotal,
-    }
+    };
 
-    fetch(
-      `http://localhost:5000/api/v1/invoice/create/${patientId}`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-        },
-        body: JSON.stringify(data),
-      }
-    )
+    fetch(`http://localhost:5000/api/v1/invoice/create/${patientId}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+      body: JSON.stringify(data),
+    })
       .then((res) => res.json())
       .then((result) => {
         dispatch({ type: "CREATING_INVOICE", payload: false });
@@ -175,68 +183,159 @@ const CreateInvoice = () => {
       });
   };
 
+  const fetchSubCategories = async (id) => {
+    dispatch({ type: "SET_SUB_CATEGORIES", payload: [] });
+    dispatch({ type: "SET_SUB_CAT_LOADING", payload: true });
+    const response = await fetch(
+      `http://localhost:5000/api/v1/category/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+        },
+      }
+    );
+    const data = await response.json();
+    dispatch({
+      type: "SET_SUB_CATEGORIES",
+      payload: data?.data?.subCategories,
+    });
+    dispatch({ type: "SET_SUB_CAT_LOADING", payload: false });
+  };
+
   if (state.loading) return <Spinner></Spinner>;
 
   return (
-    <div className="bg-tahiti-white m-20 shadow-lg rounded-md">
-      <h1 className=" text-tahiti-lightGreen font-bold text-center  text-5xl pt-10">
+    <div className="bg-tahiti-white m-10 shadow-lg rounded-md">
+      <h1 className=" text-tahiti-lightGreen font-bold text-center text-3xl py-4">
         Create Invoice
       </h1>
-      <form
-        onSubmit={handleSubmit}
-        noValidate=""
-        action=""
-        className="container flex flex-col mx-auto space-y-12 ng-untouched ng-pristine ng-valid"
-      >
-        <fieldset className="lg:px-32 py-20">
-          <div className="w-1/2 mx-auto">
-            <label
-              for="option"
-              className="text-tahiti-lightGreen font-bold text-xl"
-            >
-              Options
-            </label>
-            <select
-              onChange={(event) => {
-                const options = event.target.options;
-                for (let i = 0; i < options.length; i++) {
-                  if (options[i].selected) {
-                    dispatch({ type: "ADD_OPTION", payload: options[i].value });
-                  }
-                }
-              }}
-              type="text"
-              name="name"
-              id="gender"
-              className="select mt-1 bg-tahiti-primary col-span-full sm:col-span-3 text-lg focus:outline-none font-bold w-full text-tahiti-white"
-            >
-              <option selected>Select</option>
-              {state.categoriesData.map((category) => (
-                <option value={category?._id} key={category._id}>
-                  {category?.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {state.selectedOptions.length > 0 && (
-            <div className="overflow-x-auto w-1/2 mx-auto border rounded-md mt-20">
+      <div className="grid grid-cols-2">
+        <div className="col-span-2 lg:col-span-1">
+          <fieldset className="px-12 py-10">
+            <div className="mb-4">
+              <p className="text-lg font-medium">Test</p>
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <select
+                  onChange={(event) => {
+                    const options = event.target.options;
+                    for (let i = 0; i < options.length; i++) {
+                      if (options[i].selected) {
+                        fetchSubCategories(options[i].value);
+                      }
+                    }
+                  }}
+                  type="text"
+                  className="select w-full bg-tahiti-primary focus:outline-none font-bold text-tahiti-white select-sm"
+                >
+                  <option selected>Select</option>
+                  {state.mainCategories.map((category) => (
+                    <option value={category?._id} key={category._id}>
+                      {category?.name}
+                    </option>
+                  ))}
+                </select>
+                {state.subCatLoading ? (
+                  <button className="bg-tahiti-green focus:outline-none font-bold w-full btn btn-sm border-none">
+                    <img
+                      className="w-5 animate-spin"
+                      src="/assets/loading.png"
+                      alt="Loading"
+                    />
+                  </button>
+                ) : (
+                  <select
+                    onChange={(event) => {
+                      const options = event.target.options;
+                      for (let i = 0; i < options.length; i++) {
+                        if (options[i].selected) {
+                          dispatch({
+                            type: "ADD_TEST",
+                            payload: options[i].value,
+                          });
+                        }
+                      }
+                    }}
+                    type="text"
+                    className={` ${
+                      state.subCategories.length > 0
+                        ? "bg-tahiti-primary"
+                        : "bg-tahiti-green select-disabled "
+                    } focus:outline-none font-bold w-full text-tahiti-white select select-sm`}
+                  >
+                    <option selected>Select</option>
+                    {state.subCategories.map((category) => (
+                      <option value={category?._id} key={category._id}>
+                        {category?.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            </div>
+            <div className="mb-4">
+              <p className="text-lg font-medium">Bedding</p>
+              <div className="grid grid-cols-2 gap-4">
+                <select
+                  onChange={(event) => {
+                    // const options = event.target.options;
+                    // for (let i = 0; i < options.length; i++) {
+                    //   if (options[i].selected) {
+                    //     dispatch({
+                    //       type: "ADD_OPTION",
+                    //       payload: options[i].value,
+                    //     });
+                    //   }
+                    // }
+                  }}
+                  type="text"
+                  className={` ${
+                    state.subCategories.length > 0
+                      ? "bg-tahiti-primary"
+                      : "bg-tahiti-green select-disabled "
+                  } focus:outline-none font-bold w-full text-tahiti-white select select-sm`}
+                >
+                  <option selected>Select</option>
+                  {state.subCategories.map((category) => (
+                    <option value={category?._id} key={category._id}>
+                      {category?.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex w-full">
+                  <input
+                    type="text"
+                    className="rounded-l-lg w-full border focus:outline-none border-r-0"
+                  />
+                  <button className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none">
+                    <BiCheck className="text-xl"></BiCheck>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div className="col-span-2 lg:col-span-1 pr-10 pb-10">
+          {state.tests?.length > 0 && (
+            <div className="overflow-x-auto mx-auto border border-tahiti-primary rounded-md mt-16">
               <table className="table w-full bg-tahiti-white">
                 <thead>
                   <tr>
-                    <th >Sl</th>
-                    <th>Name</th>
-                    <th className="text-center">Amount</th>
-                    <th className="text-center">Delete</th>
+                    <th className="p-2 text-xs">Name</th>
+                    <th className="text-center p-2 text-xs">Amount</th>
+                    <th className="text-center p-2 text-xs">PC Rate</th>
+                    <th className="text-center p-2 text-xs">PC Commission</th>
+                    <th className="text-center p-2 text-xs">Remove</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {state.selectedOptions.map((category, i) => (
+                  {state.tests.map((category) => (
                     <tr key={category._id}>
-                      <th>{i + 1}</th>
-                      <td>{category?.name}</td>
-                      <td className="text-center">{category?.amount}৳</td>
-                      <td>
+                      <td className=" p-2 text-xs">{category?.name}</td>
+                      <td className="text-center p-2 text-xs">{category?.charge}৳</td>
+                      <td className="text-center p-2 text-xs">{category?.pcRate}%</td>
+                      <td className="text-center p-2 text-xs">{(category?.charge * (category?.pcRate /100)) }৳</td>
+                      <td className="p-2 text-xs">
                         <FaTrash
                           onClick={() =>
                             dispatch({
@@ -244,90 +343,17 @@ const CreateInvoice = () => {
                               payload: category._id,
                             })
                           }
-                          className="text-tahiti-red cursor-pointer mx-auto text-xl"
+                          className="text-tahiti-red cursor-pointer mx-auto"
                         ></FaTrash>
                       </td>
                     </tr>
                   ))}
-                  <tr>
-                    <td className="bg-tahiti-lightBlue"></td>
-                    <th className="bg-tahiti-lightBlue">Sub-Total</th>
-                    <td className="text-center bg-tahiti-lightBlue font-bold">
-                      {state.total}৳
-                    </td>
-                    <td className="bg-tahiti-lightBlue"></td>
-                  </tr>
                 </tbody>
               </table>
             </div>
           )}
-
-          {state.total > 0 && (
-            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
-              <p className="text-xl w-1/4 font-medium">Tax: </p>
-              <input
-                type="number"
-                className="w-1/2 rounded-md border p-1 "
-                onChange={(e) =>
-                  dispatch({ type: "SET_TAX", payload: e.target })
-                }
-              />
-              <p className="text-center w-1/4 font-extrabold">%</p>
-            </div>
-          )}
-
-          {state.total > 0 && (
-            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
-              <p className="text-xl w-1/4 font-medium">Discount: </p>
-              <input
-                type="number"
-                className="w-1/2 rounded-md border p-1 "
-                onChange={(e) =>
-                  dispatch({ type: "SET_DISCOUNT", payload: e.target })
-                }
-              />
-              <p className="text-center w-1/4 font-extrabold">%</p>
-            </div>
-          )}
-
-          {state.total > 0 && (
-            <p
-              onClick={() => dispatch({ type: "updateGrandTotal" })}
-              className="cursor-pointer text-center block mx-auto p-2 w-1/2 px-4 mt-6 font-semibold bg-tahiti-cyan text-tahiti-white rounded-md hover:bg-tahiti-lightGreen"
-            >
-              Confirm
-            </p>
-          )}
-
-          {state.grandTotal > 0 && (
-            <div className="col-span-full w-1/2 mt-6 mx-auto sm:col-span-3 flex items-center gap-2 ">
-              <p className="text-3xl w-1/2 font-bold">Grand-Total: </p>
-              <p className="w-1/2 text-3xl text-end font-bold">
-                {state.grandTotal}৳
-              </p>
-            </div>
-          )}
-
-          {state.grandTotal > 0 && (
-            <div>
-              <button
-                type="submit"
-                className=" block mx-auto p-2 w-1/2 px-4 mt-6 font-semibold bg-tahiti-darkGreen text-tahiti-white rounded-md hover:bg-tahiti-lightGreen"
-              >
-                {state.creating ? (
-                  <img
-                    src="/assets/loading.png"
-                    className="w-6 mx-auto animate-spin"
-                    alt=""
-                  />
-                ) : (
-                  "Create Invoice"
-                )}
-              </button>
-            </div>
-          )}
-        </fieldset>
-      </form>
+        </div>
+      </div>
     </div>
   );
 };
