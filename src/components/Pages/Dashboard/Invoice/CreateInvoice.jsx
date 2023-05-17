@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
 import { BiCheck } from "react-icons/bi";
+import {FaPlus} from 'react-icons/fa'
 import { useReducer } from "react";
 import Spinner from "../../../Shared/Spinner";
 
@@ -18,6 +19,7 @@ const initialState = {
   mainCategories: [],
   subCategories: [],
   subCatLoading: null,
+  patient: {},
 };
 
 function reducer(state, action) {
@@ -41,6 +43,11 @@ function reducer(state, action) {
       return {
         ...state,
         subCategories: action.payload,
+      };
+    case "SET_PATIENT":
+      return {
+        ...state,
+        patient: action.payload,
       };
     case "ADD_TEST": {
       const test = state.subCategories.find((c) => c._id === action.payload);
@@ -130,7 +137,7 @@ const CreateInvoice = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const getTestCategories = async () => {
       dispatch({ type: "SET_LOADING", payload: true });
       const response = await fetch(
         "http://localhost:5000/api/v1/category/all",
@@ -145,7 +152,26 @@ const CreateInvoice = () => {
       dispatch({ type: "SET_MAIN_CATEGORIES", payload: data?.data });
       dispatch({ type: "SET_LOADING", payload: false });
     };
-    fetchUserData();
+    getTestCategories();
+  }, []);
+
+  useEffect(() => {
+    const getPatientData = async () => {
+      dispatch({ type: "SET_LOADING", payload: true });
+      const response = await fetch(
+        `http://localhost:5000/api/v1/patient/${patientId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      dispatch({ type: "SET_PATIENT", payload: data?.data });
+      dispatch({ type: "SET_LOADING", payload: false });
+    };
+    getPatientData();
   }, []);
 
   const handleSubmit = (event) => {
@@ -205,11 +231,39 @@ const CreateInvoice = () => {
 
   if (state.loading) return <Spinner></Spinner>;
 
+  console.log(state.patient);
+
   return (
     <div className="bg-tahiti-white m-10 shadow-lg rounded-md">
       <h1 className=" text-tahiti-lightGreen font-bold text-center text-3xl py-4">
         Create Invoice
       </h1>
+      <div className="grid grid-cols-2 gap-x-4 px-12">
+        <div className="grid grid-cols-2 gap-x-4">
+          <p>Name: </p>
+          <p>{state.patient.name}</p>
+          <p>Phone:</p>
+          <p>{state.patient.phone}</p>
+          <p>Id:</p>
+          <p>{state.patient.serialId}</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-12">
+            <select
+              className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
+              <option disabled selected>
+                Referred By
+              </option>
+              <option>
+                Referred By
+              </option>
+            </select>
+            <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
+              <FaPlus></FaPlus>
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="grid grid-cols-2">
         <div className="col-span-2 lg:col-span-1">
           <fieldset className="px-12 py-10">
@@ -315,26 +369,32 @@ const CreateInvoice = () => {
             </div>
           </fieldset>
         </div>
-        <div className="col-span-2 lg:col-span-1 pr-10 pb-10">
-          {state.tests?.length > 0 && (
-            <div className="overflow-x-auto mx-auto border border-tahiti-primary rounded-md mt-16">
-              <table className="table w-full bg-tahiti-white">
-                <thead>
-                  <tr>
-                    <th className="p-2 text-xs">Name</th>
-                    <th className="text-center p-2 text-xs">Amount</th>
-                    <th className="text-center p-2 text-xs">PC Rate</th>
-                    <th className="text-center p-2 text-xs">PC Commission</th>
-                    <th className="text-center p-2 text-xs">Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.tests.map((category) => (
+        <div className="col-span-2 lg:col-span-1 pr-12 pb-10">
+          <div className="overflow-x-auto mx-auto border border-tahiti-primary rounded-md mt-16">
+            <table className="table w-full bg-tahiti-white">
+              <thead>
+                <tr>
+                  <th className="p-2 text-xs">Name</th>
+                  <th className="text-center p-2 text-xs">Amount</th>
+                  <th className="text-center p-2 text-xs">PC Rate</th>
+                  <th className="text-center p-2 text-xs">PC Commission</th>
+                  <th className="text-center p-2 text-xs">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.tests?.length > 0 ? (
+                  state.tests.map((category) => (
                     <tr key={category._id}>
                       <td className=" p-2 text-xs">{category?.name}</td>
-                      <td className="text-center p-2 text-xs">{category?.charge}৳</td>
-                      <td className="text-center p-2 text-xs">{category?.pcRate}%</td>
-                      <td className="text-center p-2 text-xs">{(category?.charge * (category?.pcRate /100)) }৳</td>
+                      <td className="text-center p-2 text-xs">
+                        {category?.charge}৳
+                      </td>
+                      <td className="text-center p-2 text-xs">
+                        {category?.pcRate}%
+                      </td>
+                      <td className="text-center p-2 text-xs">
+                        {category?.charge * (category?.pcRate / 100)}৳
+                      </td>
                       <td className="p-2 text-xs">
                         <FaTrash
                           onClick={() =>
@@ -347,11 +407,19 @@ const CreateInvoice = () => {
                         ></FaTrash>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  ))
+                ) : (
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td className="text-center p-2 text-xs">Add payments...</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
