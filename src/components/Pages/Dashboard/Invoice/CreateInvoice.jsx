@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { FaTrash } from "react-icons/fa";
 import { BiCheck } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa";
@@ -14,43 +13,44 @@ const CreateInvoice = () => {
   const { patientId } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getTestCategories = async () => {
-      dispatch({ type: "SET_LOADING", payload: true });
-      const response = await fetch(
-        "http://localhost:5000/api/v1/category/all",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      dispatch({ type: "SET_MAIN_CATEGORIES", payload: data?.data });
-      dispatch({ type: "SET_LOADING", payload: false });
-    };
-    getTestCategories();
-  }, []);
+  const baseUrl = "http://localhost:5000/api/v1";
+
+  const fetchData = async (path, successActionType) => {
+    const response = await fetch(`${baseUrl}${path}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+    });
+    const data = await response.json();
+    return { successActionType, data: data?.data };
+  };
 
   useEffect(() => {
-    const getPatientData = async () => {
+    const fetchDataAsync = async () => {
       dispatch({ type: "SET_LOADING", payload: true });
-      const response = await fetch(
-        `http://localhost:5000/api/v1/patient/${patientId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      dispatch({ type: "SET_PATIENT", payload: data?.data });
+
+      try {
+        const promises = [
+          fetchData("/category/all", "SET_MAIN_CATEGORIES"),
+          fetchData(`/patient/${patientId}`, "SET_PATIENT"),
+          fetchData("/user/all-doctors?limit=1000", "SET_DOCTORS"),
+          fetchData("/pc/all?limit=1000", "SET_PCS"),
+        ];
+
+        const results = await Promise.all(promises);
+        results.forEach(({ successActionType, data }) => {
+          dispatch({ type: successActionType, payload: data });
+        });
+      } catch (error) {
+        // Handle error
+      }
+
       dispatch({ type: "SET_LOADING", payload: false });
     };
-    getPatientData();
-  }, []);
+
+    fetchDataAsync();
+  }, [patientId]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -118,8 +118,6 @@ const CreateInvoice = () => {
 
   if (state.loading) return <Spinner></Spinner>;
 
-  console.log(state.customFields);
-
   return (
     <div className="bg-tahiti-white m-10 shadow-lg rounded-md">
       <h1 className=" text-tahiti-lightGreen font-bold text-center text-3xl py-4">
@@ -127,20 +125,66 @@ const CreateInvoice = () => {
       </h1>
       <div className="grid grid-cols-2 gap-x-4 px-12">
         <div className="grid grid-cols-2 gap-x-4">
-          <p>Name: </p>
-          <p>{state.patient.name}</p>
+          <p>Patient: </p>
+          <p>{state.patient?.name}</p>
           <p>Phone:</p>
-          <p>{state.patient.phone}</p>
+          <p>{state.patient?.phone}</p>
           <p>Id:</p>
-          <p>{state.patient.serialId}</p>
+          <p>{state.patient?.serialId}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="grid grid-cols-12">
+              <select className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
+                <option disabled selected>
+                  Referred By
+                </option>
+                {state.pcs.map((pc) => (
+                  <option value={pc._id} key={pc._id}>
+                    {pc?.name}
+                  </option>
+                ))}
+              </select>
+              <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
+                <FaPlus></FaPlus>
+              </button>
+            </div>
+            <div className="mt-2">
+              <label className="block" htmlFor="Sub-Total">
+                Total PC Commision
+              </label>
+              <input
+                id="Sub-Total"
+                disabled
+                type="text"
+                className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+                placeholder={state.total_PC_commision}
+              />
+            </div>
+          </div>
           <div className="grid grid-cols-12">
-            <select className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
+            <select
+              onChange={(event) => {
+                const options = event.target.options;
+                for (let i = 0; i < options.length; i++) {
+                  if (options[i].selected) {
+                    dispatch({
+                      type: "SET_DOCTOR",
+                      payload: options[i].value,
+                    });
+                  }
+                }
+              }}
+              className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none"
+            >
               <option disabled selected>
-                Referred By
+                Appointed to
               </option>
-              <option>Referred By</option>
+              {state.doctors.map((doctor) => (
+                <option value={doctor._id} key={doctor._id}>
+                  {doctor.firstName + " " + doctor.lastName}
+                </option>
+              ))}
             </select>
             <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
               <FaPlus></FaPlus>
@@ -253,8 +297,9 @@ const CreateInvoice = () => {
                   <input
                     type="number"
                     name="admittedDays"
+                    disabled={!state.patient.bed.name || state.admittedDays}
                     placeholder="Days"
-                    className="rounded-l-lg w-full border focus:outline-none border-r-0 pl-2"
+                    className="rounded-l-lg w-full border focus:outline-none border-r-0 pl-2 disabled:cursor-not-allowed disabled:bg-tahiti-babyPink disabled:text-tahiti-dark "
                   />
                   <button
                     type="submit"
@@ -319,14 +364,14 @@ const CreateInvoice = () => {
                 </form>
               </div>
             </div>
-            {state.customFields.map((field, index) => (
+            {state.customFields.map((field) => (
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
                   const updatedField = {
                     id: field.id,
-                    name: event.target.elements.chargeType.value,
-                    amount: Number(event.target.elements.charge.value),
+                    name: event.target.chargeType.value,
+                    amount: Number(event.target.charge.value),
                   };
                   dispatch({
                     type: "UPDATE_CUSTOM_FIELD",
@@ -404,7 +449,7 @@ const CreateInvoice = () => {
                         {category?.pcRate}%
                       </td>
                       <td className="text-center p-2 text-xs">
-                        {category?.charge * (category?.pcRate / 100)}৳
+                        {Math.ceil((category?.charge * (category?.pcRate / 100)))}৳
                       </td>
                       <td className="p-2 text-xs">
                         <FaTrash
@@ -431,7 +476,7 @@ const CreateInvoice = () => {
                 {state.beddingCharge > 0 && (
                   <tr>
                     <td className="p-2 text-xs ">
-                      {state.patient.bed.name} ({state.admittedDays} days){" "}
+                      {state.patient?.bed?.name} ({state.admittedDays} days){" "}
                     </td>
                     <td className="p-2 text-xs text-center">
                       {state.beddingCharge} ৳
@@ -442,8 +487,8 @@ const CreateInvoice = () => {
                       <FaTrash
                         onClick={() => {
                           dispatch({
-                            type: "SET_BEDDING_CHARGE",
-                            payload: 0,
+                            type: "REMOVE_BEDDING_CHARGE",
+                            payload: state.beddingCharge,
                           });
                           dispatch({
                             type: "SET_ADMITTED_DAYS",
@@ -467,8 +512,8 @@ const CreateInvoice = () => {
                       <FaTrash
                         onClick={() =>
                           dispatch({
-                            type: "SET_MEDICINE_CHARGE",
-                            payload: 0,
+                            type: "REMOVE_MEDICINE_CHARGE",
+                            payload: state.medicineCharge,
                           })
                         }
                         className="text-tahiti-red cursor-pointer mx-auto"
@@ -488,8 +533,8 @@ const CreateInvoice = () => {
                       <FaTrash
                         onClick={() =>
                           dispatch({
-                            type: "SET_SERVICE_CHARGE",
-                            payload: 0,
+                            type: "REMOVE_SERVICE_CHARGE",
+                            payload: state.serviceCharge,
                           })
                         }
                         className="text-tahiti-red cursor-pointer mx-auto"
@@ -498,27 +543,31 @@ const CreateInvoice = () => {
                   </tr>
                 )}
                 {state.customFields[0]?.name &&
-                  state.customFields.map((field) => (
-                    <tr key={field.id}>
-                      <td className=" p-2 text-xs">{field?.name}</td>
-                      <td className="text-center p-2 text-xs">
-                        {field?.amount}৳
-                      </td>
-                      <td className="text-center p-2 text-xs">-</td>
-                      <td className="text-center p-2 text-xs">-</td>
-                      <td className="p-2 text-xs">
-                        <FaTrash
-                          onClick={() =>
-                            dispatch({
-                              type: "REMOVE_CUSTOM_FIELD",
-                              payload: field.id,
-                            })
-                          }
-                          className="text-tahiti-red cursor-pointer mx-auto"
-                        ></FaTrash>
-                      </td>
-                    </tr>
-                  ))}
+                  state.customFields.map(
+                    (field) =>
+                      field?.name &&
+                      field?.amount && (
+                        <tr key={field.id}>
+                          <td className="p-2 text-xs">{field?.name}</td>
+                          <td className="text-center p-2 text-xs">
+                            {field.amount}৳
+                          </td>
+                          <td className="text-center p-2 text-xs">-</td>
+                          <td className="text-center p-2 text-xs">-</td>
+                          <td className="p-2 text-xs">
+                            <FaTrash
+                              onClick={() =>
+                                dispatch({
+                                  type: "REMOVE_CUSTOM_FIELD",
+                                  payload: field.id,
+                                })
+                              }
+                              className="text-tahiti-red cursor-pointer mx-auto"
+                            ></FaTrash>
+                          </td>
+                        </tr>
+                      )
+                  )}
               </tbody>
             </table>
           </div>

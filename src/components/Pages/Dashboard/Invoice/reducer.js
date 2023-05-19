@@ -1,7 +1,6 @@
 
 
 export const initialState = {
-    // payments: [],
     tests: [],
     total: 0,
     customFields: [],
@@ -10,6 +9,7 @@ export const initialState = {
     // tax: 0,
     loading: null,
     // creating: null,
+    total_PC_commision: 0,
     mainCategories: [],
     subCategories: [],
     subCatLoading: null,
@@ -18,6 +18,12 @@ export const initialState = {
     admittedDays: 0,
     medicineCharge: 0,
     serviceCharge: 0,
+    doctors: [],
+    selectedDoctor: null,
+    pcs: [],
+    selectedPc: null,
+    vatPercentage: '',
+    vatAmount: 0,
 };
 
 export function reducer(state, action) {
@@ -57,6 +63,7 @@ export function reducer(state, action) {
                 ...state,
                 tests: [...state.tests, test],
                 total: state?.total + test?.charge,
+                total_PC_commision: state?.total_PC_commision + Math.ceil(test?.charge * test?.pcRate / 100),
                 subCategories: state.subCategories.filter(
                     (c) => c._id !== selectedTestId
                 ),
@@ -92,6 +99,7 @@ export function reducer(state, action) {
                 customFields: state.customFields.map((field) =>
                     field.id === action.payload.id ? action.payload.updatedField : field
                 ),
+                total: state.total + action.payload.updatedField.amount,
             };
 
         case "REMOVE_CUSTOM_FIELD":
@@ -100,11 +108,23 @@ export function reducer(state, action) {
                 customFields: state.customFields.filter(
                     (field) => field.id !== action.payload
                 ),
+                total: state.total - (state.customFields.find(
+                    (field) => field.id === action.payload
+                )?.amount || 0),
             };
         case "SET_BEDDING_CHARGE": {
             return {
                 ...state,
                 beddingCharge: action.payload,
+                total: state.total + Number(action.payload),
+            };
+        }
+        case "REMOVE_BEDDING_CHARGE": {
+            console.log(action.payload);
+            return {
+                ...state,
+                total: state.total - action.payload,
+                beddingCharge: 0,
             };
         }
         case "SET_ADMITTED_DAYS": {
@@ -116,33 +136,66 @@ export function reducer(state, action) {
         case "SET_MEDICINE_CHARGE": {
             return {
                 ...state,
+                total: state.total + Number(action.payload),
                 medicineCharge: action.payload,
+            };
+        }
+        case "REMOVE_MEDICINE_CHARGE": {
+            return {
+                ...state,
+                total: state.total - action.payload,
+                medicineCharge: 0,
             };
         }
         case "SET_SERVICE_CHARGE": {
             return {
                 ...state,
+                total: state.total + Number(action.payload),
                 serviceCharge: action.payload,
             };
         }
 
-        // case "SET_TAX": {
-        //   const newTax = Number(action.payload.value);
-        //   if (newTax > 100) {
-        //     toast.error("Tax can't be more than 100%");
-        //     action.payload.value = 0;
-        //     return state;
-        //   }
-        //   if (newTax < 0) {
-        //     toast.error("Tax can't be less than 0%");
-        //     action.payload.value = 0;
-        //     return state;
-        //   }
-        //   return {
-        //     ...state,
-        //     tax: newTax,
-        //   };
-        // }
+        case "REMOVE_SERVICE_CHARGE": {
+            return {
+                ...state,
+                total: state.total - action.payload,
+                serviceCharge: 0,
+            };
+        }
+
+        case "SET_DOCTORS": {
+            return {
+                ...state,
+                doctors: action.payload,
+            };
+        }
+        case "SET_SELECTED_DOCTOR": {
+            return {
+                ...state,
+                selectedDoctor: action.payload,
+            };
+        }
+        case "SET_PCS": {
+            return {
+                ...state,
+                pcs: action.payload,
+            };
+        }
+        case "SET_SELECTED_PC": {
+            return {
+                ...state,
+                selectedPc: action.payload,
+            };
+        }
+
+
+
+        case 'SET_VAT_PERCENTAGE':
+            return {
+                ...state,
+                vatPercentage: action.payload,
+                vatAmount: (state.total * action.payload) / 100,
+            };
         // case "SET_DISCOUNT": {
         //   const newDiscount = Number(action.payload.value);
         //   if (newDiscount > 100) {
