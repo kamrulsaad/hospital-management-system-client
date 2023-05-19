@@ -170,6 +170,8 @@ const AllInvoice = () => {
       </>
     );
 
+    console.log(state.invoices);
+
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold">Invoices : {state.count}</h1>
@@ -177,7 +179,7 @@ const AllInvoice = () => {
       <div className="flex justify-between items-center">
         {role?.includes("accountant") && (
           <Link to="/patients">
-            <button className=" lg:my-5 btn btn-sm lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
+            <button className=" lg:my-5 btn btn-xs lg:mr-5 font-semibold px-2 py-1 rounded-md btn-ghost bg-tahiti-darkGreen text-tahiti-white">
               Add New
             </button>
           </Link>

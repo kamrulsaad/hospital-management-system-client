@@ -62,7 +62,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
       <td className="text-center">{invoice?.sub_total}৳</td>
       <td className="text-center">{invoice?.grand_total}৳</td>
       <td className="text-center">
-        {invoice?.paymentCompleted ? "Paid" : "Unpaid"}
+        {invoice?.dueAmount === 0 ? "Paid" : "Unpaid"}
       </td>
       <td className="text-center">
         <button className="btn btn-xs">

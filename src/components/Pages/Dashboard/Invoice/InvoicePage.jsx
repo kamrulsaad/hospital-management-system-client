@@ -11,11 +11,15 @@ const InvoicePage = () => {
   const [status, setStatus] = useState(null);
   const [invoice, setInvoice] = useState({});
 
-  const date = new Date(invoice?.createdAt);
-  const options = { year: "numeric", month: "short", day: "numeric" };
-  const formattedDate = date
-    .toLocaleDateString("en-US", options)
-    .replace(/ /g, "/");
+  const formatDate = (date) => {
+    const newDate = new Date(date);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const formattedDate = newDate
+      .toLocaleDateString("en-US", options)
+      .replace(/ /g, "/");
+    return formattedDate.replace(",", "");
+  }
+
 
   const componentRef = useRef();
 
@@ -61,7 +65,6 @@ const InvoicePage = () => {
       setInvoice(data?.data);
       setStatus(data?.data?.paymentCompleted);
       setLoading(false);
-      console.log(data.data);
     };
     fetchInvoiceData();
   }, [refetch]);
@@ -109,7 +112,8 @@ const InvoicePage = () => {
                 {invoice?.dueAmount === 0 ? "Paid" : "Unpaid"}
               </span>
             </p>
-            <p>Date: {formattedDate.replace(",", "")}</p>
+            <p>Created: {formatDate(invoice?.createdAt)}</p>
+            <p>Updated: {formatDate(invoice?.updatedAt)}</p>
           </div>
         </div>
         <div className="px-10 bg-tahiti-white">
