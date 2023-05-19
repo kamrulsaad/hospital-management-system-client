@@ -63,7 +63,6 @@ const DashBoard = () => {
     fetch("http://localhost:5000/api/v1/dashboard", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         dispatch({
           type: "SET_PATIENTS",
           payload: result?.data?.totalPatientsCount,

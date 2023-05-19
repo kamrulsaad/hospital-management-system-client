@@ -1,134 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import { FaTrash } from "react-icons/fa";
 import { BiCheck } from "react-icons/bi";
-import {FaPlus} from 'react-icons/fa'
+import { FaPlus } from "react-icons/fa";
 import { useReducer } from "react";
 import Spinner from "../../../Shared/Spinner";
-
-const initialState = {
-  // payments: [],
-  tests: [],
-  total: 0,
-  // grandTotal: 0,
-  // discount: 0,
-  // tax: 0,
-  loading: null,
-  // creating: null,
-  mainCategories: [],
-  subCategories: [],
-  subCatLoading: null,
-  patient: {},
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    case "SET_SUB_CAT_LOADING":
-      return {
-        ...state,
-        subCatLoading: action.payload,
-      };
-    case "SET_MAIN_CATEGORIES":
-      return {
-        ...state,
-        mainCategories: action.payload,
-      };
-    case "SET_SUB_CATEGORIES":
-      return {
-        ...state,
-        subCategories: action.payload,
-      };
-    case "SET_PATIENT":
-      return {
-        ...state,
-        patient: action.payload,
-      };
-    case "ADD_TEST": {
-      const test = state.subCategories.find((c) => c._id === action.payload);
-      return {
-        ...state,
-        tests: [...state.tests, test],
-        total: state.total + test.charge,
-        subCategories: state.subCategories.filter(
-          (c) => c._id !== action.payload
-        ),
-      };
-    }
-    // case "DELETE_OPTION": {
-    //   const test = state.selectedOptions.find(
-    //     (c) => c._id === action.payload
-    //   );
-    //   return {
-    //     ...state,
-    //     total: state.total - test.amount,
-    //     selectedOptions: state.selectedOptions.filter(
-    //       (test) => test._id !== action.payload
-    //     ),
-    //     payments: state.payments.filter((p) => p !== action.payload),
-    //     subCategories: [...state.subCategories, test],
-    //     grandTotal: state.payments.length === 1 ? 0 : state.grandTotal,
-    //   };
-    // }
-    // case "SET_TAX": {
-    //   const newTax = Number(action.payload.value);
-    //   if (newTax > 100) {
-    //     toast.error("Tax can't be more than 100%");
-    //     action.payload.value = 0;
-    //     return state;
-    //   }
-    //   if (newTax < 0) {
-    //     toast.error("Tax can't be less than 0%");
-    //     action.payload.value = 0;
-    //     return state;
-    //   }
-    //   return {
-    //     ...state,
-    //     tax: newTax,
-    //   };
-    // }
-    // case "SET_DISCOUNT": {
-    //   const newDiscount = Number(action.payload.value);
-    //   if (newDiscount > 100) {
-    //     toast.error("Discount can't be more than 100%");
-    //     action.payload.value = 0;
-    //     return state;
-    //   }
-    //   if (newDiscount < 0) {
-    //     toast.error("Discount can't be less than 0%");
-    //     action.payload.value = 0;
-    //     return state;
-    //   }
-    //   return {
-    //     ...state,
-    //     discount: newDiscount,
-    //   };
-    // }
-    // case "updateGrandTotal": {
-    //   const tempTotal = state.total + state.total * (state.tax / 100);
-    //   const grandTotal = Math.round(
-    //     tempTotal - tempTotal * (state.discount / 100)
-    //   );
-    //   return {
-    //     ...state,
-    //     grandTotal,
-    //   };
-    // }
-    // case "CREATING_INVOICE": {
-    //   return {
-    //     ...state,
-    //     creating: action.payload,
-    //   };
-    // }
-    default:
-      return state;
-  }
-}
+import { initialState, reducer } from "./reducer";
 
 const CreateInvoice = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -212,6 +90,8 @@ const CreateInvoice = () => {
   const fetchSubCategories = async (id) => {
     dispatch({ type: "SET_SUB_CATEGORIES", payload: [] });
     dispatch({ type: "SET_SUB_CAT_LOADING", payload: true });
+    if (id === "Select")
+      return dispatch({ type: "SET_SUB_CAT_LOADING", payload: false });
     const response = await fetch(
       `http://localhost:5000/api/v1/category/${id}`,
       {
@@ -222,16 +102,23 @@ const CreateInvoice = () => {
       }
     );
     const data = await response.json();
+
+    const filteredSubCategories = data?.data?.subCategories.filter(
+      (category) => {
+        return !state.tests.some((test) => test._id === category._id);
+      }
+    );
+
     dispatch({
       type: "SET_SUB_CATEGORIES",
-      payload: data?.data?.subCategories,
+      payload: filteredSubCategories,
     });
     dispatch({ type: "SET_SUB_CAT_LOADING", payload: false });
   };
 
   if (state.loading) return <Spinner></Spinner>;
 
-  console.log(state.patient);
+  console.log(state.customFields);
 
   return (
     <div className="bg-tahiti-white m-10 shadow-lg rounded-md">
@@ -249,14 +136,11 @@ const CreateInvoice = () => {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid grid-cols-12">
-            <select
-              className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
+            <select className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
               <option disabled selected>
                 Referred By
               </option>
-              <option>
-                Referred By
-              </option>
+              <option>Referred By</option>
             </select>
             <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
               <FaPlus></FaPlus>
@@ -282,7 +166,9 @@ const CreateInvoice = () => {
                   type="text"
                   className="select w-full bg-tahiti-primary focus:outline-none font-bold text-tahiti-white select-sm"
                 >
-                  <option selected>Select</option>
+                  <option selected disabled>
+                    Category
+                  </option>
                   {state.mainCategories.map((category) => (
                     <option value={category?._id} key={category._id}>
                       {category?.name}
@@ -300,15 +186,19 @@ const CreateInvoice = () => {
                 ) : (
                   <select
                     onChange={(event) => {
-                      const options = event.target.options;
-                      for (let i = 0; i < options.length; i++) {
-                        if (options[i].selected) {
-                          dispatch({
-                            type: "ADD_TEST",
-                            payload: options[i].value,
-                          });
-                        }
-                      }
+                      const selectedOptions = Array.from(
+                        event.target.options
+                      ).filter((option) => option.selected);
+
+                      const selectedValues = selectedOptions.map(
+                        (option) => option.value
+                      );
+
+                      dispatch({
+                        type: "ADD_TEST",
+                        payload: selectedValues[0],
+                      });
+                      event.target.value = "Sub Category";
                     }}
                     type="text"
                     className={` ${
@@ -317,7 +207,9 @@ const CreateInvoice = () => {
                         : "bg-tahiti-green select-disabled "
                     } focus:outline-none font-bold w-full text-tahiti-white select select-sm`}
                   >
-                    <option selected>Select</option>
+                    <option selected disabled>
+                      Sub Category
+                    </option>
                     {state.subCategories.map((category) => (
                       <option value={category?._id} key={category._id}>
                         {category?.name}
@@ -330,42 +222,157 @@ const CreateInvoice = () => {
             <div className="mb-4">
               <p className="text-lg font-medium">Bedding</p>
               <div className="grid grid-cols-2 gap-4">
-                <select
-                  onChange={(event) => {
-                    // const options = event.target.options;
-                    // for (let i = 0; i < options.length; i++) {
-                    //   if (options[i].selected) {
-                    //     dispatch({
-                    //       type: "ADD_OPTION",
-                    //       payload: options[i].value,
-                    //     });
-                    //   }
-                    // }
-                  }}
+                <input
+                  id="bedding"
+                  disabled
                   type="text"
-                  className={` ${
-                    state.subCategories.length > 0
-                      ? "bg-tahiti-primary"
-                      : "bg-tahiti-green select-disabled "
-                  } focus:outline-none font-bold w-full text-tahiti-white select select-sm`}
+                  className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+                  placeholder={
+                    state?.patient?.bed?.name +
+                    " (" +
+                    state?.patient?.bed?.category?.charge +
+                    "৳/day)"
+                  }
+                />
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    dispatch({
+                      type: "SET_ADMITTED_DAYS",
+                      payload: event.target.admittedDays.value,
+                    });
+                    dispatch({
+                      type: "SET_BEDDING_CHARGE",
+                      payload:
+                        state.patient.bed.category.charge *
+                        event.target.admittedDays.value,
+                    });
+                  }}
+                  className="flex w-full"
                 >
-                  <option selected>Select</option>
-                  {state.subCategories.map((category) => (
-                    <option value={category?._id} key={category._id}>
-                      {category?.name}
-                    </option>
-                  ))}
-                </select>
-                <div className="flex w-full">
                   <input
-                    type="text"
-                    className="rounded-l-lg w-full border focus:outline-none border-r-0"
+                    type="number"
+                    name="admittedDays"
+                    placeholder="Days"
+                    className="rounded-l-lg w-full border focus:outline-none border-r-0 pl-2"
                   />
-                  <button className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none">
+                  <button
+                    type="submit"
+                    className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none"
+                  >
+                    <BiCheck className="text-xl" />
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <p className="text-lg font-medium">Medicine Charge:</p>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    dispatch({
+                      type: "SET_MEDICINE_CHARGE",
+                      payload: event.target.medicine.value,
+                    });
+                  }}
+                  className="flex w-full"
+                >
+                  <input
+                    name="medicine"
+                    type="number"
+                    className="rounded-l-lg w-full pl-2 border focus:outline-none border-r-0"
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none"
+                  >
                     <BiCheck className="text-xl"></BiCheck>
                   </button>
-                </div>
+                </form>
               </div>
+            </div>
+            <div className="mb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <p className="text-lg font-medium">Service Charge:</p>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    dispatch({
+                      type: "SET_SERVICE_CHARGE",
+                      payload: event.target.service.value,
+                    });
+                  }}
+                  className="flex w-full"
+                >
+                  <input
+                    name="service"
+                    type="number"
+                    className="rounded-l-lg w-full pl-2 border focus:outline-none border-r-0"
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none"
+                  >
+                    <BiCheck className="text-xl"></BiCheck>
+                  </button>
+                </form>
+              </div>
+            </div>
+            {state.customFields.map((field, index) => (
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const updatedField = {
+                    id: field.id,
+                    name: event.target.elements.chargeType.value,
+                    amount: Number(event.target.elements.charge.value),
+                  };
+                  dispatch({
+                    type: "UPDATE_CUSTOM_FIELD",
+                    payload: { id: field.id, updatedField },
+                  });
+                }}
+                className="mb-2"
+                key={field.id}
+              >
+                <label className="mb-1 block font-medium" htmlFor="Sub-Total">
+                  Charge Type {field.id}
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      name="chargeType"
+                      type="text"
+                      className="input w-full input-sm input-bordered border-tahiti-dark focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex w-full">
+                    <input
+                      name="charge"
+                      type="number"
+                      className="rounded-l-lg w-full pl-2 border focus:outline-none border-r-0"
+                    />
+                    <button
+                      type="submit"
+                      className="btn btn-sm bg-tahiti-primary border-l-0 rounded-l-none"
+                    >
+                      <BiCheck className="text-xl"></BiCheck>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            ))}
+            <div className="mb-4">
+              <p
+                onClick={() => {
+                  dispatch({ type: "ADD_CUSTOM_FIELD" });
+                }}
+                className="font-bold btn btn-sm bg-tahiti-primary border-0"
+              >
+                Add Custom Field{" "}
+                <span className="text-tahiti-darkGreen ml-1">+</span>
+              </p>
             </div>
           </fieldset>
         </div>
@@ -382,7 +389,11 @@ const CreateInvoice = () => {
                 </tr>
               </thead>
               <tbody>
-                {state.tests?.length > 0 ? (
+                {state.tests?.length > 0 ||
+                state.beddingCharge > 0 ||
+                state.medicineCharge > 0 ||
+                state.serviceCharge > 0 ||
+                state.customFields[0]?.name ? (
                   state.tests.map((category) => (
                     <tr key={category._id}>
                       <td className=" p-2 text-xs">{category?.name}</td>
@@ -399,7 +410,7 @@ const CreateInvoice = () => {
                         <FaTrash
                           onClick={() =>
                             dispatch({
-                              type: "DELETE_OPTION",
+                              type: "REMOVE_TEST",
                               payload: category._id,
                             })
                           }
@@ -417,9 +428,146 @@ const CreateInvoice = () => {
                     <td></td>
                   </tr>
                 )}
+                {state.beddingCharge > 0 && (
+                  <tr>
+                    <td className="p-2 text-xs ">
+                      {state.patient.bed.name} ({state.admittedDays} days){" "}
+                    </td>
+                    <td className="p-2 text-xs text-center">
+                      {state.beddingCharge} ৳
+                    </td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs">
+                      <FaTrash
+                        onClick={() => {
+                          dispatch({
+                            type: "SET_BEDDING_CHARGE",
+                            payload: 0,
+                          });
+                          dispatch({
+                            type: "SET_ADMITTED_DAYS",
+                            payload: 0,
+                          });
+                        }}
+                        className="text-tahiti-red cursor-pointer mx-auto"
+                      ></FaTrash>
+                    </td>
+                  </tr>
+                )}
+                {state.medicineCharge > 0 && (
+                  <tr>
+                    <td className="p-2 text-xs ">Medicine</td>
+                    <td className="p-2 text-xs text-center">
+                      {state.medicineCharge} ৳
+                    </td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs">
+                      <FaTrash
+                        onClick={() =>
+                          dispatch({
+                            type: "SET_MEDICINE_CHARGE",
+                            payload: 0,
+                          })
+                        }
+                        className="text-tahiti-red cursor-pointer mx-auto"
+                      ></FaTrash>
+                    </td>
+                  </tr>
+                )}
+                {state.serviceCharge > 0 && (
+                  <tr>
+                    <td className="p-2 text-xs ">Service</td>
+                    <td className="p-2 text-xs text-center">
+                      {state.serviceCharge}৳
+                    </td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs">
+                      <FaTrash
+                        onClick={() =>
+                          dispatch({
+                            type: "SET_SERVICE_CHARGE",
+                            payload: 0,
+                          })
+                        }
+                        className="text-tahiti-red cursor-pointer mx-auto"
+                      ></FaTrash>
+                    </td>
+                  </tr>
+                )}
+                {state.customFields[0]?.name &&
+                  state.customFields.map((field) => (
+                    <tr key={field.id}>
+                      <td className=" p-2 text-xs">{field?.name}</td>
+                      <td className="text-center p-2 text-xs">
+                        {field?.amount}৳
+                      </td>
+                      <td className="text-center p-2 text-xs">-</td>
+                      <td className="text-center p-2 text-xs">-</td>
+                      <td className="p-2 text-xs">
+                        <FaTrash
+                          onClick={() =>
+                            dispatch({
+                              type: "REMOVE_CUSTOM_FIELD",
+                              payload: field.id,
+                            })
+                          }
+                          className="text-tahiti-red cursor-pointer mx-auto"
+                        ></FaTrash>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+      <div className="px-10 pb-10 grid grid-cols-4 gap-10">
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Sub Total
+          </label>
+          <input
+            id="Sub-Total"
+            disabled
+            type="text"
+            className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            placeholder={state.total}
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Discount
+          </label>
+          <input
+            id="Sub-Total"
+            type="text"
+            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            VAT
+          </label>
+          <input
+            id="Sub-Total"
+            type="text"
+            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Total
+          </label>
+          <input
+            id="Sub-Total"
+            disabled
+            type="text"
+            className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            placeholder={state.total}
+          />
         </div>
       </div>
     </div>
