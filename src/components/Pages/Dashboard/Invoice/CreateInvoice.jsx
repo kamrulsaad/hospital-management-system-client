@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import { useReducer } from "react";
 import Spinner from "../../../Shared/Spinner";
 import { initialState, reducer } from "./reducer";
+import { toast } from "react-toastify";
 
 const CreateInvoice = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -52,15 +53,34 @@ const CreateInvoice = () => {
     fetchDataAsync();
   }, [patientId]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch({ type: "CREATING_INVOICE", payload: true });
+  const handleSubmit = () => {
+    dispatch({ type: "SET_CREATING", payload: true });
 
     const data = {
-      payments: state.payments,
+      patient: patientId,
+      tests: state.tests,
+      bedding: {
+        bed: state.patient?.bed?._id,
+        charge: state.beddingCharge,
+        days: state.admittedDays,
+      },
+      medicineCharge: state.medicineCharge,
+      serviceCharge: state.serviceCharge,
+      otherCharges: state.customFields.map((field) => ({
+        name: field.name,
+        amount: field.amount,
+      })),
       sub_total: state.total,
       discount: state.discount,
-      tax: state.tax,
+      VAT: {
+        vatPercentage: state.vatPercentage,
+        vatAmount: state.vatAmount,
+      },
+      paidAmount: state.paidAmount,
+      dueAmount: state.due,
+      referredBy: state.refferedBy || null,
+      appointedTo: state.selectedDoctor || null,
+      total_PC_Commission: state.total_PC_commision,
       grand_total: state.grandTotal,
     };
 
@@ -74,7 +94,7 @@ const CreateInvoice = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        dispatch({ type: "CREATING_INVOICE", payload: false });
+        dispatch({ type: "CREATING_INVOICE", payload: false })
         if (result.status === "success") {
           toast.success(result.message);
           navigate("/allinvoice");
@@ -133,34 +153,33 @@ const CreateInvoice = () => {
           <p>{state.patient?.serialId}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <div className="grid grid-cols-12">
-              <select className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none">
-                <option disabled selected>
-                  Referred By
+          <div className="grid grid-cols-12">
+            <select
+              className="rounded-l-lg border col-span-10 bg-tahiti-primary text-tahiti-white rounded-r-none select select-sm focus:outline-none"
+              onChange={(event) => {
+                const options = event.target.options;
+                for (let i = 0; i < options.length; i++) {
+                  if (options[i].selected) {
+                    dispatch({
+                      type: "SET_REFFERED_BY",
+                      payload: options[i].value,
+                    });
+                  }
+                }
+              }}
+            >
+              <option disabled selected>
+                Referred By
+              </option>
+              {state.pcs.map((pc) => (
+                <option value={pc._id} key={pc._id}>
+                  {pc?.name}
                 </option>
-                {state.pcs.map((pc) => (
-                  <option value={pc._id} key={pc._id}>
-                    {pc?.name}
-                  </option>
-                ))}
-              </select>
-              <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
-                <FaPlus></FaPlus>
-              </button>
-            </div>
-            <div className="mt-2">
-              <label className="block" htmlFor="Sub-Total">
-                Total PC Commision
-              </label>
-              <input
-                id="Sub-Total"
-                disabled
-                type="text"
-                className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
-                placeholder={state.total_PC_commision}
-              />
-            </div>
+              ))}
+            </select>
+            <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
+              <FaPlus></FaPlus>
+            </button>
           </div>
           <div className="grid grid-cols-12">
             <select
@@ -169,7 +188,7 @@ const CreateInvoice = () => {
                 for (let i = 0; i < options.length; i++) {
                   if (options[i].selected) {
                     dispatch({
-                      type: "SET_DOCTOR",
+                      type: "SET_SELECTED_DOCTOR",
                       payload: options[i].value,
                     });
                   }
@@ -272,10 +291,11 @@ const CreateInvoice = () => {
                   type="text"
                   className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
                   placeholder={
+                    state.patient?.bed?.name &&
                     state?.patient?.bed?.name +
-                    " (" +
-                    state?.patient?.bed?.category?.charge +
-                    "৳/day)"
+                      " (" +
+                      state?.patient?.bed?.category?.charge +
+                      "৳/day)"
                   }
                 />
                 <form
@@ -288,7 +308,7 @@ const CreateInvoice = () => {
                     dispatch({
                       type: "SET_BEDDING_CHARGE",
                       payload:
-                        state.patient.bed.category.charge *
+                        state.patient?.bed?.category.charge *
                         event.target.admittedDays.value,
                     });
                   }}
@@ -297,7 +317,7 @@ const CreateInvoice = () => {
                   <input
                     type="number"
                     name="admittedDays"
-                    disabled={!state.patient.bed.name || state.admittedDays}
+                    disabled={!state.patient?.bed?.name || state.admittedDays}
                     placeholder="Days"
                     className="rounded-l-lg w-full border focus:outline-none border-r-0 pl-2 disabled:cursor-not-allowed disabled:bg-tahiti-babyPink disabled:text-tahiti-dark "
                   />
@@ -427,9 +447,9 @@ const CreateInvoice = () => {
               <thead>
                 <tr>
                   <th className="p-2 text-xs">Name</th>
-                  <th className="text-center p-2 text-xs">Amount</th>
                   <th className="text-center p-2 text-xs">PC Rate</th>
                   <th className="text-center p-2 text-xs">PC Commission</th>
+                  <th className="text-center p-2 text-xs">Amount</th>
                   <th className="text-center p-2 text-xs">Remove</th>
                 </tr>
               </thead>
@@ -443,13 +463,14 @@ const CreateInvoice = () => {
                     <tr key={category._id}>
                       <td className=" p-2 text-xs">{category?.name}</td>
                       <td className="text-center p-2 text-xs">
-                        {category?.charge}৳
-                      </td>
-                      <td className="text-center p-2 text-xs">
                         {category?.pcRate}%
                       </td>
                       <td className="text-center p-2 text-xs">
-                        {Math.ceil((category?.charge * (category?.pcRate / 100)))}৳
+                        {Math.ceil(category?.charge * (category?.pcRate / 100))}
+                        ৳
+                      </td>
+                      <td className="text-center p-2 text-xs">
+                        {category?.charge}৳
                       </td>
                       <td className="p-2 text-xs">
                         <FaTrash
@@ -478,11 +499,11 @@ const CreateInvoice = () => {
                     <td className="p-2 text-xs ">
                       {state.patient?.bed?.name} ({state.admittedDays} days){" "}
                     </td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs text-center">
                       {state.beddingCharge} ৳
                     </td>
-                    <td className="p-2 text-xs text-center">-</td>
-                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs">
                       <FaTrash
                         onClick={() => {
@@ -503,11 +524,11 @@ const CreateInvoice = () => {
                 {state.medicineCharge > 0 && (
                   <tr>
                     <td className="p-2 text-xs ">Medicine</td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs text-center">
                       {state.medicineCharge} ৳
                     </td>
-                    <td className="p-2 text-xs text-center">-</td>
-                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs">
                       <FaTrash
                         onClick={() =>
@@ -524,11 +545,11 @@ const CreateInvoice = () => {
                 {state.serviceCharge > 0 && (
                   <tr>
                     <td className="p-2 text-xs ">Service</td>
+                    <td className="p-2 text-xs text-center">-</td>
+                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs text-center">
                       {state.serviceCharge}৳
                     </td>
-                    <td className="p-2 text-xs text-center">-</td>
-                    <td className="p-2 text-xs text-center">-</td>
                     <td className="p-2 text-xs">
                       <FaTrash
                         onClick={() =>
@@ -549,11 +570,11 @@ const CreateInvoice = () => {
                       field?.amount && (
                         <tr key={field.id}>
                           <td className="p-2 text-xs">{field?.name}</td>
+                          <td className="text-center p-2 text-xs">-</td>
+                          <td className="text-center p-2 text-xs">-</td>
                           <td className="text-center p-2 text-xs">
                             {field.amount}৳
                           </td>
-                          <td className="text-center p-2 text-xs">-</td>
-                          <td className="text-center p-2 text-xs">-</td>
                           <td className="p-2 text-xs">
                             <FaTrash
                               onClick={() =>
@@ -573,7 +594,99 @@ const CreateInvoice = () => {
           </div>
         </div>
       </div>
-      <div className="px-10 pb-10 grid grid-cols-4 gap-10">
+      <div className="px-10 pb-10 grid grid-cols-4 gap-x-10 gap-y-2">
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            VAT (%)
+          </label>
+          <div className="grid grid-cols-2">
+            <div className="border-r">
+              <input
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    dispatch({
+                      type: "SET_VAT_PERCENTAGE",
+                      payload: event.target.value,
+                    });
+                  }
+                }}
+                disabled={!state.total}
+                id="tax"
+                type="text"
+                className="input w-full rounded-r-none  border-r-2 bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+              />
+            </div>
+            <input
+              id="tax_amount"
+              type="text"
+              disabled
+              placeholder={state.vatAmount}
+              className="input w-full rounded-l-none bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Discount
+          </label>
+          <input
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                dispatch({
+                  type: "SET_DISCOUNT",
+                  payload: event.target.value,
+                });
+              }
+            }}
+            disabled={!state.total}
+            type="text"
+            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Paid Amount <span className="text-tahiti-red">*</span>
+          </label>
+          <input
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                dispatch({
+                  type: "SET_PAID_AMOUNT",
+                  payload: event.target.value,
+                });
+              }
+            }}
+            disabled={!state.total}
+            type="text"
+            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Due
+          </label>
+          <input
+            disabled
+            type="text"
+            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            placeholder={state.due}
+          />
+        </div>
+        <div>
+          <label className="block" htmlFor="Sub-Total">
+            Total PC Commision
+          </label>
+          <input
+            id="Sub-Total"
+            disabled
+            type="text"
+            className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            placeholder={state.total_PC_commision}
+          />
+        </div>
         <div>
           <label className="block" htmlFor="Sub-Total">
             Sub Total
@@ -587,37 +700,28 @@ const CreateInvoice = () => {
           />
         </div>
         <div>
-          <label className="block" htmlFor="Sub-Total">
-            Discount
-          </label>
+          <label className="block">Total</label>
           <input
-            id="Sub-Total"
-            type="text"
-            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
-          />
-        </div>
-        <div>
-          <label className="block" htmlFor="Sub-Total">
-            VAT
-          </label>
-          <input
-            id="Sub-Total"
-            type="text"
-            className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
-          />
-        </div>
-        <div>
-          <label className="block" htmlFor="Sub-Total">
-            Total
-          </label>
-          <input
-            id="Sub-Total"
+            id="total"
             disabled
             type="text"
             className="input w-full input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
-            placeholder={state.total}
+            placeholder={state.grandTotal}
           />
         </div>
+        <button
+          onClick={handleSubmit}
+          className="btn btn-sm bg-tahiti-primary mt-6 border-0"
+        >
+          {state.creating ? (
+            <img
+              className="w-4 mx-auto animate-spin"
+              src="/assets/loading.png"
+            />
+          ) : (
+            "Submit"
+          )}
+        </button>
       </div>
     </div>
   );

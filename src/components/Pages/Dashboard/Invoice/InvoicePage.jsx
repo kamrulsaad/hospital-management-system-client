@@ -61,6 +61,7 @@ const InvoicePage = () => {
       setInvoice(data?.data);
       setStatus(data?.data?.paymentCompleted);
       setLoading(false);
+      console.log(data.data);
     };
     fetchInvoiceData();
   }, [refetch]);
@@ -77,7 +78,7 @@ const InvoicePage = () => {
       <div ref={componentRef}>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
           <div>
-            <p>From</p>
+            <p>From,</p>
             <p className="font-medium">
               {invoice?.createdBy?.firstName} {invoice?.createdBy?.lastName}
             </p>
@@ -105,7 +106,7 @@ const InvoicePage = () => {
               Payment Status:{" "}
               <span className="font-bold">
                 {" "}
-                {invoice?.paymentCompleted ? "Paid" : "Unpaid"}
+                {invoice?.dueAmount === 0 ? "Paid" : "Unpaid"}
               </span>
             </p>
             <p>Date: {formattedDate.replace(",", "")}</p>
@@ -116,33 +117,67 @@ const InvoicePage = () => {
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th className="p-2 pl-4">Sl</th>
                   <th className="p-2">Item</th>
+                  <th className="p-2 text-center print:hidden">PC Comission</th>
                   <th className="text-right p-2">Amount</th>
                 </tr>
               </thead>
-              {invoice?.payments?.map((payment, i) => (
+              {invoice?.tests?.map((payment, i) => (
                 <tr key={payment?._id}>
-                  <td className="pl-4 p-2">{i + 1}</td>
                   <td className="p-2">{payment.name}</td>
-                  <td className="text-right p-2">{payment.amount}৳</td>
+                  <td className="p-2 text-center print:hidden">
+                    {Math.ceil((payment.charge * payment.pcRate) / 100)}৳
+                  </td>
+                  <td className="text-right p-2">{payment.charge}৳</td>
                 </tr>
               ))}
-              <tr>
-                <td className="bg-tahiti-babyPink font-bold pl-4 p-2">#</td>
-                <td className="bg-tahiti-babyPink font-bold p-2">Sub Total</td>
-                <td className="text-right font-bold bg-tahiti-babyPink p-2">
-                  {invoice?.sub_total}৳
-                </td>
-              </tr>
+              {invoice?.bedding?.days > 0 && (
+                <tr>
+                  <td className="p-2">
+                    Bedding Charge : <b>{invoice?.bedding?.bed?.name}</b> (
+                    {invoice?.bedding?.days} days){" "}
+                  </td>
+                  <td className="p-2 text-center print:hidden">-</td>
+                  <td className="text-right p-2">
+                    {invoice?.bedding?.charge}৳
+                  </td>
+                </tr>
+              )}
+              {invoice?.medicineCharge > 0 && (
+                <tr>
+                  <td className="p-2">Medicine Charge </td>
+                  <td className="p-2 text-center print:hidden">-</td>
+                  <td className="text-right p-2">{invoice?.medicineCharge}৳</td>
+                </tr>
+              )}
+              {invoice?.serviceCharge > 0 && (
+                <tr>
+                  <td className="p-2">Service Charge </td>
+                  <td className="p-2 text-center print:hidden">-</td>
+                  <td className="text-right p-2">{invoice?.serviceCharge}৳</td>
+                </tr>
+              )}
+              {invoice?.otherCharges?.map((charge) => {
+                if (charge.name && charge.amount) {
+                  return (
+                    <tr key={charge._id}>
+                      <td className="p-2">{charge.name}</td>
+                      <td className="p-2 text-center print:hidden">-</td>
+                      <td className="text-right p-2">{charge.amount}৳</td>
+                    </tr>
+                  );
+                } else {
+                  return null; // Skip rendering if name or amount is not valid
+                }
+              })}
             </table>
           </div>
         </div>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
-          <div className="col-span-2 mt-auto space-x-4">
+          <div className="mt-auto space-x-4">
             {!status && (
               <button
-                onClick={handleStatusUpdate}
+                // onClick={handleStatusUpdate}
                 className="btn btn-xs btn-success print:hidden "
               >
                 Submit Payment
@@ -160,22 +195,55 @@ const InvoicePage = () => {
               <table className="table w-full">
                 <tbody>
                   {/* row 1 */}
-                  <tr>
-                    <td className="p-2">Sub Total: </td>
+                  <tr className="print:hidden">
+                    <td className="p-2">PC Commission: </td>
                     <td className="font-bold text-right p-2">
-                      {invoice?.sub_total}৳
+                      {invoice?.total_PC_Commission}৳
                     </td>
                   </tr>
                   <tr>
+                    <td className="p-2">Tax Amount:</td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.VAT?.vatAmount}৳
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="p-2">Payment Due:</td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.dueAmount}৳
+                    </td>
+                  </tr>
+                  <tr className="print:border-b-2">
+                    <td className="p-2">Paid Amount: </td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.paidAmount}৳
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div className="overflow-x-auto">
+              <table className="table w-full">
+                <tbody>
+                  {/* row 1 */}
+                  <tr>
                     <td className="p-2">Tax:</td>
                     <td className="font-bold text-right p-2">
-                      +{invoice?.tax}%
+                      +{invoice?.VAT?.vatPercentage}%
                     </td>
                   </tr>
                   <tr>
                     <td className="p-2">Discount:</td>
                     <td className="font-bold text-right p-2">
-                      -{invoice?.discount}%
+                      {invoice?.discount}৳
+                    </td>
+                  </tr>
+                  <tr className="print:border-b-2">
+                    <td className="p-2">Sub Total: </td>
+                    <td className="font-bold text-right p-2">
+                      {invoice?.sub_total}৳
                     </td>
                   </tr>
                   <tr>

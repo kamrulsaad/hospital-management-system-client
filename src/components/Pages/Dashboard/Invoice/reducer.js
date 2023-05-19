@@ -4,11 +4,10 @@ export const initialState = {
     tests: [],
     total: 0,
     customFields: [],
-    // grandTotal: 0,
-    // discount: 0,
-    // tax: 0,
+    grandTotal: 0,
+    discount: 0,
     loading: null,
-    // creating: null,
+    creating: null,
     total_PC_commision: 0,
     mainCategories: [],
     subCategories: [],
@@ -19,11 +18,13 @@ export const initialState = {
     medicineCharge: 0,
     serviceCharge: 0,
     doctors: [],
-    selectedDoctor: null,
+    selectedDoctor: '',
     pcs: [],
-    selectedPc: null,
     vatPercentage: '',
     vatAmount: 0,
+    paidAmount: 0,
+    due: 0,
+    refferedBy: '',
 };
 
 export function reducer(state, action) {
@@ -63,6 +64,7 @@ export function reducer(state, action) {
                 ...state,
                 tests: [...state.tests, test],
                 total: state?.total + test?.charge,
+                grandTotal: state?.total + test?.charge,
                 total_PC_commision: state?.total_PC_commision + Math.ceil(test?.charge * test?.pcRate / 100),
                 subCategories: state.subCategories.filter(
                     (c) => c._id !== selectedTestId
@@ -76,6 +78,7 @@ export function reducer(state, action) {
                 ...state,
                 tests: state.tests.filter((c) => c._id !== action.payload),
                 total: state.total - test.charge,
+                grandTotal: state.total - test.charge,
                 subCategories: [...state.subCategories, test],
             };
         }
@@ -100,6 +103,7 @@ export function reducer(state, action) {
                     field.id === action.payload.id ? action.payload.updatedField : field
                 ),
                 total: state.total + action.payload.updatedField.amount,
+                grandTotal: state.total + action.payload.updatedField.amount,
             };
 
         case "REMOVE_CUSTOM_FIELD":
@@ -111,19 +115,24 @@ export function reducer(state, action) {
                 total: state.total - (state.customFields.find(
                     (field) => field.id === action.payload
                 )?.amount || 0),
+                grandTotal: state.total - (state.customFields.find(
+                    (field) => field.id === action.payload
+                )?.amount || 0),
+
             };
         case "SET_BEDDING_CHARGE": {
             return {
                 ...state,
                 beddingCharge: action.payload,
                 total: state.total + Number(action.payload),
+                grandTotal: state.total + Number(action.payload),
             };
         }
         case "REMOVE_BEDDING_CHARGE": {
-            console.log(action.payload);
             return {
                 ...state,
                 total: state.total - action.payload,
+                grandTotal: state.total - action.payload,
                 beddingCharge: 0,
             };
         }
@@ -137,6 +146,7 @@ export function reducer(state, action) {
             return {
                 ...state,
                 total: state.total + Number(action.payload),
+                grandTotal: state.total + Number(action.payload),
                 medicineCharge: action.payload,
             };
         }
@@ -144,6 +154,7 @@ export function reducer(state, action) {
             return {
                 ...state,
                 total: state.total - action.payload,
+                grandTotal: state.total - action.payload,
                 medicineCharge: 0,
             };
         }
@@ -151,6 +162,7 @@ export function reducer(state, action) {
             return {
                 ...state,
                 total: state.total + Number(action.payload),
+                grandTotal: state.total + Number(action.payload),
                 serviceCharge: action.payload,
             };
         }
@@ -159,6 +171,7 @@ export function reducer(state, action) {
             return {
                 ...state,
                 total: state.total - action.payload,
+                grandTotal: state.total - action.payload,
                 serviceCharge: 0,
             };
         }
@@ -181,54 +194,43 @@ export function reducer(state, action) {
                 pcs: action.payload,
             };
         }
-        case "SET_SELECTED_PC": {
-            return {
-                ...state,
-                selectedPc: action.payload,
-            };
-        }
-
-
 
         case 'SET_VAT_PERCENTAGE':
+            const vatAmount = Math.ceil((action.payload) * state.total / 100);
             return {
                 ...state,
                 vatPercentage: action.payload,
-                vatAmount: (state.total * action.payload) / 100,
+                vatAmount,
+                grandTotal: state.total + vatAmount
             };
-        // case "SET_DISCOUNT": {
-        //   const newDiscount = Number(action.payload.value);
-        //   if (newDiscount > 100) {
-        //     toast.error("Discount can't be more than 100%");
-        //     action.payload.value = 0;
-        //     return state;
-        //   }
-        //   if (newDiscount < 0) {
-        //     toast.error("Discount can't be less than 0%");
-        //     action.payload.value = 0;
-        //     return state;
-        //   }
-        //   return {
-        //     ...state,
-        //     discount: newDiscount,
-        //   };
-        // }
-        // case "updateGrandTotal": {
-        //   const tempTotal = state.total + state.total * (state.tax / 100);
-        //   const grandTotal = Math.round(
-        //     tempTotal - tempTotal * (state.discount / 100)
-        //   );
-        //   return {
-        //     ...state,
-        //     grandTotal,
-        //   };
-        // }
-        // case "CREATING_INVOICE": {
-        //   return {
-        //     ...state,
-        //     creating: action.payload,
-        //   };
-        // }
+        case "SET_DISCOUNT": {
+            const newDiscount = Number(action.payload);
+            return {
+                ...state,
+                discount: newDiscount,
+                grandTotal: (state.total + state.vatAmount) - newDiscount
+            };
+        }
+        case "SET_PAID_AMOUNT": {
+            const newPaidAmount = Number(action.payload);
+            return {
+                ...state,
+                paidAmount: newPaidAmount,
+                due: state.grandTotal - newPaidAmount
+            };
+        }
+        case "SET_CREATING": {
+            return {
+                ...state,
+                creating: action.payload,
+            };
+        }
+        case "SET_REFFERED_BY": {
+            return {
+                ...state,
+                refferedBy: action.payload,
+            };
+        }
         default:
             return state;
     }
