@@ -20,36 +20,6 @@ const TestRow = ({ invoice, role, setRefetch }) => {
     redirect: "follow",
   };
 
-  const handleFileRemove = (id) => {
-    setDelLoading(true);
-
-    Swal.fire({
-      title: `Are you sure?
-              This process can't be undone!`,
-      showCancelButton: true,
-      confirmButtonText: "Okay",
-    }).then((results) => {
-      if (results.isConfirmed) {
-        fetch(
-          `http://localhost:5000/api/v1/test/remove/${id}`,
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.status === "success") toast.success(result.message);
-            else toast.error(result.error);
-            setRefetch();
-            setDelLoading(false);
-          })
-          .catch((error) => {
-            toast.error(error);
-            setDelLoading(false);
-          });
-      }
-      if (results.isDismissed) setDelLoading(false);
-    });
-  };
-
   const handleDelete = (id) => {
     setDelLoading(true);
 
@@ -92,31 +62,20 @@ const TestRow = ({ invoice, role, setRefetch }) => {
       <td className="text-center">
         {invoice?.available ? "Available" : "Not Available"}
       </td>
+      {role?.includes("labaratorist") && (
+        <>
+          <td>
+            <Link to={`/test/${invoice?._id}`}>
+              <FaFileUpload className="text-2xl cursor-pointer mx-auto" />
+            </Link>
+          </td>
+        </>
+      )}
       <td className="text-center">
         <Link to={`/testDetails/${invoice?._id}`}>
           <button className="btn btn-xs rounded-lg">Details</button>
         </Link>
       </td>
-      {role?.includes("labaratorist") && (
-        <>
-          <td>
-            <Link to={`/test/${invoice?._id}`}>
-              <FaFileUpload className="text-2xl cursor-pointer" />
-            </Link>
-          </td>
-          <td>
-            {invoice?.available ? (
-              <HiOutlineDocumentRemove
-                onClick={() => handleFileRemove(invoice?._id)}
-                className="text-2xl text-tahiti-red cursor-pointer"
-              />
-            ) : (
-              <HiOutlineDocumentRemove className="text-2xl text-tahiti-grey cursor-not-allowed" />
-            )}
-          </td>
-        </>
-      )}
-
       {(role?.includes("super-admin") || role?.includes("admin")) && (
         <td>
           {delLoading ? (

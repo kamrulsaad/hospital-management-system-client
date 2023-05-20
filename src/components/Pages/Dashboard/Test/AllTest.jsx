@@ -261,9 +261,8 @@ const AllTest = () => {
               <th className="text-center">Test</th>
               <th className="text-center">Date</th>
               <th className="text-center">Status</th>
+              {role?.includes("labaratorist") && <th className="text-center">Update</th>}
               <th className="text-center">Details</th>
-              {role?.includes("labaratorist") && <th>Update</th>}
-              {role?.includes("labaratorist") && <th>Remove</th>}
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
               )}

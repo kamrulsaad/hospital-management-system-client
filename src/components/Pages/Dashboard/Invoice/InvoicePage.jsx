@@ -9,9 +9,7 @@ const InvoicePage = () => {
   const { invoiceId } = useParams();
   const [loading, setLoading] = useState(null);
   const [refetch, setRefetch] = useState(true);
-  const [status, setStatus] = useState(null);
   const [invoice, setInvoice] = useState({});
-  const [numberInput, setNumberInput] = useState(0);
 
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -117,7 +115,6 @@ const InvoicePage = () => {
       );
       const data = await response.json();
       setInvoice(data?.data);
-      setStatus(data?.data?.paymentCompleted);
       setLoading(false);
     };
     fetchInvoiceData();
@@ -127,12 +124,12 @@ const InvoicePage = () => {
 
   return (
     <div className="p-10 pb-0">
+      <div ref={componentRef}>
       <div>
-        <p className="text-xl text-tahiti-lightGreen my-2-5 mx-10 font-semibold">
-          UNICEH HMS
+        <p className="text-xl text-tahiti-lightGreen my-2-5 mx-10 font-semibold print:mt-4">
+          HMS UNIECH
         </p>
       </div>
-      <div ref={componentRef}>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
           <div>
             <p>From,</p>
@@ -233,7 +230,7 @@ const InvoicePage = () => {
         </div>
         <div className="grid grid-cols-3 bg-tahiti-white p-10">
           <div className="mt-auto space-x-4">
-            {!status && (
+            {invoice?.dueAmount > 0 && (
               <button
                 onClick={handleStatusUpdate}
                 className="btn btn-xs btn-success print:hidden "

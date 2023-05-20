@@ -59,7 +59,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
       <td>{invoice?.serialId}</td>
       <td className="text-center">{invoice?.patient?.name}</td>
       <td className="text-center">{formattedDate.replace(",", "")}</td>
-      <td className="text-center">{invoice?.sub_total}৳</td>
+      <td className="text-center">{invoice?.dueAmount}৳</td>
       <td className="text-center">{invoice?.grand_total}৳</td>
       <td className="text-center">
         {invoice?.dueAmount === 0 ? "Paid" : "Unpaid"}

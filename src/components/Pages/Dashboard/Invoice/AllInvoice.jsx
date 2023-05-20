@@ -170,8 +170,6 @@ const AllInvoice = () => {
       </>
     );
 
-    console.log(state.invoices);
-
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold">Invoices : {state.count}</h1>
@@ -184,7 +182,12 @@ const AllInvoice = () => {
             </button>
           </Link>
         )}
-        <button className="btn btn-xs mb-1 bg-tahiti-darkGreen " onClick={handleExport}>Export</button>
+        <button
+          className="btn btn-xs mb-1 bg-tahiti-darkGreen "
+          onClick={handleExport}
+        >
+          Export
+        </button>
         <div className="flex gap-2 ">
           <select
             type="text"
@@ -275,7 +278,7 @@ const AllInvoice = () => {
               <th>Invoice ID</th>
               <th className="text-center">Patient</th>
               <th className="text-center">Payment Date</th>
-              <th className="text-center">Sub Total</th>
+              <th className="text-center">Due Amount</th>
               <th className="text-center">Grand Total</th>
               <th className="text-center">Status</th>
               <th className="text-center">Details</th>
