@@ -3,6 +3,7 @@ import Spinner from "../../../Shared/Spinner";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useReactToPrint } from "react-to-print";
+import Swal from "sweetalert2";
 
 const InvoicePage = () => {
   const { invoiceId } = useParams();
@@ -10,6 +11,7 @@ const InvoicePage = () => {
   const [refetch, setRefetch] = useState(true);
   const [status, setStatus] = useState(null);
   const [invoice, setInvoice] = useState({});
+  const [numberInput, setNumberInput] = useState(0);
 
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -18,8 +20,7 @@ const InvoicePage = () => {
       .toLocaleDateString("en-US", options)
       .replace(/ /g, "/");
     return formattedDate.replace(",", "");
-  }
-
+  };
 
   const componentRef = useRef();
 
@@ -28,25 +29,78 @@ const InvoicePage = () => {
   });
 
   const handleStatusUpdate = () => {
-    const updateStatus = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `http://localhost:5000/api/v1/invoice/status/${invoiceId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+    Swal.fire({
+      title: "Submit Payment",
+      html: `
+        <input type="number" id="numberInput" class="input input-bordered border-tahiti-dark" placeholder=${
+          invoice?.dueAmount + "৳"
+        }>
+        <p class="text-xs text-center text-tahiti-red mt-4" >Please make sure you don't enter a value greater than the due amount!</p>`,
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      didOpen: () => {
+        const input = document.getElementById("numberInput");
+        input.addEventListener("keydown", handleKeyDown);
+        input.focus();
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const input = document.getElementById("numberInput");
+        const numberInput = Number(input.value);
+
+        Swal.fire({
+          title: "Loading",
+          html: "Processing your request...",
+          allowOutsideClick: false,
+          didOpen: async () => {
+            Swal.showLoading();
+
+            const response = await fetch(
+              `http://localhost:5000/api/v1/invoice/status/${invoiceId}`,
+              {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+                },
+                body: JSON.stringify({
+                  paidAmount: numberInput,
+                }),
+              }
+            );
+            const data = await response.json();
+            if (data.status === "success") {
+              Swal.close();
+              Swal.fire({
+                title: "Success",
+                text: data.message,
+                icon: "success",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  setRefetch(!refetch);
+                }
+              });
+            } else {
+              Swal.close();
+              Swal.fire({
+                title: "Error",
+                text: data.error,
+                icon: "error",
+              });
+            }
           },
-        }
-      );
-      const data = await response.json();
-      if (data?.status === "success") {
-        toast.success(data?.message);
-        setRefetch(!refetch);
+        });
       }
-      setLoading(false);
+    });
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        Swal.clickConfirm();
+      }
     };
-    updateStatus();
   };
 
   useEffect(() => {
@@ -181,7 +235,7 @@ const InvoicePage = () => {
           <div className="mt-auto space-x-4">
             {!status && (
               <button
-                // onClick={handleStatusUpdate}
+                onClick={handleStatusUpdate}
                 className="btn btn-xs btn-success print:hidden "
               >
                 Submit Payment
