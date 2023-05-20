@@ -3,12 +3,14 @@ import { FaFileUpload } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import formatDate from "../../../../utils/formatDate";
+import { useCallback } from "react";
 
 const initialState = {
   test: null,
   loading: false,
   image: null,
   fileUrl: "",
+  results: [],
 };
 
 const reducer = (state, action) => {
@@ -33,6 +35,24 @@ const reducer = (state, action) => {
         ...state,
         fileUrl: action.payload,
       };
+    case "ADD_RESULT":
+      const existingResultIndex = state.results.findIndex(
+        (result) => result.testId === action.payload.testId
+      );
+      if (existingResultIndex !== -1) {
+        const updatedResults = [...state.results];
+        updatedResults[existingResultIndex] = action.payload;
+        return {
+          ...state,
+          results: updatedResults,
+        };
+      } else {
+        // If no duplicate found, add the new result
+        return {
+          ...state,
+          results: [...state.results, action.payload],
+        };
+      }
     default:
       return state;
   }
@@ -55,6 +75,48 @@ const UpdateTest = () => {
     });
   };
 
+  const handleKeyDown = useCallback(
+    (event, testId) => {
+      if (event.key === "Tab" || event.key === "Enter") {
+        const inputValue = event.target.value;
+        const newResult = { testId, value: inputValue };
+        dispatch({ type: "ADD_RESULT", payload: newResult });
+      }
+    },
+    [dispatch]
+  );
+
+  const handleSubmit = () => {
+    const data = {
+      type: state?.test?.category?.type,
+      results: state.results,
+    };
+
+    console.log(data);
+
+    fetch(`http://localhost:5000/api/v1/test/${testId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: result.message,
+          }).then(() => {
+            navigate("/tests");
+          });
+        } else {
+          toast.error(result.error);
+        }
+      });
+  };
+
   useEffect(() => {
     const fetchInvoiceData = async () => {
       dispatch({ type: "SET_LOADING", payload: true });
@@ -68,7 +130,6 @@ const UpdateTest = () => {
         }
       );
       const data = await response.json();
-      console.log(data?.data);
       dispatch({ type: "SET_LOADING", payload: false });
       dispatch({ type: "SET_TEST", payload: data?.data });
     };
@@ -103,6 +164,14 @@ const UpdateTest = () => {
             <p>Recieving Date: </p>
             <p className="capitalize">{formatDate(state?.test?.createdAt)}</p>
           </div>
+          <div className="flex justify-between">
+            <p>Age: </p>
+            <p>{state?.test?.patient?.age}years</p>
+          </div>
+          <div className="flex justify-between">
+            <p>Sex: </p>
+            <p>{state?.test?.patient?.gender}</p>
+          </div>
         </div>
       </div>
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
@@ -112,23 +181,36 @@ const UpdateTest = () => {
         <table className="table w-full">
           {/* head */}
           <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
+            <tr className="text-center">
+              <th className="text-sm py-2">Test</th>
+              <th className="text-sm py-2">Result</th>
+              <th className="text-sm py-2">Normal Value</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
-            </tr>
+            {state?.test?.results?.map((test) => (
+              <tr key={test?._id}>
+                <td className="py-2">{test?.test?.name}</td>
+                <td className="text-center py-2">
+                  <input
+                    type="text"
+                    placeholder={test?.result || "Enter result"}
+                    className="input input-bordered input-sm border-tahiti-dark px-2 focus:outline-none"
+                    onKeyDown={(e) => handleKeyDown(e, test?._id)}
+                  />
+                </td>
+                <td className="text-center py-2">{test?.test?.normalValue}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
+      <button
+        onClick={handleSubmit}
+        className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
+      >
+        Confirm
+      </button>
     </div>
   );
 };
