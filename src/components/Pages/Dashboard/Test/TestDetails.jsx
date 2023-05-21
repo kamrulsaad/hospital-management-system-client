@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../../Shared/Spinner";
+import formatDate from "../../../../utils/formatDate";
 
 const TestDetails = () => {
   const [test, setTest] = useState({});
@@ -22,45 +23,85 @@ const TestDetails = () => {
       });
   }, []);
 
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-
-    // Get the month name abbreviation
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const monthName = monthNames[date.getMonth()];
-
-    // Get the day, year, and time in 12-hour format
-    const day = date.getDate();
-    const year = date.getFullYear();
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const amPm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12 || 12;
-
-    // Combine the formatted values into a string
-    const formattedDate = `${monthName}/${day}/${year}- ${hours}:${minutes}${amPm}`;
-
-    return formattedDate;
-  }
-
   if (loading) return <Spinner></Spinner>;
 
   return (
-    <div className="p-10 bg-tahiti-white">
-      <div className="md:grid grid-cols-2 mx-20 items-center">
+    <div className="mx-20 my-10">
+      <div className="grid grid-cols-3 gap-x-4 italic border p-2 mb-6">
+        <div>
+          <div className="flex justify-between">
+            <p>ID no: </p>
+            <p>{test?.serialId}</p>
+          </div>
+          <div className="flex justify-between">
+            <p>Patient's Name: </p>
+            <p>{test?.patient?.name}</p>
+          </div>
+          <div className="flex justify-between">
+            <p>Referred By: </p>
+            <p>{test?.invoiceId?.referredBy || "Self"}</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-between">
+            <p>Nature of Exam: </p>
+            <p className="capitalize">{test?.category?.nature}</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-between">
+            <p>Recieving Date: </p>
+            <p className="capitalize">{formatDate(test?.createdAt)}</p>
+          </div>
+          <div className="flex justify-between">
+            <p>Age: </p>
+            <p>{test?.patient?.age}years</p>
+          </div>
+          <div className="flex justify-between">
+            <p>Sex: </p>
+            <p>{test?.patient?.gender}</p>
+          </div>
+        </div>
+      </div>
+      <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
+        {test?.category?.name}
+      </h1>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          {/* head */}
+          <thead>
+            <tr className="text-center">
+              <th className="text-sm py-2">Test</th>
+              <th className="text-sm py-2">Result</th>
+              <th className="text-sm py-2">Normal Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {test?.results?.map((test) => (
+              <tr key={test?._id}>
+                <td className="py-2">{test?.test?.name}</td>
+                <td className="text-center py-2">
+                  {test?.result || "Not Available Yet"}
+                </td>
+                <td className="text-center py-2">{test?.test?.normalValue}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <NavLink to={`/test/${testId}`}>
+        <button className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4">
+          Update
+        </button>
+      </NavLink>
+    </div>
+  );
+};
+
+export default TestDetails;
+
+/**
+ * <div className="md:grid grid-cols-2 mx-20 items-center">
         <div>
           <h1 className="text-3xl mb-4">
             Test: <b>{test?.category?.name}</b>
@@ -109,8 +150,4 @@ const TestDetails = () => {
           )}
         </div>
       </div>
-    </div>
-  );
-};
-
-export default TestDetails;
+ */

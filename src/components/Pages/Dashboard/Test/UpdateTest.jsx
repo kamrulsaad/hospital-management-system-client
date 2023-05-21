@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import formatDate from "../../../../utils/formatDate";
 import { useCallback } from "react";
+import { toast } from "react-toastify";
 
 const initialState = {
   test: null,
@@ -61,9 +62,6 @@ const reducer = (state, action) => {
 const UpdateTest = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [image, setImage] = useState(null);
-  const [fileUrl, setFileUrl] = useState("");
-
   const navigate = useNavigate();
   const { testId } = useParams();
 
@@ -92,7 +90,7 @@ const UpdateTest = () => {
       results: state.results,
     };
 
-    console.log(data);
+    Swal.showLoading();
 
     fetch(`http://localhost:5000/api/v1/test/${testId}`, {
       method: "PATCH",
@@ -104,12 +102,13 @@ const UpdateTest = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        Swal.close();
         if (result.status === "success") {
           Swal.fire({
             icon: "success",
             title: result.message,
           }).then(() => {
-            navigate("/tests");
+            navigate(`/testDetails/${testId}`);
           });
         } else {
           toast.error(result.error);
@@ -177,40 +176,99 @@ const UpdateTest = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {state.test?.category?.name}
       </h1>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          {/* head */}
-          <thead>
-            <tr className="text-center">
-              <th className="text-sm py-2">Test</th>
-              <th className="text-sm py-2">Result</th>
-              <th className="text-sm py-2">Normal Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {state?.test?.results?.map((test) => (
-              <tr key={test?._id}>
-                <td className="py-2">{test?.test?.name}</td>
-                <td className="text-center py-2">
-                  <input
-                    type="text"
-                    placeholder={test?.result || "Enter result"}
-                    className="input input-bordered input-sm border-tahiti-dark px-2 focus:outline-none"
-                    onKeyDown={(e) => handleKeyDown(e, test?._id)}
-                  />
-                </td>
-                <td className="text-center py-2">{test?.test?.normalValue}</td>
+      {state?.test?.category?.type === "main" && (
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            {/* head */}
+            <thead>
+              <tr className="text-center">
+                <th className="text-sm py-2">Test</th>
+                <th className="text-sm py-2">Result</th>
+                <th className="text-sm py-2">Normal Value</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <button
-        onClick={handleSubmit}
-        className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
-      >
-        Confirm
-      </button>
+            </thead>
+            <tbody>
+              {state?.test?.results?.map((test) => (
+                <tr key={test?._id}>
+                  <td className="py-2">{test?.test?.name}</td>
+                  <td className="text-center py-2">
+                    <input
+                      type="text"
+                      placeholder={test?.result || "Enter result"}
+                      className="input input-bordered input-sm border-tahiti-dark px-2 focus:outline-none"
+                      onKeyDown={(e) => handleKeyDown(e, test?._id)}
+                    />
+                  </td>
+                  <td className="text-center py-2">
+                    {test?.test?.normalValue}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex justify-center items-center">
+            <button
+              onClick={handleSubmit}
+              className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      )}
+      {state?.test?.category?.type === "file" && (
+        <>
+          {state.fileUrl ? (
+            <div>
+              <div>
+                <p className="text-center mb-2 text-lg">
+                  Preview of <b>{state.image?.name} </b>!{" "}
+                  <span
+                    onClick={() => {
+                      URL.revokeObjectURL(state.fileUrl);
+                      setFileUrl(null);
+                      setImage(null);
+                    }}
+                    className="underline cursor-pointer"
+                  >
+                    remove?
+                  </span>
+                </p>
+                <iframe
+                  className="mx-auto rounded-lg"
+                  src={state.fileUrl}
+                  width="80%"
+                  height={window.innerHeight - 200}
+                />
+              </div>
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={handleSubmit}
+                  className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
+              <p for="password" className="font-medium mr-4">
+                Choose File:{" "}
+              </p>
+              <label htmlFor="file-upload">
+                <FaFileUpload className="text-2xl cursor-pointer" />
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                onChange={selectFile}
+                className="hidden"
+                accept="application/pdf"
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
@@ -265,62 +323,6 @@ export default UpdateTest;
 // };
 
 /**
-   * <fieldset class="grid grid-cols-2 gap-6 p-6 rounded-md w-3/4 ">
-          <div className="col-span-full sm:col-span-3 flex  items-center ">
-            <p for="password" className=" w-1/3  font-medium">
-              Remarks:{" "}
-            </p>
-            <textarea
-              id="description"
-              type="text"
-              className="w-3/4 rounded-md border p-1 "
-            />
-          </div>
-          <div className="col-span-full sm:col-span-3 flex items-center">
-            <p for="password" className=" w-1/3  font-medium">
-              Choose File:{" "}
-            </p>
-            <label htmlFor="file-upload">
-              <FaFileUpload className="text-2xl cursor-pointer" />
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              onChange={selectFile}
-              className="hidden"
-              accept="application/pdf"
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn btn-ghost btn-sm w-1/3 bg-tahiti-primary col-span-2"
-          >
-            Update
-          </button>
-        </fieldset>
-
-        {state.fileUrl && (
-        <div>
-          <p className="text-center mb-2 text-lg">
-            Preview of <b>{state.image?.name} </b>!{" "}
-            <span
-              onClick={() => {
-                URL.revokeObjectURL(state.fileUrl);
-                setFileUrl(null);
-                setImage(null);
-              }}
-              className="underline cursor-pointer"
-            >
-              remove?
-            </span>
-          </p>
-          <iframe
-            className="mx-auto rounded-lg"
-            src={state.fileUrl}
-            width="80%"
-            height={window.innerHeight - 200}
-          />
-        </div>
-      )}
+   * 
 
    */
