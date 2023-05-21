@@ -661,6 +661,7 @@ const CreateInvoice = () => {
             }}
             disabled={!state.total}
             type="text"
+            placeholder={state.paidAmount}
             className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
           />
         </div>

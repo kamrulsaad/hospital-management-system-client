@@ -15,6 +15,7 @@ const TestDetails = () => {
       .then((response) => response.json())
       .then((result) => {
         if (result.status === "success") {
+          console.log(result.data);
           setTest(result.data);
         } else {
           toast.error(result.error);
@@ -66,29 +67,43 @@ const TestDetails = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {test?.category?.name}
       </h1>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          {/* head */}
-          <thead>
-            <tr className="text-center">
-              <th className="text-sm py-2">Test</th>
-              <th className="text-sm py-2">Result</th>
-              <th className="text-sm py-2">Normal Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {test?.results?.map((test) => (
-              <tr key={test?._id}>
-                <td className="py-2">{test?.test?.name}</td>
-                <td className="text-center py-2">
-                  {test?.result || "Not Available Yet"}
-                </td>
-                <td className="text-center py-2">{test?.test?.normalValue}</td>
+      {(test?.category?.type === "main" && !test.file_url) && (
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            {/* head */}
+            <thead>
+              <tr className="text-center">
+                <th className="text-sm py-2">Test</th>
+                <th className="text-sm py-2">Result</th>
+                <th className="text-sm py-2">Normal Value</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {test?.results?.map((test) => (
+                <tr key={test?._id}>
+                  <td className="py-2">{test?.test?.name}</td>
+                  <td className="text-center py-2">
+                    {test?.result || "Not Available Yet"}
+                  </td>
+                  <td className="text-center py-2">
+                    {test?.test?.normalValue}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {test?.file_url ? (
+        <iframe
+          className="mx-auto rounded-lg"
+          src={test.file_url}
+          width="100%"
+          height={window.innerHeight}
+        />
+      ) : (
+        <p className="text-center">File not available yet. Please check back later.</p>
+      )}
       <NavLink to={`/test/${testId}`}>
         <button className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4">
           Update

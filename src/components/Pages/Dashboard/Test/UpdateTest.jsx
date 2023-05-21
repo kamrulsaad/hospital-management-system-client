@@ -12,6 +12,7 @@ const initialState = {
   image: null,
   fileUrl: "",
   results: [],
+  fileUpToggle: false,
 };
 
 const reducer = (state, action) => {
@@ -48,16 +49,27 @@ const reducer = (state, action) => {
           results: updatedResults,
         };
       } else {
-        // If no duplicate found, add the new result
         return {
           ...state,
           results: [...state.results, action.payload],
         };
       }
+    case "TOGGLE_FILE_UPLOAD": {
+      return {
+        ...state,
+        fileUpToggle: action.payload,
+      };
+    }
     default:
       return state;
   }
 };
+
+// const UploadFile = ({ state, dispatch }) => {
+//   return (
+
+//   )
+// }
 
 const UpdateTest = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -114,6 +126,50 @@ const UpdateTest = () => {
           toast.error(result.error);
         }
       });
+  };
+
+  const handleFileUpload = () => {
+    Swal.fire({
+      title: "Uploading File",
+      html: "Please wait while we upload the file...",
+      allowOutsideClick: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    const formData = new FormData();
+    formData.append("pdf", state.image, state.image?.name);
+    if (state?.description) formData.append("description", state?.description);
+
+    fetch(`http://localhost:5000/api/v1/test/upload/${testId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: result.message,
+          }).then(() => {
+            navigate("/tests");
+          });
+        } else {
+          toast.error(result.error);
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while uploading the file!",
+          footer: error.message,
+        });
+      });
+    window.URL.revokeObjectURL(fileUrl);
   };
 
   useEffect(() => {
@@ -176,7 +232,7 @@ const UpdateTest = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {state.test?.category?.name}
       </h1>
-      {state?.test?.category?.type === "main" && (
+      {state?.test?.category?.type === "main" && !state.fileUpToggle && (
         <div className="overflow-x-auto">
           <table className="table w-full">
             {/* head */}
@@ -206,17 +262,28 @@ const UpdateTest = () => {
               ))}
             </tbody>
           </table>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center gap-x-4 mt-4">
             <button
               onClick={handleSubmit}
-              className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
+              className="btn btn-sm bg-tahiti-primary border-0 "
             >
               Confirm
+            </button>
+            <button
+              onClick={() => {
+                dispatch({
+                  type: "TOGGLE_FILE_UPLOAD",
+                  payload: true,
+                });
+              }}
+              className="btn btn-sm bg-tahiti-cyan border-0"
+            >
+              Upload File instead
             </button>
           </div>
         </div>
       )}
-      {state?.test?.category?.type === "file" && (
+      {(state?.test?.category?.type === "file" || state.fileUpToggle) && (
         <>
           {state.fileUrl ? (
             <div>
@@ -229,7 +296,7 @@ const UpdateTest = () => {
                       setFileUrl(null);
                       setImage(null);
                     }}
-                    className="underline cursor-pointer"
+                    className="hover:underline cursor-pointer"
                   >
                     remove?
                   </span>
@@ -237,21 +304,32 @@ const UpdateTest = () => {
                 <iframe
                   className="mx-auto rounded-lg"
                   src={state.fileUrl}
-                  width="80%"
-                  height={window.innerHeight - 200}
+                  width="100%"
+                  height={window.innerHeight}
                 />
               </div>
-              <div className="flex justify-center items-center">
-                <button
-                  onClick={handleSubmit}
-                  className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
-                >
-                  Confirm
-                </button>
-              </div>
+              <button
+                onClick={handleFileUpload}
+                className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
+              >
+                Confirm
+              </button>
             </div>
           ) : (
-            <div className="flex items-center justify-center">
+            <div className="flex gap-x-4 items-center justify-center">
+              {state?.test?.category?.type === "main" && (
+                <button
+                  onClick={() => {
+                    dispatch({
+                      type: "TOGGLE_FILE_UPLOAD",
+                      payload: false,
+                    });
+                  }}
+                  className="btn btn-sm bg-tahiti-cyan border-0"
+                >
+                  Revert Back
+                </button>
+              )}
               <p for="password" className="font-medium mr-4">
                 Choose File:{" "}
               </p>
@@ -274,55 +352,3 @@ const UpdateTest = () => {
 };
 
 export default UpdateTest;
-
-// const handleFileUpload = (event) => {
-//   event.preventDefault();
-
-//   Swal.fire({
-//     title: "Uploading File",
-//     html: "Please wait while we upload the file...",
-//     allowOutsideClick: false,
-//     onBeforeOpen: () => {
-//       Swal.showLoading();
-//     },
-//   });
-//   const formData = new FormData();
-//   formData.append("pdf", state.image, state.image?.name);
-//   formData.append("description", event.target.description.value);
-
-//   //  send to backend
-//   fetch(`http://localhost:5000/api/v1/test/upload/${testId}`, {
-//     method: "POST",
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-//     },
-//     body: formData,
-//   })
-//     .then((res) => res.json())
-//     .then((result) => {
-//       if (result.status === "success") {
-//         Swal.fire({
-//           icon: "success",
-//           title: result.message,
-//         }).then(() => {
-//           navigate("/tests");
-//         });
-//       } else {
-//         toast.error(result.error);
-//       }
-//     })
-//     .catch((error) => {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Oops...",
-//         text: "Something went wrong while uploading the file!",
-//         footer: error.message,
-//       });
-//     });
-//   window.URL.revokeObjectURL(fileUrl);
-// };
-
-/**
-   * 
-
-   */
