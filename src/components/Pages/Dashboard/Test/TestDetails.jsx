@@ -67,8 +67,8 @@ const TestDetails = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {test?.category?.name}
       </h1>
-      {(test?.category?.type === "main" && !test.file_url) && (
-        <div className="overflow-x-auto">
+      {test?.category?.type === "main" && !test.file_url ?
+        (<div className="overflow-x-auto">
           <table className="table w-full">
             {/* head */}
             <thead>
@@ -93,16 +93,18 @@ const TestDetails = () => {
             </tbody>
           </table>
         </div>
-      )}
-      {test?.file_url ? (
-        <iframe
-          className="mx-auto rounded-lg"
-          src={test.file_url}
-          width="100%"
-          height={window.innerHeight}
-        />
-      ) : (
-        <p className="text-center">File not available yet. Please check back later.</p>
+      ) : 
+      (<iframe
+        className="mx-auto rounded-lg"
+        src={test.file_url}
+        width="80%"
+        height={window.innerHeight}
+      />)
+      }
+      {test?.category?.type === "main" && !test.file_url && (
+        <p className="text-center">
+          File not available yet. Please check back later.
+        </p>
       )}
       <NavLink to={`/test/${testId}`}>
         <button className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4">

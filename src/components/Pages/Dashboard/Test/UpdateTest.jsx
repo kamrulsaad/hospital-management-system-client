@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import formatDate from "../../../../utils/formatDate";
 import { useCallback } from "react";
-import { toast } from "react-toastify";
+import RichTextUpdate from "./RichTextUpdate";
 
 const initialState = {
   test: null,
@@ -65,12 +65,6 @@ const reducer = (state, action) => {
   }
 };
 
-// const UploadFile = ({ state, dispatch }) => {
-//   return (
-
-//   )
-// }
-
 const UpdateTest = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -123,7 +117,12 @@ const UpdateTest = () => {
             navigate(`/testDetails/${testId}`);
           });
         } else {
-          toast.error(result.error);
+          Swal.close();
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: result.error,
+          });
         }
       });
   };
@@ -158,7 +157,12 @@ const UpdateTest = () => {
             navigate("/tests");
           });
         } else {
-          toast.error(result.error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong while uploading the file!",
+            footer: result.error,
+          });
         }
       })
       .catch((error) => {
@@ -283,6 +287,12 @@ const UpdateTest = () => {
           </div>
         </div>
       )}
+      {state?.test?.category?.type === "description" && (
+        <>
+          <RichTextUpdate id={testId}></RichTextUpdate>
+          
+        </>
+      )}
       {(state?.test?.category?.type === "file" || state.fileUpToggle) && (
         <>
           {state.fileUrl ? (
@@ -293,8 +303,8 @@ const UpdateTest = () => {
                   <span
                     onClick={() => {
                       URL.revokeObjectURL(state.fileUrl);
-                      setFileUrl(null);
-                      setImage(null);
+                      dispatch({ type: "SET_FILE_URL", payload: "" });
+                      dispatch({ type: "SET_IMAGE", payload: null });
                     }}
                     className="hover:underline cursor-pointer"
                   >
