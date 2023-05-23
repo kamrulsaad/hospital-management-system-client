@@ -127,7 +127,7 @@ const UpdateTest = () => {
       });
   };
 
-  const handleFileUpload = () => {
+    const handleFileUpload = () => {
     Swal.fire({
       title: "Uploading File",
       html: "Please wait while we upload the file...",
@@ -138,7 +138,6 @@ const UpdateTest = () => {
     });
     const formData = new FormData();
     formData.append("pdf", state.image, state.image?.name);
-    if (state?.description) formData.append("description", state?.description);
 
     fetch(`http://localhost:5000/api/v1/test/upload/${testId}`, {
       method: "POST",
@@ -154,7 +153,7 @@ const UpdateTest = () => {
             icon: "success",
             title: result.message,
           }).then(() => {
-            navigate("/tests");
+            navigate(`/testDetails/${testId}`);
           });
         } else {
           Swal.fire({
@@ -288,10 +287,7 @@ const UpdateTest = () => {
         </div>
       )}
       {state?.test?.category?.type === "description" && (
-        <>
-          <RichTextUpdate id={testId}></RichTextUpdate>
-          
-        </>
+        <RichTextUpdate id={testId}></RichTextUpdate>
       )}
       {(state?.test?.category?.type === "file" || state.fileUpToggle) && (
         <>

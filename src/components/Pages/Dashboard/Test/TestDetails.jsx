@@ -3,11 +3,21 @@ import { NavLink, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../../Shared/Spinner";
 import formatDate from "../../../../utils/formatDate";
+import MainTestDetails from "./MainTestDetails";
+import DescDetails from "./DescDetails";
+import FileTestDetails from "./FileTestDetails";
+import { saveAs } from "file-saver";
+import { useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const TestDetails = () => {
   const [test, setTest] = useState({});
   const [loading, setLoading] = useState(null);
+  const [downloading, setDownloading] = useState(false);
+
   const { testId } = useParams();
+  const downloadRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
@@ -26,145 +36,123 @@ const TestDetails = () => {
 
   if (loading) return <Spinner></Spinner>;
 
+  const handleDownload = async () => {
+    setDownloading(true);
+
+    if (test?.file_url) {
+      const patientName = test?.patient?.name;
+      const testName = test?.category?.name;
+
+      const response = await fetch(test?.file_url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/pdf",
+        },
+      });
+
+      const fileBlob = await response.blob();
+      saveAs(fileBlob, `${patientName}-${testName}-report.pdf`);
+    } else {
+      const element = downloadRef.current;
+
+      // Capture the div as an image using html2canvas
+      html2canvas(element, { scale: 1 })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const doc = new jsPDF();
+          const width = doc.internal.pageSize.getWidth();
+          const aspectRatio = canvas.width / canvas.height;
+          const height = width / aspectRatio;
+
+          // Add the captured image to the PDF
+          doc.addImage(imgData, "PNG", 0, 0, width, height);
+
+          // Save the PDF
+          doc.save(`${test?.patient?.name}-report.pdf`);
+          setDownloading(false);
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+          setDownloading(false);
+        });
+    }
+
+    setDownloading(false);
+  };
+
   return (
     <div className="mx-20 my-10">
-      <div className="grid grid-cols-3 gap-x-4 italic border p-2 mb-6">
-        <div>
-          <div className="flex justify-between">
-            <p>ID no: </p>
-            <p>{test?.serialId}</p>
+      <div className="p-4" ref={downloadRef}>
+        <div className="grid grid-cols-3 gap-x-4 italic border p-2 mb-6 pb-4">
+          <div>
+            <div className="flex justify-between">
+              <p>ID no: </p>
+              <p>{test?.serialId}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Patient's Name: </p>
+              <p>{test?.patient?.name}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Referred By: </p>
+              <p>{test?.invoiceId?.referredBy || "Self"}</p>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <p>Patient's Name: </p>
-            <p>{test?.patient?.name}</p>
+          <div>
+            <div className="flex justify-between">
+              <p>Nature of Exam: </p>
+              <p className="capitalize">{test?.category?.nature}</p>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <p>Referred By: </p>
-            <p>{test?.invoiceId?.referredBy || "Self"}</p>
+          <div>
+            <div className="flex justify-between">
+              <p>Recieving Date: </p>
+              <p className="capitalize">{formatDate(test?.createdAt)}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Age: </p>
+              <p>{test?.patient?.age}years</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Sex: </p>
+              <p>{test?.patient?.gender}</p>
+            </div>
           </div>
         </div>
-        <div>
-          <div className="flex justify-between">
-            <p>Nature of Exam: </p>
-            <p className="capitalize">{test?.category?.nature}</p>
-          </div>
-        </div>
-        <div>
-          <div className="flex justify-between">
-            <p>Recieving Date: </p>
-            <p className="capitalize">{formatDate(test?.createdAt)}</p>
-          </div>
-          <div className="flex justify-between">
-            <p>Age: </p>
-            <p>{test?.patient?.age}years</p>
-          </div>
-          <div className="flex justify-between">
-            <p>Sex: </p>
-            <p>{test?.patient?.gender}</p>
-          </div>
-        </div>
+        <h1 className="text-3xl pb-2 text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
+          {test?.category?.name}
+        </h1>
+        {test?.category?.type === "main" && (
+          <MainTestDetails test={test}></MainTestDetails>
+        )}
+        {test?.category?.type === "description" && (
+          <DescDetails test={test}></DescDetails>
+        )}
       </div>
-      <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
-        {test?.category?.name}
-      </h1>
-      {test?.category?.type === "main" && !test.file_url ?
-        (<div className="overflow-x-auto">
-          <table className="table w-full">
-            {/* head */}
-            <thead>
-              <tr className="text-center">
-                <th className="text-sm py-2">Test</th>
-                <th className="text-sm py-2">Result</th>
-                <th className="text-sm py-2">Normal Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {test?.results?.map((test) => (
-                <tr key={test?._id}>
-                  <td className="py-2">{test?.test?.name}</td>
-                  <td className="text-center py-2">
-                    {test?.result || "Not Available Yet"}
-                  </td>
-                  <td className="text-center py-2">
-                    {test?.test?.normalValue}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : 
-      (<iframe
-        className="mx-auto rounded-lg"
-        src={test.file_url}
-        width="80%"
-        height={window.innerHeight}
-      />)
-      }
-      {test?.category?.type === "main" && !test.file_url && (
-        <p className="text-center">
-          File not available yet. Please check back later.
-        </p>
+
+      {test?.category?.type === "file" && (
+        <FileTestDetails test={test}></FileTestDetails>
       )}
-      <NavLink to={`/test/${testId}`}>
-        <button className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4">
-          Update
+
+      <div className="flex gap-4 justify-center">
+        <NavLink to={`/test/${testId}`}>
+          <button className="btn btn-sm bg-tahiti-primary border-0 mt-4">
+            Update
+          </button>
+        </NavLink>
+        <button
+          onClick={handleDownload}
+          className="btn btn-sm bg-tahiti-mainBlue border-0 mt-4"
+        >
+          {downloading ? (
+            <img className="w-4 animate-spin" src="/assets/loading.png" />
+          ) : (
+            "Download Report"
+          )}
         </button>
-      </NavLink>
+      </div>
     </div>
   );
 };
 
 export default TestDetails;
-
-/**
- * <div className="md:grid grid-cols-2 mx-20 items-center">
-        <div>
-          <h1 className="text-3xl mb-4">
-            Test: <b>{test?.category?.name}</b>
-          </h1>
-          <p>
-            SerialId: #<b>{test?.serialId}</b>
-          </p>
-          <p>
-            Status: <b>{test?.available ? "Available" : "Not Available"}</b>
-          </p>
-          <p>
-            Created: <b>{formatDate(test?.createdAt)}</b>
-          </p>
-          <p>
-            Last Updated: <b>{formatDate(test?.updatedAt).replace(",", "")}</b>
-          </p>
-          <p>
-            Patient: <b>{test?.patient?.name}</b>
-          </p>
-          <p>
-            PatientId: <b>{test?.patient?.serialId}</b>
-          </p>
-          <p>
-            Assigned By:{" "}
-            <b>
-              {test?.createdBy?.firstName + " " + test?.createdBy?.lastName}
-            </b>
-          </p>
-          <p>
-            Phone: <b>{test?.createdBy?.phone}</b>
-          </p>
-          {test?.description && (
-            <p className="w-3/4">
-              Remarks: {test?.description}
-            </p>
-          )}
-        </div>
-        <div>
-          {test?.file_url && (
-            <iframe
-              className="mx-auto rounded-lg"
-              src={test?.file_url}
-              width="100%"
-              height="650px"
-            />
-          )}
-        </div>
-      </div>
- */
