@@ -107,6 +107,16 @@ const DashBoardLayouts = () => {
                   <li>
                     <NavLink
                       activeclassname="active"
+                      to="/pc"
+                      className="flex items-center p-2 space-x-3 rounded-md"
+                    >
+                      <TbFileInvoice className="text-tahiti-white text-xl"></TbFileInvoice>
+                      <span>PC</span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      activeclassname="active"
                       to="/allinvoice"
                       className="flex items-center p-2 space-x-3 rounded-md"
                     >

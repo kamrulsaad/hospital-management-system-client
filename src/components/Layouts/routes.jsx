@@ -48,6 +48,10 @@ import SubCatDetails from "../Pages/Dashboard/Categories/Subcategories/SubCatDet
 import CreateTestName from "../Pages/Dashboard/Categories/Subcategories/TestName/CreateTestName";
 import UpdateSubCat from "../Pages/Dashboard/Categories/Subcategories/UpdateSubCat";
 import UpdateTestName from "../Pages/Dashboard/Categories/Subcategories/TestName/UpdateTestName";
+import AllPc from "../Pages/Dashboard/PC/AllPc";
+import PcDetails from "../Pages/Dashboard/PC/PcDetails";
+import RegisterPc from "../Pages/Dashboard/PC/RegisterPc";
+import UpdatePc from "../Pages/Dashboard/PC/UpdatePc";
 
 const router = createBrowserRouter([
   {
@@ -253,6 +257,24 @@ const router = createBrowserRouter([
         path: "/bed/update/:id",
         element: <UpdateBed></UpdateBed>,
       },
+
+      // pc related api's
+      {
+        path: "/pc",
+        element: <AllPc></AllPc>,
+      },
+      {
+        path: "/pc/new",
+        element: <RegisterPc></RegisterPc>,
+      },
+      {
+        path: "/pc/update/:id",
+        element: <UpdatePc></UpdatePc>,
+      },
+      {
+        path: "/pc/details/:id",
+        element: <PcDetails></PcDetails>,
+      },
       {
         path: "/*",
         element: <ErrorPage></ErrorPage>,
@@ -293,45 +315,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/qr/",
-      }
+      },
     ],
   },
 ]);
 export default router;
-
-// import { lazy } from 'react';
-
-// const Login = lazy(() => import('../Pages/Login/Login'));
-// const Register = lazy(() => import('../Pages/Register/Register'));
-// const ErrorPage = lazy(() => import('./ErrorPage'));
-// const Main = lazy(() => import('./DashBoardLayouts/Main'));
-// const DashBoard = lazy(() => import('../Pages/Dashboard/DashBoradHome/DashBoard'));
-// const DashBoardLayouts = lazy(() => import('../Layouts/DashBoardLayouts/DashBoardLayouts'));
-// const AllPatients = lazy(() => import('../Pages/Dashboard/Patients/AllPatients'));
-// const Doctors = lazy(() => import('../Pages/Dashboard/Doctors/Doctors'));
-// const PrivateRoute = lazy(() => import('../PrivateRoutes/PrivateRoutes'));
-// const AddAPatient = lazy(() => import('../Pages/Dashboard/Patients/AddAPatient'));
-// const UserProfile = lazy(() => import('../Pages/Dashboard/Users/UserProfie/UserProfile'));
-// const AllUser = lazy(() => import('../Pages/Dashboard/Users/AllUser/AllUser'));
-// const Appointment = lazy(() => import('../Pages/Dashboard/Appointment/Appointment'));
-// const MyAppointments = lazy(() => import('../Pages/Dashboard/Doctors/MyAppointments'));
-// const UpdatePassword = lazy(() => import('../Pages/Dashboard/Users/UserProfie/UpdatePassword'));
-// const UpdatePresciption = lazy(() => import('../Pages/Dashboard/Presciption/UpdatePresciption'));
-// const AllApointments = lazy(() => import('../Pages/Dashboard/Appointment/AllApointments'));
-// const CreateInvoice = lazy(() => import('../Pages/Dashboard/Invoice/CreateInvoice'));
-// const AllInvoice = lazy(() => import('../Pages/Dashboard/Invoice/AllInvoice'));
-// const NewPatientProfile = lazy(() => import('../Pages/Dashboard/PatientProfile/NewPatientProfile'));
-// const AllCategories = lazy(() => import('../Pages/Dashboard/Categories/AllCategories'));
-// const InvoicePage = lazy(() => import('../Pages/Dashboard/Invoice/InvoicePage'));
-// const CreateInvoiceCategory = lazy(() => import('../Pages/Dashboard/Categories/CreateInvoiceCatagory'));
-// const AllTest = lazy(() => import('../Pages/Dashboard/Test/AllTest'));
-// const UpdateTest = lazy(() => import('../Pages/Dashboard/Test/UpdateTest'));
-// const TestDetails = lazy(() => import('../Pages/Dashboard/Test/TestDetails'));
-// const AllExpense = lazy(() => import('../Pages/Dashboard/Expense/AllExpense'));
-// const CreateExpense = lazy(() => import('../Pages/Dashboard/Expense/CreateExpense'));
-// const ExpenseDetails = lazy(() => import('../Pages/Dashboard/Expense/ExpenseDetails'));
-// const UpdateExpense = lazy(() => import('../Pages/Dashboard/Expense/UpdateExpense'));
-// const AllExpenseCategories = lazy(() => import('../Pages/Dashboard/Expense/Categories/AllExpenseCategories'));
-// const CreateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/CreateExpCat'));
-// const ExpCatDetails = lazy(() => import('../Pages/Dashboard/Expense/Categories/ExpCatDetails'));
-// const UpdateExpCat = lazy(() => import('../Pages/Dashboard/Expense/Categories/UpdateExpCat'));
