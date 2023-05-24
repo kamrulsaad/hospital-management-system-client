@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import Spinner from "../../../Shared/Spinner";
 import formatDate from "../../../../utils/formatDate";
-// import TestNames from "./TestName/TestNames";
+import Invoices from "./Invoices";
 
 const PcDetails = () => {
   const [expense, setExpense] = useState({});
@@ -16,15 +16,12 @@ const PcDetails = () => {
 
   useEffect(() => {
     const fetchExpense = async () => {
-      const response = await fetch(
-        `http://localhost:5000/api/v1/pc/${id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/v1/pc/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+        },
+      });
       const data = await response.json();
       console.log(data?.data);
       setExpense(data?.data);
@@ -71,12 +68,17 @@ const PcDetails = () => {
         </div>
         <div className=" flex w-1/2 mb-2">
           <p className="text-xl font-medium w-2/5">Added By: </p>
-          <p className="text-xl font-bold">{expense?.addedBy?.firstName} {expense?.addedBy?.lastName || ""} ({expense?.addedBy?.role})</p>
+          <p className="text-xl font-bold">
+            {expense?.addedBy?.firstName} {expense?.addedBy?.lastName || ""} (
+            {expense?.addedBy?.role})
+          </p>
         </div>
 
         <div className=" flex w-1/2 mb-2">
           <p className="text-xl font-medium w-2/5">Registered:</p>
-          <p className="text-xl font-bold">{formatDate(expense?.createdAt) || "N/A"}</p>
+          <p className="text-xl font-bold">
+            {formatDate(expense?.createdAt) || "N/A"}
+          </p>
         </div>
       </div>
       <div className="mt-10">
@@ -86,11 +88,11 @@ const PcDetails = () => {
           </button>
         </Link>
       </div>
-      {/* <TestNames
+      <Invoices
         expense={expense}
         refetch={refetch}
         setRefetch={setRefetch}
-      ></TestNames> */}
+      ></Invoices>
     </div>
   );
 };

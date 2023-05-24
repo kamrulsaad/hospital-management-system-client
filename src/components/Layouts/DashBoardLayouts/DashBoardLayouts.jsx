@@ -13,6 +13,7 @@ import {
   FaUserMd,
 } from "react-icons/fa";
 import { TbFileInvoice } from "react-icons/tb";
+import { VscReferences } from "react-icons/vsc";
 import { BiMoneyWithdraw } from "react-icons/bi";
 
 const DashBoardLayouts = () => {
@@ -95,7 +96,7 @@ const DashBoardLayouts = () => {
                     activeclassname="active"
                     className="flex items-center p-2 space-x-3 rounded-md"
                   >
-                    <FaBed  className="text-xl text-tahiti-white"></FaBed>
+                    <FaBed className="text-xl text-tahiti-white"></FaBed>
                     <span>Beds</span>
                   </NavLink>
                 </li>
@@ -110,7 +111,7 @@ const DashBoardLayouts = () => {
                       to="/pc"
                       className="flex items-center p-2 space-x-3 rounded-md"
                     >
-                      <TbFileInvoice className="text-tahiti-white text-xl"></TbFileInvoice>
+                      <VscReferences className="text-tahiti-white text-xl"></VscReferences>
                       <span>PC</span>
                     </NavLink>
                   </li>
@@ -168,8 +169,8 @@ const DashBoardLayouts = () => {
             </ul>
           </div>
           <p className="text-xs">
-            Powered by <img className="w-4 inline" src="/favicon.ico" alt="" />{" "} UNIECH{" "}
-            
+            Powered by <img className="w-4 inline" src="/favicon.ico" alt="" />{" "}
+            UNIECH{" "}
           </p>
         </div>
         <div className="col-span-5">
