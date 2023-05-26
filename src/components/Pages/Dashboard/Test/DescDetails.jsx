@@ -1,7 +1,7 @@
 import React from "react";
 
 const DescDetails = ({ test }) => {
-  if (!test?.remarks || !test?.image_url)
+  if (!test?.remarks && !test?.image_url)
     return (
       <p className="text-center">Not available yet. Please check back later.</p>
     );

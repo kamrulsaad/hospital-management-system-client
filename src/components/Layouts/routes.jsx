@@ -52,6 +52,7 @@ import AllPc from "../Pages/Dashboard/PC/AllPc";
 import PcDetails from "../Pages/Dashboard/PC/PcDetails";
 import RegisterPc from "../Pages/Dashboard/PC/RegisterPc";
 import UpdatePc from "../Pages/Dashboard/PC/UpdatePc";
+import PCInvoice from "../Pages/Dashboard/PC/PCInvoice";
 
 const router = createBrowserRouter([
   {
@@ -256,6 +257,11 @@ const router = createBrowserRouter([
       {
         path: "/bed/update/:id",
         element: <UpdateBed></UpdateBed>,
+      },
+
+      {
+        path: "pc/invoice/:invoiceId",
+        element: <PCInvoice></PCInvoice>,
       },
 
       // pc related api's

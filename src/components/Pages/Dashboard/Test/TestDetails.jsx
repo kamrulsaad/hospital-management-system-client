@@ -10,6 +10,7 @@ import { saveAs } from "file-saver";
 import { useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useReactToPrint } from "react-to-print";
 
 const TestDetails = () => {
   const [test, setTest] = useState({});
@@ -17,7 +18,11 @@ const TestDetails = () => {
   const [downloading, setDownloading] = useState(false);
 
   const { testId } = useParams();
-  const downloadRef = useRef(null);
+  const reportRef = useRef(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => reportRef.current,
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -53,36 +58,23 @@ const TestDetails = () => {
       const fileBlob = await response.blob();
       saveAs(fileBlob, `${patientName}-${testName}-report.pdf`);
     } else {
-      const element = downloadRef.current;
+      const capture = document.getElementById("report");
 
-      // Capture the div as an image using html2canvas
-      html2canvas(element, { scale: 1 })
-        .then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          const doc = new jsPDF();
-          const width = doc.internal.pageSize.getWidth();
-          const aspectRatio = canvas.width / canvas.height;
-          const height = width / aspectRatio;
-
-          // Add the captured image to the PDF
-          doc.addImage(imgData, "PNG", 0, 0, width, height);
-
-          // Save the PDF
-          doc.save(`${test?.patient?.name}-report.pdf`);
-          setDownloading(false);
-        })
-        .catch((error) => {
-          console.error("Error generating PDF:", error);
-          setDownloading(false);
-        });
+      html2canvas(capture).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const doc = new jsPDF("P", "mm", "a4");
+        const width = doc.internal.pageSize.getWidth();
+        const height = doc.internal.pageSize.getHeight();
+        doc.addImage(imgData, "PNG", 0, 0, width, height);
+        doc.save(`${test?.patient?.name}-${test?.category?.name}-report.pdf`);
+      });
     }
-
     setDownloading(false);
   };
 
   return (
     <div className="mx-20 my-10">
-      <div className="p-4" ref={downloadRef}>
+      <div className="p-4" id="report" ref={reportRef}>
         <div className="grid grid-cols-3 gap-x-4 italic border p-2 mb-6 pb-4">
           <div>
             <div className="flex justify-between">
@@ -95,7 +87,7 @@ const TestDetails = () => {
             </div>
             <div className="flex justify-between">
               <p>Referred By: </p>
-              <p>{test?.invoiceId?.referredBy || "Self"}</p>
+              <p>{test?.invoiceId?.referredBy.name || "Self"}</p>
             </div>
           </div>
           <div>
@@ -148,6 +140,16 @@ const TestDetails = () => {
             <img className="w-4 animate-spin" src="/assets/loading.png" />
           ) : (
             "Download Report"
+          )}
+        </button>
+        <button
+          onClick={handlePrint}
+          className="btn btn-sm bg-tahiti-mainBlue border-0 mt-4"
+        >
+          {downloading ? (
+            <img className="w-4 animate-spin" src="/assets/loading.png" />
+          ) : (
+            "Print Report"
           )}
         </button>
       </div>

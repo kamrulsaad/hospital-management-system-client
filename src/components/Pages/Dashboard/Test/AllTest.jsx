@@ -21,16 +21,6 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "INCREMENT_PAGE_NUMBER":
-      if (state.pageNumber < state.pages) {
-        return { ...state, pageNumber: state.pageNumber + 1 };
-      }
-      return state;
-    case "DECREMENT_PAGE_NUMBER":
-      if (state.pageNumber > 1) {
-        return { ...state, pageNumber: state.pageNumber - 1 };
-      }
-      return state;
     case "SET_LOADING":
       return {
         ...state,
@@ -81,6 +71,16 @@ const reducer = (state, action) => {
         ...state,
         search: action.payload,
       };
+    case "SET_PAGENUMBER":
+      return {
+        ...state,
+        pageNumber: action.payload,
+      };
+    case "SET_SIZE":
+      return {
+        ...state,
+        size: action.payload,
+      };
     default:
       return state;
   }
@@ -91,7 +91,21 @@ const AllTest = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const pages = Math.ceil(state?.count / state?.size);
+  const pages = Math.ceil(state.count / state.size);
+
+  const increasePageNumber = () => {
+    if (state.pageNumber < pages) {
+      dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber + 1 });
+    }
+  };
+
+  const decreasePageNumber = () => {
+    if (state.pageNumber > 1) {
+      dispatch({ type: "SET_PAGENUMBER", payload: state.pageNumber - 1 });
+    } else {
+      dispatch({ type: "SET_PAGENUMBER", payload: 1 });
+    }
+  };
 
   useEffect(() => {
     dispatch({
@@ -261,7 +275,9 @@ const AllTest = () => {
               <th className="text-center">Test</th>
               <th className="text-center">Date</th>
               <th className="text-center">Status</th>
-              {role?.includes("labaratorist") && <th className="text-center">Update</th>}
+              {role?.includes("labaratorist") && (
+                <th className="text-center">Update</th>
+              )}
               <th className="text-center">Details</th>
               {(role?.includes("super-admin") || role?.includes("admin")) && (
                 <th className="text-center">Delete</th>
@@ -300,13 +316,13 @@ const AllTest = () => {
         </span>
         <div className="inline-flex mt-2 xs:mt-0">
           <button
-            onClick={() => dispatch({ type: "DECREMENT_PAGE_NUMBER" })}
+            onClick={decreasePageNumber}
             className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white rounded-l  dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Prev
           </button>
           <button
-            onClick={() => dispatch({ type: "INCREMENT_PAGE_NUMBER" })}
+            onClick={increasePageNumber}
             className="px-4 py-2 text-sm font-medium bg-tahiti-primary text-tahiti-white   border-0 border-l  rounded-r dark:hover:bg-tahiti-darkGreen dark:hover:text-tahiti-white"
           >
             Next

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import Swal from "sweetalert2";
 
-const InvoicePage = () => {
+const PCInvoice = () => {
   const { invoiceId } = useParams();
   const [loading, setLoading] = useState(null);
   const [refetch, setRefetch] = useState(true);
@@ -316,4 +316,4 @@ const InvoicePage = () => {
   );
 };
 
-export default InvoicePage;
+export default PCInvoice;

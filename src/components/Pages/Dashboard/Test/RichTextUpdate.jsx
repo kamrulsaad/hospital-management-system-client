@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineFileImage } from "react-icons/ai";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { convert } from "html-to-text";
 
 const RichTextUpdate = ({ id }) => {
+  const [testData, setTestData] = useState({
+    remarks: "",
+    image_url: "",
+  });
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -34,6 +39,39 @@ const RichTextUpdate = ({ id }) => {
     "list",
     "bullet",
   ];
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/v1/test/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.status === "success") {
+          setTestData({
+            remarks: result.data.remarks,
+            image_url: result.data.image_url,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong while fetching the test details!",
+            footer: result.error,
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while fetching the test details!",
+          footer: error.message,
+        });
+      });
+  }, []);
 
   const handleSubmit = () => {
     Swal.fire({
@@ -85,6 +123,8 @@ const RichTextUpdate = ({ id }) => {
     window.URL.revokeObjectURL(imageUrl);
   };
 
+  console.log(testData.remarks);
+
   return (
     <div>
       <ReactQuill
@@ -92,7 +132,6 @@ const RichTextUpdate = ({ id }) => {
         onChange={setContent}
         modules={modules}
         formats={formats}
-        placeholder={"Write something..."}
       />
       {imageUrl ? (
         <div className="mt-4 relative">
