@@ -127,7 +127,9 @@ const UpdateTest = () => {
       });
   };
 
-    const handleFileUpload = () => {
+  console.log(state.test);
+
+  const handleFileUpload = () => {
     Swal.fire({
       title: "Uploading File",
       html: "Please wait while we upload the file...",
@@ -235,6 +237,9 @@ const UpdateTest = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {state.test?.category?.name}
       </h1>
+      {state?.test?.category?.type === "description" && (
+        <RichTextUpdate id={testId}></RichTextUpdate>
+      )}
       {state?.test?.category?.type === "main" && !state.fileUpToggle && (
         <div className="overflow-x-auto">
           <table className="table w-full">
@@ -285,9 +290,6 @@ const UpdateTest = () => {
             </button>
           </div>
         </div>
-      )}
-      {state?.test?.category?.type === "description" && (
-        <RichTextUpdate id={testId}></RichTextUpdate>
       )}
       {(state?.test?.category?.type === "file" || state.fileUpToggle) && (
         <>

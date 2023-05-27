@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaFileUpload, FaTrash } from "react-icons/fa";
-import { HiOutlineDocumentRemove } from "react-icons/hi";
+import { FcViewDetails } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -30,7 +30,10 @@ const TestRow = ({ invoice, role, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`https://server.thelabaidhospital.com/api/v1/test/${id}`, requestOptions)
+        fetch(
+          `https://server.thelabaidhospital.com/api/v1/test/${id}`,
+          requestOptions
+        )
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
@@ -55,29 +58,29 @@ const TestRow = ({ invoice, role, setRefetch }) => {
 
   return (
     <tr>
-      <td>{invoice?.serialId}</td>
-      <td className="text-center">{invoice?.patient?.name}</td>
-      <td className="text-center">{invoice?.category?.name}</td>
-      <td className="text-center">{formattedDate.replace(",", "")}</td>
-      <td className="text-center">
+      <td className="py-2">{invoice?.serialId}</td>
+      <td className="text-center py-2">{invoice?.patient?.name}</td>
+      <td className="text-center py-2">{invoice?.category?.name}</td>
+      <td className="text-center py-2">{formattedDate.replace(",", "")}</td>
+      <td className="text-center py-2">
         {invoice?.available ? "Available" : "Not Available"}
       </td>
       {role?.includes("labaratorist") && (
         <>
-          <td>
+          <td className="py-2">
             <Link to={`/test/${invoice?._id}`}>
               <FaFileUpload className="text-2xl cursor-pointer mx-auto" />
             </Link>
           </td>
         </>
       )}
-      <td className="text-center">
+      <td className="text-center py-2">
         <Link to={`/testDetails/${invoice?._id}`}>
-          <button className="btn btn-xs rounded-lg">Details</button>
+          <FcViewDetails className="text-2xl mx-auto"></FcViewDetails>
         </Link>
       </td>
       {(role?.includes("super-admin") || role?.includes("admin")) && (
-        <td>
+        <td className="py-2">
           {delLoading ? (
             <img
               className="w-6 animate-spin mx-auto"
@@ -87,7 +90,7 @@ const TestRow = ({ invoice, role, setRefetch }) => {
           ) : (
             <FaTrash
               onClick={() => handleDelete(invoice?._id)}
-              className="text-tahiti-red cursor-pointer mx-auto"
+              className="text-tahiti-red text-lg cursor-pointer mx-auto"
             ></FaTrash>
           )}
         </td>

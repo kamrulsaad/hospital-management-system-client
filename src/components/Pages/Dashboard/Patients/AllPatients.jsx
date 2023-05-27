@@ -137,11 +137,22 @@ const AllPatients = () => {
             Go Back
           </button>
         ) : (
-          <Link to={"/"}>
-            <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
-              Back to Dashboard
-            </button>
-          </Link>
+          <div className="flex justify-center items-center gap-4">
+            {(role?.includes("receptionist") ||
+              role === "super-admin" ||
+              role === "admin") && (
+              <Link to="/addapatient">
+                <button className="btn btn-sm rounded-md bg-tahiti-darkGreen text-tahiti-white">
+                  Add New
+                </button>
+              </Link>
+            )}
+            <Link to={"/"}>
+              <button className="lg:my-5 font-semibold p-1 rounded-md btn-ghost block mx-auto bg-tahiti-darkGreen text-tahiti-white px-4">
+                Back to Dashboard
+              </button>
+            </Link>
+          </div>
         )}
       </>
     );
@@ -149,7 +160,6 @@ const AllPatients = () => {
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold mb-4">Patients : {state.count}</h1>
-      {/* Search Field */}
       <div
         className={`flex ${
           role?.includes("receptionist") ||
@@ -159,17 +169,6 @@ const AllPatients = () => {
             : "justify-end"
         }`}
       >
-        {(role?.includes("receptionist") ||
-          role === "super-admin" ||
-          role === "admin") && (
-          <>
-            <Link to="/addapatient">
-              <button className=" lg:mb-5 font-semibold px-2 py-1 text-xs  rounded-md bg-tahiti-darkGreen text-tahiti-white">
-                Add New
-              </button>
-            </Link>
-          </>
-        )}
         <div className="flex mb-4 gap-2">
           <select
             type="text"
@@ -239,8 +238,11 @@ const AllPatients = () => {
               <th className="text-center">Blood Group</th>
               <th className="text-center">Gender</th>
               <th className="text-center">Phone</th>
+              {(role?.includes("receptionist") || role?.includes("admin")) && (
+                <th className="text-center">Payment</th>
+              )}
               <th className="text-center">Details</th>
-              {(role?.includes("super-admin") || role?.includes("admin")) && (
+              {role?.includes("admin") && (
                 <th className="text-center">Delete</th>
               )}
             </tr>

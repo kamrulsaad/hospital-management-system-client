@@ -226,9 +226,6 @@ const Register = () => {
                 <option className="font-bold" value={"receptionist"}>
                   Receptionist
                 </option>
-                <option className="font-bold" value={"accountant"}>
-                  Accountant
-                </option>
                 <option className="font-bold" value={"labaratorist"}>
                   Labaratorist
                 </option>

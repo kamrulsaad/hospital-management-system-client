@@ -172,17 +172,15 @@ const AllTest = () => {
 
   return (
     <div className="px-10 bg-tahiti-white">
-      <div className="mb-6 mt-10">
+      <div className="mb-4 mt-10">
         <h1 className="text-3xl font-bold mb-2">Tests : {state.count}</h1>
         <div className="flex items-center justify-between">
-          {role?.includes("admin") && (
-            <Link
-              to={"/categories"}
-              className=" btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
-            >
-              all categories
-            </Link>
-          )}
+          <Link
+            to={"/categories"}
+            className=" btn btn-xs font-semibold rounded-md btn-ghost bg-tahiti-darkGreen  text-tahiti-white"
+          >
+            all categories
+          </Link>
           <div className="flex gap-2 items-center">
             <select
               type="text"
