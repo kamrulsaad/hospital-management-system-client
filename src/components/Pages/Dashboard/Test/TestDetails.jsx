@@ -26,7 +26,7 @@ const TestDetails = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/test/${testId}`)
+    fetch(`https://server.thelabaidhospital.com/api/v1/test/${testId}`)
       .then((response) => response.json())
       .then((result) => {
         if (result.status === "success") {
