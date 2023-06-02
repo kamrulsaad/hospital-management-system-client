@@ -15,7 +15,7 @@ const UpdateExpCat = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/expense/category/${categoryId}`,
+        `https://server.thelabaidhospital.com/api/v1/expense/category/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateExpCat = () => {
       description,
     };
 
-    fetch(`http://localhost:5000/api/v1/expense/category/${categoryId}`, {
+    fetch(`https://server.thelabaidhospital.com/api/v1/expense/category/${categoryId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

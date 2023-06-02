@@ -15,7 +15,7 @@ const UpdateExpense = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/expense/${expenseId}`,
+        `https://server.thelabaidhospital.com/api/v1/expense/${expenseId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateExpense = () => {
       description,
     };
 
-    fetch(`http://localhost:5000/api/v1/expense/${expenseId}`, {
+    fetch(`https://server.thelabaidhospital.com/api/v1/expense/${expenseId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

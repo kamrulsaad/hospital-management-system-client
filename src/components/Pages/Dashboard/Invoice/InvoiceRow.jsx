@@ -30,7 +30,7 @@ const InvoiceRow = ({ invoice, i, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`http://localhost:5000/api/v1/invoice/${id}`, requestOptions)
+        fetch(`https://server.thelabaidhospital.com/api/v1/invoice/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
