@@ -16,13 +16,21 @@ const CreateSubCategory = () => {
     const name = form.name.value;
     const charge = form.charge.value;
     const nature = form.nature.value;
-    const type = form.type.value;
+    const type = "file";
+    const roomNo = form.roomNo.value;
     const pcRate = form.pcRate.value;
     const mainCategory = categoryId;
     const description = form.description.value;
 
     const createInvoiceCategoryData = {
-      name, description, mainCategory, charge, pcRate, type, nature
+      name,
+      description,
+      mainCategory,
+      charge,
+      pcRate,
+      roomNo,
+      type,
+      nature,
     };
 
     // return console.log(createInvoiceCategoryData);
@@ -37,7 +45,7 @@ const CreateSubCategory = () => {
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
-        
+
         if (result.status === "success") {
           toast.success(result.message);
           navigate(`/category/${categoryId}`);
@@ -87,20 +95,13 @@ const CreateSubCategory = () => {
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>
-            <div className="col-span-full flex items-center w-1/2 sm:col-span-3">
-              <p className="text-xl font-medium w-1/4">Type: </p>
-              <select
+            <div className="col-span-full flex w-1/2 sm:col-span-3">
+              <p className="text-xl font-medium w-1/4">Room No: </p>
+              <input
+                id="roomNo"
                 type="text"
-                id="type"
-                className="select bg-tahiti-mainBlue col-span-full sm:col-span-3 focus:outline-none font-bold w-3/4 text-tahiti-white"
-              >
-                <option selected disabled>
-                  Select
-                </option>
-                <option value="main">Main</option>
-                <option value="description">Descriptive</option>
-                <option value="file">File</option>
-              </select>
+                className="w-3/4 rounded-md border p-1 "
+              />
             </div>
             <div className="col-span-full flex w-1/2 sm:col-span-3">
               <p className="text-xl font-medium w-1/4">Charge: </p>

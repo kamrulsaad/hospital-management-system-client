@@ -170,6 +170,16 @@ const AllPatients = () => {
         }`}
       >
         <div className="flex mb-4 gap-2">
+          <button
+            onClick={() => {
+              dispatch({ type: "SET_NAME", payload: "admitted" });
+              dispatch({ type: "SET_VALUE", payload: "true" });
+              dispatch({ type: "SET_REFETCH" });
+            }}
+            className="btn btn-xs"
+          >
+            In Patient
+          </button>
           <select
             type="text"
             name="name"

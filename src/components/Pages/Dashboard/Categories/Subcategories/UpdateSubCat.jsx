@@ -38,6 +38,7 @@ const UpdateSubCat = () => {
     const charge = form.charge.value || expense?.charge;
     const nature = form.nature.value || expense?.nature;
     const pcRate = form.pcRate.value || expense?.pcRate;
+    const roomNo = form.roomNo.value || expense?.roomNo;
     const description = form.description.value || expense?.description;
 
     const createBedCategoryData = {
@@ -46,6 +47,7 @@ const UpdateSubCat = () => {
       charge,
       pcRate,
       nature,
+      roomNo,
     };
 
     fetch(`http://localhost:5000/api/v1/sub_category/${categoryId}`, {
@@ -99,6 +101,15 @@ const UpdateSubCat = () => {
                 name="name"
                 type="text"
                 placeholder={expense?.name}
+                className="w-3/4 rounded-md border p-1 "
+              />
+            </div>
+            <div className="col-span-full flex w-1/2 sm:col-span-3">
+              <p className="text-xl font-medium w-1/4">Room No: </p>
+              <input
+                name="roomNo"
+                type="text"
+                placeholder={expense?.roomNo}
                 className="w-3/4 rounded-md border p-1 "
               />
             </div>

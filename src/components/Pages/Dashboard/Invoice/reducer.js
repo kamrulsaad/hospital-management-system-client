@@ -25,6 +25,8 @@ export const initialState = {
     paidAmount: 0,
     due: 0,
     refferedBy: '',
+    remarks: '',
+    deliveryDate: '',
 };
 
 export function reducer(state, action) {
@@ -229,6 +231,18 @@ export function reducer(state, action) {
             return {
                 ...state,
                 refferedBy: action.payload,
+            };
+        }
+        case "SET_REMARKS": {
+            return {
+                ...state,
+                remarks: action.payload,
+            };
+        }
+        case "SET_DELIVERY_DATE": {
+            return {
+                ...state,
+                deliveryDate: action.payload,
             };
         }
         default:

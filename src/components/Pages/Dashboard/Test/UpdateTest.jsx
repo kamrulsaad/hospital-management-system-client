@@ -237,137 +237,18 @@ const UpdateTest = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {state.test?.category?.name}
       </h1>
-      {state?.test?.category?.type === "description" && !state.fileUpToggle && (
-        <>
-          <RichTextUpdate id={testId}></RichTextUpdate>
-          <button
-            onClick={() => {
-              dispatch({
-                type: "TOGGLE_FILE_UPLOAD",
-                payload: true,
-              });
-            }}
-            className="btn btn-sm bg-tahiti-cyan border-0 mt-2"
-          >
-            Upload File instead
-          </button>
-        </>
-      )}
-      {state?.test?.category?.type === "main" && !state.fileUpToggle && (
-        <div className="overflow-x-auto">
-          <table className="table w-full">
-            {/* head */}
-            <thead>
-              <tr className="text-center">
-                <th className="text-sm py-2">Test</th>
-                <th className="text-sm py-2">Result</th>
-                <th className="text-sm py-2">Normal Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {state?.test?.results?.map((test) => (
-                <tr key={test?._id}>
-                  <td className="py-2">{test?.test?.name}</td>
-                  <td className="text-center py-2">
-                    <input
-                      type="text"
-                      placeholder={test?.result || "Enter result"}
-                      className="input input-bordered input-sm border-tahiti-dark px-2 focus:outline-none"
-                      onKeyDown={(e) => handleKeyDown(e, test?._id)}
-                    />
-                  </td>
-                  <td className="text-center py-2">
-                    {test?.test?.normalValue}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex justify-center items-center gap-x-4 mt-4">
-            <button
-              onClick={handleSubmit}
-              className="btn btn-sm bg-tahiti-primary border-0 "
-            >
-              Confirm
-            </button>
-            <button
-              onClick={() => {
-                dispatch({
-                  type: "TOGGLE_FILE_UPLOAD",
-                  payload: true,
-                });
-              }}
-              className="btn btn-sm bg-tahiti-cyan border-0"
-            >
-              Upload File instead
-            </button>
-          </div>
-        </div>
-      )}
-      {(state?.test?.category?.type === "file" || state.fileUpToggle) && (
-        <>
-          {state.fileUrl ? (
-            <div>
-              <div>
-                <p className="text-center mb-2 text-lg">
-                  Preview of <b>{state.image?.name} </b>!{" "}
-                  <span
-                    onClick={() => {
-                      URL.revokeObjectURL(state.fileUrl);
-                      dispatch({ type: "SET_FILE_URL", payload: "" });
-                      dispatch({ type: "SET_IMAGE", payload: null });
-                    }}
-                    className="hover:underline cursor-pointer"
-                  >
-                    remove?
-                  </span>
-                </p>
-                <iframe
-                  className="mx-auto rounded-lg"
-                  src={state.fileUrl}
-                  width="100%"
-                  height={window.innerHeight}
-                />
-              </div>
-              <button
-                onClick={handleFileUpload}
-                className="btn btn-sm bg-tahiti-primary border-0 block mx-auto mt-4"
-              >
-                Confirm
-              </button>
-            </div>
-          ) : (
-            <div className="flex gap-x-4 items-center justify-center">
-              {state?.test?.category?.type === "main" && (
-                <button
-                  onClick={() => {
-                    dispatch({
-                      type: "TOGGLE_FILE_UPLOAD",
-                      payload: false,
-                    });
-                  }}
-                  className="btn btn-sm bg-tahiti-cyan border-0"
-                >
-                  Revert Back
-                </button>
-              )}
-              <p for="password" className="font-medium mr-4">
-                Choose File:{" "}
-              </p>
-              <label htmlFor="file-upload">
-                <FaFileUpload className="text-2xl cursor-pointer" />
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                onChange={selectFile}
-                className="hidden"
-                accept="application/pdf"
-              />
-            </div>
-          )}
-        </>
-      )}
+
+      <button
+        onClick={() => {
+          dispatch({
+            type: "TOGGLE_FILE_UPLOAD",
+            payload: true,
+          });
+        }}
+        className="btn btn-sm bg-tahiti-cyan border-0 mt-4"
+      >
+        Upload File
+      </button>
     </div>
   );
 };

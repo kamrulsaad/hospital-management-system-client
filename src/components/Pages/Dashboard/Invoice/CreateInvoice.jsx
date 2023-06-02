@@ -82,6 +82,8 @@ const CreateInvoice = () => {
       appointedTo: state.selectedDoctor || null,
       total_PC_Commission: state.total_PC_commision,
       grand_total: state.grandTotal,
+      remarks: state.remarks,
+      deliveryDate: state.deliveryDate,
     };
 
     fetch(`http://localhost:5000/api/v1/invoice/create/${patientId}`, {
@@ -94,7 +96,7 @@ const CreateInvoice = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        dispatch({ type: "CREATING_INVOICE", payload: false })
+        dispatch({ type: "CREATING_INVOICE", payload: false });
         if (result.status === "success") {
           toast.success(result.message);
           navigate("/allinvoice");
@@ -181,6 +183,7 @@ const CreateInvoice = () => {
               <FaPlus></FaPlus>
             </button>
           </div>
+
           <div className="grid grid-cols-12">
             <select
               onChange={(event) => {
@@ -208,6 +211,33 @@ const CreateInvoice = () => {
             <button className="btn btn-sm col-span-2 bg-tahiti-lightGreen border-r-0 border-t-0 border-b-0 rounded-l-none">
               <FaPlus></FaPlus>
             </button>
+          </div>
+          <div>
+            <label className="block" htmlFor="Remarks">
+              Remarks
+            </label>
+            <input
+              type="text"
+              onChange={(event) => {
+                dispatch({ type: "SET_REMARKS", payload: event.target.value });
+              }}
+              className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            />
+          </div>
+          <div>
+            <label className="block" htmlFor="date">
+              Report Collection Date
+            </label>
+            <input
+              onChange={(event) => {
+                dispatch({
+                  type: "SET_DELIVERY_DATE",
+                  payload: event.target.value,
+                });
+              }}
+              type="text"
+              className="input w-full bg-tahiti-babyPink input-sm focus:outline-none disabled:placeholder:text-tahiti-dark"
+            />
           </div>
         </div>
       </div>

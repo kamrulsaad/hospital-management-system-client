@@ -124,18 +124,27 @@ const InvoicePage = () => {
   return (
     <div className="p-10 pb-0">
       <div ref={componentRef}>
-      <div>
-        <p className="text-xl text-tahiti-lightGreen my-2-5 mx-10 font-semibold print:mt-4">
-          HMS UNIECH
-        </p>
-      </div>
-        <div className="grid grid-cols-3 bg-tahiti-white p-10">
+        <div className="flex items-center justify-center gap-4">
+          <div>
+            <img src="/assets/logo.png" alt="" className="w-28" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-medium uppercase">
+              The-Labaid Hospital
+            </h1>
+            <hr />
+            <p className="text-sm">
+              Molla Tower, Choytola Bustand, Jamgora, Ashulia, Dhaka <br />{" "}
+              Phone: 01739088461, 01861146542, 01980322522
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 bg-tahiti-white p-10 print:text-xs gap-4">
           <div>
             <p>From,</p>
             <p className="font-medium">
               {invoice?.createdBy?.firstName} {invoice?.createdBy?.lastName}
             </p>
-            <p className="font-medium capitalize">{invoice?.createdBy?.role}</p>
             <p>
               Phone:{" "}
               <span className="font-medium">{invoice?.createdBy?.phone}</span>{" "}
@@ -167,11 +176,12 @@ const InvoicePage = () => {
           </div>
         </div>
         <div className="px-10 bg-tahiti-white">
-          <div className="overflow-x-auto bg-tahiti-white border text-sm rounded-lg">
+          <div className="overflow-x-auto bg-tahiti-white border text-sm print:text-xs rounded-lg">
             <table className="table w-full">
               <thead>
                 <tr>
                   <th className="p-2">Item</th>
+                  <th className="p-2">Room No</th>
                   <th className="p-2 text-center print:hidden">PC Comission</th>
                   <th className="text-right p-2">Amount</th>
                 </tr>
@@ -179,6 +189,7 @@ const InvoicePage = () => {
               {invoice?.tests?.map((payment, i) => (
                 <tr key={payment?._id}>
                   <td className="p-2">{payment.name}</td>
+                  <td className="p-2">{payment.roomNo}</td>
                   <td className="p-2 text-center print:hidden">
                     {Math.ceil((payment.charge * payment.pcRate) / 100)}৳
                   </td>
@@ -227,22 +238,28 @@ const InvoicePage = () => {
             </table>
           </div>
         </div>
-        <div className="grid grid-cols-3 bg-tahiti-white p-10">
-          <div className="mt-auto space-x-4">
-            {invoice?.dueAmount > 0 && (
+        <div className="grid grid-cols-3 bg-tahiti-white p-10 print:text-xs">
+          <div className="flex flex-col justify-between">
+            <div>
+              <p>Report Delivery Time: {invoice?.deliveryDate}</p>
+              <p>Remarks: {invoice?.remarks}</p>
+            </div>
+            <div className="space-x-4">
+              {invoice?.dueAmount > 0 && (
+                <button
+                  onClick={handleStatusUpdate}
+                  className="btn btn-xs btn-success print:hidden "
+                >
+                  Submit Payment
+                </button>
+              )}
               <button
-                onClick={handleStatusUpdate}
-                className="btn btn-xs btn-success print:hidden "
+                onClick={handlePrint}
+                className="btn btn-ghost btn-xs bg-tahiti-primary print:hidden"
               >
-                Submit Payment
+                Print
               </button>
-            )}
-            <button
-              onClick={handlePrint}
-              className="btn btn-ghost btn-xs bg-tahiti-primary print:hidden"
-            >
-              Print
-            </button>
+            </div>
           </div>
           <div>
             <div className="overflow-x-auto">
