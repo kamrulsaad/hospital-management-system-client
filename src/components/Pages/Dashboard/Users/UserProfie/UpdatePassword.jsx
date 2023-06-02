@@ -70,7 +70,7 @@ const UpdatePassword = () => {
       newPassword: newPassword,
     };
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/user/update-password`, {
+    fetch(`http://localhost:5000/api/v1/user/update-password`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -15,7 +15,7 @@ const UpdateBedCategory = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/bed/category/${id}`,
+        `http://localhost:5000/api/v1/bed/category/${id}`,
         {
           method: "GET",
           headers: {
@@ -44,7 +44,7 @@ const UpdateBedCategory = () => {
       description,
     };
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/bed/category/${id}`, {
+    fetch(`http://localhost:5000/api/v1/bed/category/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

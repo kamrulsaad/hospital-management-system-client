@@ -26,7 +26,7 @@ const TestDetails = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://server.thelabaidhospital.com/api/v1/test/${testId}`)
+    fetch(`http://localhost:5000/api/v1/test/${testId}`)
       .then((response) => response.json())
       .then((result) => {
         if (result.status === "success") {
@@ -87,12 +87,12 @@ const TestDetails = () => {
             </div>
             <div className="flex justify-between">
               <p>Referred By: </p>
-              <p>{test?.invoiceId?.referredBy.name || "Self"}</p>
+              <p>{test?.invoiceId?.referredBy?.name || "Self"}</p>
             </div>
           </div>
           <div>
             <div className="flex justify-between">
-              <p>Nature of Exam: </p>
+              <p>Specimen: </p>
               <p className="capitalize">{test?.category?.nature}</p>
             </div>
           </div>

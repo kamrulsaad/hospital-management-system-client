@@ -98,7 +98,7 @@ const AllPc = () => {
       payload: state.key && state.value ? true : false,
     });
     fetch(
-      `https://server.thelabaidhospital.com/api/v1/pc/all?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
+      `http://localhost:5000/api/v1/pc/all?page=${state.pageNumber}&limit=${state.size}&key=${state.key}&value=${state.value}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,

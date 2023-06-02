@@ -22,7 +22,7 @@ const RegisterPc = () => {
     };
 
     // return console.log(createInvoiceCategoryData);
-    fetch(`https://server.thelabaidhospital.com/api/v1/pc/register`, {
+    fetch(`http://localhost:5000/api/v1/pc/register`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -55,7 +55,7 @@ const PCInvoice = () => {
             Swal.showLoading();
 
             const response = await fetch(
-              `https://server.thelabaidhospital.com/api/v1/invoice/status/${invoiceId}`,
+              `http://localhost:5000/api/v1/invoice/status/${invoiceId}`,
               {
                 method: "POST",
                 headers: {
@@ -104,7 +104,7 @@ const PCInvoice = () => {
     const fetchInvoiceData = async () => {
       setLoading(true);
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/invoice/${invoiceId}`,
+        `http://localhost:5000/api/v1/invoice/${invoiceId}`,
         {
           method: "GET",
           headers: {

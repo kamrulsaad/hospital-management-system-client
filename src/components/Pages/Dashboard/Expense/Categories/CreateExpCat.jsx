@@ -20,7 +20,7 @@ const CreateExpCat = () => {
       description,
     };
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/expense/category/create`, {
+    fetch(`http://localhost:5000/api/v1/expense/category/create`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

@@ -25,7 +25,7 @@ const BedDetails = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/bed/${id}`,
+        `http://localhost:5000/api/v1/bed/${id}`,
         {
           method: "GET",
           headers: {

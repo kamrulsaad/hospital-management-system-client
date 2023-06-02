@@ -37,10 +37,8 @@ const NewPatientProfile = ({ qr }) => {
       redirect: "follow",
     };
 
-    console.log(requestOptions);
-
     fetch(
-      `https://server.thelabaidhospital.com/api/v1/bed/unassign/${bedId}`,
+      `http://localhost:5000/api/v1/bed/unassign/${bedId}`,
       requestOptions
     )
       .then((response) => response.json())
@@ -60,8 +58,8 @@ const NewPatientProfile = ({ qr }) => {
     const fetchUserData = async () => {
       const response = await fetch(
         qr
-          ? `https://server.thelabaidhospital.com/api/v1/patient/qr/${id}`
-          : `https://server.thelabaidhospital.com/api/v1/patient/${id}`,
+          ? `http://localhost:5000/api/v1/patient/qr/${id}`
+          : `http://localhost:5000/api/v1/patient/${id}`,
         {
           method: "GET",
           headers: {

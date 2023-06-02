@@ -98,7 +98,7 @@ const UpdateTest = () => {
 
     Swal.showLoading();
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/test/${testId}`, {
+    fetch(`http://localhost:5000/api/v1/test/${testId}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -141,7 +141,7 @@ const UpdateTest = () => {
     const formData = new FormData();
     formData.append("pdf", state.image, state.image?.name);
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/test/upload/${testId}`, {
+    fetch(`http://localhost:5000/api/v1/test/upload/${testId}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("LoginToken")}`,
@@ -181,7 +181,7 @@ const UpdateTest = () => {
     const fetchInvoiceData = async () => {
       dispatch({ type: "SET_LOADING", payload: true });
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/test/${testId}`,
+        `http://localhost:5000/api/v1/test/${testId}`,
         {
           method: "GET",
           headers: {
@@ -237,8 +237,21 @@ const UpdateTest = () => {
       <h1 className="text-3xl text-center mb-4 border w-fit mx-auto px-2 py-1 italic font-semibold">
         {state.test?.category?.name}
       </h1>
-      {state?.test?.category?.type === "description" && (
-        <RichTextUpdate id={testId}></RichTextUpdate>
+      {state?.test?.category?.type === "description" && !state.fileUpToggle && (
+        <>
+          <RichTextUpdate id={testId}></RichTextUpdate>
+          <button
+            onClick={() => {
+              dispatch({
+                type: "TOGGLE_FILE_UPLOAD",
+                payload: true,
+              });
+            }}
+            className="btn btn-sm bg-tahiti-cyan border-0 mt-2"
+          >
+            Upload File instead
+          </button>
+        </>
       )}
       {state?.test?.category?.type === "main" && !state.fileUpToggle && (
         <div className="overflow-x-auto">

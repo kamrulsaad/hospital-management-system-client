@@ -15,7 +15,7 @@ const UpdateTestName = () => {
   useEffect(() => {
     const fetchExpense = async () => {
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/test_name/${categoryId}`,
+        `http://localhost:5000/api/v1/test_name/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -42,7 +42,7 @@ const UpdateTestName = () => {
       normalValue,
     };
 
-    fetch(`https://server.thelabaidhospital.com/api/v1/test_name/${categoryId}`, {
+    fetch(`http://localhost:5000/api/v1/test_name/${categoryId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

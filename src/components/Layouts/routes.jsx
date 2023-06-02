@@ -319,9 +319,6 @@ const router = createBrowserRouter([
         path: "/qr/payment/invoice/:invoiceId",
         element: <InvoicePage qr></InvoicePage>,
       },
-      {
-        path: "/qr/",
-      },
     ],
   },
 ]);

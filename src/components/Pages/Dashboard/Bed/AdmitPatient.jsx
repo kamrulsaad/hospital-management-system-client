@@ -18,7 +18,7 @@ const AdmitPatient = () => {
     const fetchCategories = async () => {
       setLoading(true);
       const response = await fetch(
-        `https://server.thelabaidhospital.com/api/v1/bed/available`,
+        `http://localhost:5000/api/v1/bed/available`,
         {
           method: "GET",
           headers: {
@@ -40,7 +40,7 @@ const AdmitPatient = () => {
     if (!event.target.category.value) return toast.error("Please select a bed");
 
     fetch(
-      `https://server.thelabaidhospital.com/api/v1/bed/assign/${event.target.category.value}`,
+      `http://localhost:5000/api/v1/bed/assign/${event.target.category.value}`,
       {
         method: "PATCH",
         headers: {

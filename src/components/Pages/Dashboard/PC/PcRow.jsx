@@ -28,7 +28,7 @@ const PcRow = ({ invoice, i, role, refetch, setRefetch }) => {
       confirmButtonText: "Okay",
     }).then((results) => {
       if (results.isConfirmed) {
-        fetch(`https://server.thelabaidhospital.com/api/v1/pc/${id}`, requestOptions)
+        fetch(`http://localhost:5000/api/v1/pc/${id}`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             if (result.status === "success") toast.success(result.message);
